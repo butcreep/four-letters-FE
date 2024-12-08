@@ -4,6 +4,7 @@ import Home from "pages/Home";
 import styled from "styled-components";
 import LetterWrite from "pages/LetterWrite";
 import Intro from "pages/Intro";
+import LetterSelect from "components/LetterSelect";
 const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 480px;
@@ -19,7 +20,8 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Intro />} />
-        <Route path="/write" element={<LetterWrite />} />
+        <Route path="/letter-select" element={<LetterSelect />} />
+        <Route path="/letter-write" element={<LetterWrite />} />
       </Routes>
     </AppContainer>
   );
