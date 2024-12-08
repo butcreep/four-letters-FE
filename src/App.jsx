@@ -1,8 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "pages/Home";
 import styled from "styled-components";
-// import LetterWrite from "./pages/LetterWrite";
+import LetterWrite from "pages/LetterWrite";
+import Intro from "pages/Intro";
 const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 480px;
@@ -16,8 +17,9 @@ const App = () => {
   return (
     <AppContainer>
       <Routes>
-        <Route path="/" element={<Home />} />
-        {/* <Route path="/write" element={<LetterWrite />} /> */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Intro />} />
+        <Route path="/write" element={<LetterWrite />} />
       </Routes>
     </AppContainer>
   );
