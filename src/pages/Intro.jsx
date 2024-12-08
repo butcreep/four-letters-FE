@@ -15,7 +15,7 @@ const Intro = () => {
         <br />
         받고싶은 사람
       </h1>
-      <div className="w-full" onClick={handleLogin}>
+      <div className="w-full cursor-pointer" onClick={handleLogin}>
         <div className="flex justify-center items-center bg-kakaoYellow w-full h-[54px] gap-2">
           <span>카카오 로그인</span>
         </div>
