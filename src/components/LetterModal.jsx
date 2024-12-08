@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 // Styled-components 정의
 const ModalOverlay = styled.div`
@@ -40,6 +41,12 @@ const CloseButton = styled.button`
 `;
 
 const LetterModal = ({ letter, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleWriteLetter = () => {
+    navigate("/letter-select", { state: { recipient: letter } });
+  };
+
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -47,7 +54,8 @@ const LetterModal = ({ letter, onClose }) => {
         <Content>{letter.content}</Content>
         <CloseButton onClick={onClose}>닫기</CloseButton>
         <div className="flex">
-          <Button text="요청 삭제" /> <Button text="편지 쓰기" />
+          <Button text="요청 삭제" />{" "}
+          <Button text="편지 쓰기" onClick={handleWriteLetter} />
         </div>
       </ModalContent>
     </ModalOverlay>
