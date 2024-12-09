@@ -10,8 +10,9 @@ const AppContainer = styled.div`
   max-width: 480px;
   overflow: auto;
   width: 100%;
-  background-color: #fff;
+  background-color: #000;
   height: calc(var(--vh, 1vh) * 100);
+  position: relative;
 `;
 
 const App = () => {
