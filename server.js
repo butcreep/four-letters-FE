@@ -1,43 +1,34 @@
 const express = require("express");
-const cors = require("cors");
-
+const fs = require("fs");
 const app = express();
-app.use(cors());
+const port = 4000; // 기본 포트
+
+// JSON 데이터 파싱
 app.use(express.json());
 
-// Mock 데이터
-let letters = [
-  {
-    id: 1,
-    sender: "루돌라",
-    content: "안녕하세요! 저는 루돌라입니다",
-    date: "2024-12-08",
-  },
-  {
-    id: 2,
-    sender: "루돌돌",
-    content: "나에게 편지를 써주겠어요?",
-    date: "2024-12-08",
-  },
-];
+// db.json 데이터 읽기
+const getDBData = () => {
+  const data = fs.readFileSync("./db.json", "utf-8");
+  return JSON.parse(data);
+};
 
-// 편지 요청 리스트 가져오기
-app.get("/letters", (req, res) => {
-  res.json(letters);
+// 모든 편지 가져오기
+app.get("/api/letters", (req, res) => {
+  const db = getDBData();
+  res.json(db.letters);
 });
 
-// 특정 편지 요청 가져오기
-app.get("/letters/:id", (req, res) => {
-  const letter = letters.find((l) => l.id === parseInt(req.params.id));
-  if (letter) {
-    res.json(letter);
-  } else {
-    res.status(404).json({ message: "Letter not found" });
+// 특정 편지 가져오기
+app.get("/api/letters/:id", (req, res) => {
+  const db = getDBData();
+  const letter = db.letters.find(letter => letter.id === parseInt(req.params.id, 10));
+  if (!letter) {
+    return res.status(404).json({ error: "Letter not found" });
   }
+  res.json(letter);
 });
 
-// 서버 실행
-const port = process.env.PORT || 3000;
+// 서버 시작
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
