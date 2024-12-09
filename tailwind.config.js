@@ -8,7 +8,6 @@ module.exports = {
         primary: "#F9F9F9",
         secondary: "#ffed4a",
         danger: "#e3342f",
-        kakaoYellow: "#FEE502",
       }),
     },
   },
