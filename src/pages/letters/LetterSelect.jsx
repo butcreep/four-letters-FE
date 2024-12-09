@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -81,9 +81,12 @@ const letterTemplates = [
 ];
 
 const LetterSelect = () => {
+  const { id } = useParams();
+
   const location = useLocation();
   const navigate = useNavigate();
   const recipient = location.state?.recipient; // 전달받은 recipient 정보
+  console.log("❤recipient", recipient);
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]);
 
   const handleSelectTemplate = template => {
@@ -91,7 +94,7 @@ const LetterSelect = () => {
   };
 
   const handleNext = () => {
-    navigate("/letter-write", {
+    navigate(`/letter-write/${id}`, {
       state: { recipient, template: selectedTemplate },
     });
   };
