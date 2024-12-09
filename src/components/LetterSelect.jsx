@@ -43,8 +43,7 @@ const SmallImage = styled.div`
   width: 80px;
   height: 100px;
   cursor: pointer;
-  border: ${(props) =>
-    props.$isSelected ? "2px solid #007BFF" : "2px solid transparent"};
+  border: ${props => (props.$isSelected ? "2px solid #007BFF" : "2px solid transparent")};
   border-radius: 8px;
 
   img {
@@ -87,7 +86,7 @@ const LetterSelect = () => {
   const recipient = location.state?.recipient; // 전달받은 recipient 정보
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]);
 
-  const handleSelectTemplate = (template) => {
+  const handleSelectTemplate = template => {
     setSelectedTemplate(template);
   };
 
@@ -100,15 +99,12 @@ const LetterSelect = () => {
   return (
     <Container>
       <LargeImage>
-        <img
-          src={selectedTemplate.src}
-          alt={`Template ${selectedTemplate.id}`}
-        />
+        <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
       </LargeImage>
 
       <SwiperContainer>
-        <Swiper navigation spaceBetween={10} slidesPerView={3}>
-          {letterTemplates.map((template) => (
+        <Swiper spaceBetween={10} slidesPerView={3}>
+          {letterTemplates.map(template => (
             <SwiperSlide key={template.id}>
               <SmallImage
                 onClick={() => handleSelectTemplate(template)}
