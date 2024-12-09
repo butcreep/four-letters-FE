@@ -45,7 +45,7 @@ const TextArea = styled.textarea`
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-image: url(${props => props.background});
+  background-image: url(${(props) => props.background});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -91,7 +91,7 @@ const Button = styled.button`
 const PreviewArea = styled.div`
   width: 100%;
   height: 300px;
-  background-image: url(${props => props.background});
+  background-image: url(${(props) => props.background});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -138,20 +138,21 @@ const LetterWrite = () => {
   const [letterContent, setLetterContent] = useState("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const handleContentChange = e => {
+  const handleContentChange = (e) => {
     setLetterContent(e.target.value);
   };
 
-  const handleToRecipientChange = e => {
+  const handleToRecipientChange = (e) => {
     setToRecipient(e.target.value);
   };
 
-  const handleFromSenderChange = e => {
+  const handleFromSenderChange = (e) => {
     setFromSender(e.target.value);
   };
 
   const handleSubmit = async () => {
-    const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
+    const baseURL =
+      process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
 
     try {
       await axios.post(`${baseURL}/letters`, {
@@ -175,7 +176,8 @@ const LetterWrite = () => {
   };
 
   const handleSaveDraft = async () => {
-    const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
+    const baseURL =
+      process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
     try {
       await axios.put(`${baseURL}/requests/${parseInt(recipient.id, 10)}`, {
         isDraft: true,
@@ -203,9 +205,19 @@ const LetterWrite = () => {
       <Title>편지 작성</Title>
       <InputGroup>
         <label htmlFor="toRecipient">받는 사람</label>
-        <input id="toRecipient" type="text" value={toRecipient} onChange={handleToRecipientChange} />
+        <input
+          id="toRecipient"
+          type="text"
+          value={toRecipient}
+          onChange={handleToRecipientChange}
+        />
         <label htmlFor="fromSender">보내는 사람</label>
-        <input id="fromSender" type="text" value={fromSender} onChange={handleFromSenderChange} />
+        <input
+          id="fromSender"
+          type="text"
+          value={fromSender}
+          onChange={handleFromSenderChange}
+        />
       </InputGroup>
       <TextArea
         placeholder="여기에 편지를 작성하세요..."
@@ -223,7 +235,7 @@ const LetterWrite = () => {
 
       {isPreviewOpen && (
         <ModalOverlay onClick={handleClosePreview}>
-          <ModalContent onClick={e => e.stopPropagation()}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
             <PreviewArea background={template?.src}>
               <p>To. {toRecipient}</p>
               <p>{letterContent || "내용이 없습니다."}</p>
