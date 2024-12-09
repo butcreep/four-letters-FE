@@ -164,6 +164,9 @@ const LetterWrite = () => {
         fromSender, // 보내는 사람 이름
         background: template?.src, // 편지지 배경 이미지
       });
+      await axios.put(`${baseURL}/requests/${parseInt(recipient.id, 10)}`, {
+        isDone: true,
+      });
       alert("편지가 전송되었습니다!");
       navigate("/home"); // 요청 리스트로 이동
     } catch (error) {

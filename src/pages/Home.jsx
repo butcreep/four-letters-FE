@@ -22,21 +22,44 @@ const Home = () => {
     };
     fetchRequests();
   }, []);
+
   const handleWriteLetter = () => {
     navigate(`/letter-select/${selectedRequest.id}`, { state: { recipient: selectedRequest } });
   };
+  const handleContinueDraft = () => {
+    // setSelectedRequest(request);
+    console.log("selectedRequest", selectedRequest);
+  };
+
   return (
     <div className="app-container">
-      {requests.length > 0 ? <RequestList requests={requests} onRequestClick={setSelectedRequest} /> : <NoLetters />}
+      {requests.length > 0 ? (
+        <RequestList requests={requests} onRequestClick={setSelectedRequest} onContinueDraft={handleContinueDraft} />
+      ) : (
+        <NoLetters />
+      )}
 
       {selectedRequest && (
-        <Modal
-          request={selectedRequest}
-          onClose={() => setSelectedRequest(null)}
-          onCancel={() => setSelectedRequest(null)}
-          confirmText="편지 쓰기"
-          onConfirm={handleWriteLetter}
-        />
+        <>
+          {selectedRequest.isDraft ? (
+            <Modal
+              title="작성중인 편지"
+              content={`작성중이던 편지가 있습니다. 이어서 작성할까요?`}
+              onConfirm={() => {
+                handleContinueDraft();
+              }}
+              onCancel={() => setSelectedRequest(null)}
+              onClose={() => setSelectedRequest(null)}
+            />
+          ) : (
+            <Modal
+              title="편지 쓰기"
+              content={`${selectedRequest.sender}에게 편지를 작성하세요.`}
+              onConfirm={handleWriteLetter}
+              onClose={() => setSelectedRequest(null)}
+            />
+          )}
+        </>
       )}
     </div>
   );
