@@ -1,33 +1,43 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import LetterList from "components/LetterList";
-import LetterModal from "components/LetterModal";
 import NoLetters from "components/NoLetters";
-// import "./App.css"; // 스타일 파일
+import RequestList from "./requests/RequestList";
+import Modal from "components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [letters, setLetters] = useState([]);
-  const [selectedLetter, setSelectedLetter] = useState(null);
-
+  const [requests, setRequests] = useState([]);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
-    const fetchLetters = async () => {
+    const fetchRequests = async () => {
       try {
-        const response = await axios.get(`${baseURL}/letters`);
+        const response = await axios.get(`${baseURL}/requests`);
         console.log(response.data);
-        setLetters(response.data);
+        setRequests(response.data);
       } catch (error) {
-        console.error("Error fetching letters:", error);
+        console.error("Error fetching fetchRequests:", error);
       }
     };
-    fetchLetters();
+    fetchRequests();
   }, []);
-
+  const handleWriteLetter = () => {
+    navigate(`/letter-select/${selectedRequest.id}`, { state: { recipient: selectedRequest } });
+  };
   return (
     <div className="app-container">
-      {letters.length > 0 ? <LetterList letters={letters} onLetterClick={setSelectedLetter} /> : <NoLetters />}
+      {requests.length > 0 ? <RequestList requests={requests} onRequestClick={setSelectedRequest} /> : <NoLetters />}
 
-      {selectedLetter && <LetterModal letter={selectedLetter} onClose={() => setSelectedLetter(null)} />}
+      {selectedRequest && (
+        <Modal
+          request={selectedRequest}
+          onClose={() => setSelectedRequest(null)}
+          onCancel={() => setSelectedRequest(null)}
+          confirmText="편지 쓰기"
+          onConfirm={handleWriteLetter}
+        />
+      )}
     </div>
   );
 };
