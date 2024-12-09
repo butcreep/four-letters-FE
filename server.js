@@ -1,7 +1,12 @@
 const express = require("express");
 const fs = require("fs");
+const cors = require("cors");
+
 const app = express();
-const port = 4000; // 기본 포트
+const port = 3000;
+
+// CORS 허용
+app.use(cors());
 
 // JSON 데이터 파싱
 app.use(express.json());
@@ -12,8 +17,13 @@ const getDBData = () => {
   return JSON.parse(data);
 };
 
+// 기본 경로 처리
+app.get("/", (req, res) => {
+  res.send("Welcome to the API server. Try /api/letters for data.");
+});
+
 // 모든 편지 가져오기
-app.get("/api/letters", (req, res) => {
+app.get("/letters", (req, res) => {
   const db = getDBData();
   res.json(db.letters);
 });
@@ -30,5 +40,5 @@ app.get("/api/letters/:id", (req, res) => {
 
 // 서버 시작
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Local server is running on http://localhost:${port}`);
 });

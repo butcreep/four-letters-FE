@@ -10,11 +10,10 @@ const Home = () => {
   const [selectedLetter, setSelectedLetter] = useState(null);
 
   useEffect(() => {
+    const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
     const fetchLetters = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_GLITCH_URL}/letters`
-        );
+        const response = await axios.get(`${baseURL}/letters`);
         console.log(response.data);
         setLetters(response.data);
       } catch (error) {
@@ -26,18 +25,9 @@ const Home = () => {
 
   return (
     <div className="app-container">
-      {letters.length > 0 ? (
-        <LetterList letters={letters} onLetterClick={setSelectedLetter} />
-      ) : (
-        <NoLetters />
-      )}
+      {letters.length > 0 ? <LetterList letters={letters} onLetterClick={setSelectedLetter} /> : <NoLetters />}
 
-      {selectedLetter && (
-        <LetterModal
-          letter={selectedLetter}
-          onClose={() => setSelectedLetter(null)}
-        />
-      )}
+      {selectedLetter && <LetterModal letter={selectedLetter} onClose={() => setSelectedLetter(null)} />}
     </div>
   );
 };
