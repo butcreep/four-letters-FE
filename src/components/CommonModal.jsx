@@ -38,14 +38,7 @@
 // export default CommonModal;
 import React from "react";
 import { Modal } from "antd";
-import styled, { createGlobalStyle } from "styled-components";
-
-// 글로벌 스타일 정의
-const GlobalStyle = createGlobalStyle`
-  .ant-modal-mask {
-    background-color: rgba(0, 0, 0, 0.8) !important; /* 어두운 백그라운드 */
-  }
-`;
+import styled from "styled-components";
 
 // 백그라운드 오버레이와 모달 스타일
 const StyledModal = styled(Modal)`
@@ -68,13 +61,6 @@ const StyledModal = styled(Modal)`
 
   .ant-modal-body {
     text-align: center;
-  }
-
-  /* 모달 정중앙 위치 설정 */
-  .ant-modal {
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 295px !important; /* 너비 지정 */
   }
 `;
 
@@ -121,16 +107,13 @@ const CommonModal = ({
 }) => {
   return (
     <>
-      <GlobalStyle />
       <StyledModal
         open={isVisible}
         width={295}
         onCancel={onClose || onCancel}
         footer={null} // 기본 footer 제거
       >
-        <h2 className="text-2xl font-bold pt-10 pb-4">
-          {title || (request && request.sender)}
-        </h2>
+        <h2 className="text-2xl font-bold pt-10 pb-4">{title || (request && request.sender)}</h2>
         <p>{content || (request && request.content)}</p>
 
         <FooterButton>
