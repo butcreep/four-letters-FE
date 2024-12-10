@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import CommonButton from "components/CommonButton"; // CommonButton 컴포넌트를 import
+import Header from "components/HeaderContainer";
 
 // Styled-components 정의
 const Container = styled.div`
@@ -15,9 +16,9 @@ const Container = styled.div`
 `;
 
 const LargeImage = styled.div`
-  width: 300px;
-  height: 400px;
-  margin-bottom: 20px;
+  width: 295px;
+  height: 295px;
+  margin-bottom: 24px;
 
   img {
     width: 100%;
@@ -30,8 +31,8 @@ const LargeImage = styled.div`
 
 const SwiperContainer = styled.div`
   width: 100%;
-  max-width: 320px;
-  margin-bottom: 20px;
+  max-width: 295px;
+  margin-bottom: 78px;
 
   .swiper-slide {
     display: flex;
@@ -40,10 +41,11 @@ const SwiperContainer = styled.div`
 `;
 
 const SmallImage = styled.div`
-  width: 80px;
+  width: 100px;
   height: 100px;
   cursor: pointer;
-  border: ${props => (props.$isSelected ? "2px solid #007BFF" : "2px solid transparent")};
+  border: ${(props) =>
+    props.$isSelected ? "2px solid #007BFF" : "2px solid transparent"};
   border-radius: 8px;
 
   img {
@@ -86,7 +88,7 @@ const letterTemplates = [
 const TemplateSelection = ({ onNext, onBack }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]); // 선택된 템플릿을 초기화
 
-  const handleSelectTemplate = template => {
+  const handleSelectTemplate = (template) => {
     setSelectedTemplate(template); // 선택된 템플릿 설정
   };
 
@@ -97,29 +99,39 @@ const TemplateSelection = ({ onNext, onBack }) => {
   };
 
   return (
-    <Container>
-      <BackButton onClick={onBack}>&larr;</BackButton>
-      <LargeImage>
-        <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
-      </LargeImage>
-      <SwiperContainer>
-        <Swiper spaceBetween={10} slidesPerView={3}>
-          {letterTemplates.map(template => (
-            <SwiperSlide key={template.id}>
-              <SmallImage
-                onClick={() => handleSelectTemplate(template)}
-                $isSelected={template.id === selectedTemplate?.id}
-              >
-                <img src={template.src} alt={`Template ${template.id}`} />
-              </SmallImage>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </SwiperContainer>
-      <ButtonContainer>
-        <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
-      </ButtonContainer>
-    </Container>
+    <>
+      <Header title="편지지 선택" />
+      <Container>
+        <BackButton onClick={onBack}>&larr;</BackButton>
+        <LargeImage>
+          <img
+            src={selectedTemplate.src}
+            alt={`Template ${selectedTemplate.id}`}
+          />
+        </LargeImage>
+        <SwiperContainer>
+          <Swiper spaceBetween={8} slidesPerView={3}>
+            {letterTemplates.map((template) => (
+              <SwiperSlide key={template.id}>
+                <SmallImage
+                  onClick={() => handleSelectTemplate(template)}
+                  $isSelected={template.id === selectedTemplate?.id}
+                >
+                  <img src={template.src} alt={`Template ${template.id}`} />
+                </SmallImage>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </SwiperContainer>
+        <ButtonContainer>
+          <CommonButton
+            text="다음"
+            onClick={handleNext}
+            disabled={!selectedTemplate}
+          />
+        </ButtonContainer>
+      </Container>
+    </>
   );
 };
 

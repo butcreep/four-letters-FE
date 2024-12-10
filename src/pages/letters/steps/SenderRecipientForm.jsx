@@ -1,98 +1,60 @@
+import CommonButton from "components/CommonButton";
+import Header from "components/HeaderContainer";
 import React, { useState } from "react";
-import styled from "styled-components";
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-`;
-
-const InputGroup = styled.div`
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 400px;
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-  }
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  color: red;
-  font-size: 12px;
-`;
 
 const SenderRecipientForm = ({ onNext }) => {
   const [sender, setSender] = useState("");
   const [recipient, setRecipient] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if (!sender.trim() || !recipient.trim()) {
-      setError("모든 필드를 입력해주세요."); // 필드 유효성 검사
-      return;
-    }
-    setError(""); // 오류 메시지 초기화
     onNext({ sender, recipient });
   };
 
   return (
-    <Container>
-      <h2>보내는 사람 및 받는 사람 정보 입력</h2>
-      <InputGroup>
-        <label htmlFor="sender">보내는 사람</label>
-        <input
-          id="sender"
-          type="text"
-          value={sender}
-          onChange={e => setSender(e.target.value)}
-          placeholder="보내는 사람 이름을 입력하세요"
+    <>
+      <Header title="보내는 이/받는 이" />
+      <div className="pt-[40px] w-[295px] mx-auto flex flex-col justify-between items-center">
+        <div className="flex flex-col gap-6 w-full">
+          <div>
+            <label className="form-label" htmlFor="sender">
+              보내는 이
+            </label>
+            <input
+              className="form-input"
+              id="sender"
+              type="text"
+              value={sender}
+              onChange={(e) => setSender(e.target.value)}
+              placeholder="별명, 닉네임, 이름으로 입력"
+            />
+            <p className="text-xs mt-[10px] text-white">
+              1~7자 이내로 입력해주세요.
+            </p>
+          </div>
+          <div>
+            <label className="form-label" htmlFor="recipient">
+              받는 이
+            </label>
+            <input
+              className="form-input"
+              id="recipient"
+              type="text"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              placeholder="별명, 닉네임, 이름으로 입력"
+            />
+            <p className="text-xs mt-[10px] text-white">
+              1~7자 이내로 입력해주세요.
+            </p>
+          </div>
+        </div>
+        <CommonButton
+          text="다음"
+          onClick={handleSubmit}
+          disabled={!sender.trim() || !recipient.trim()}
         />
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor="recipient">받는 사람</label>
-        <input
-          id="recipient"
-          type="text"
-          value={recipient}
-          onChange={e => setRecipient(e.target.value)}
-          placeholder="받는 사람 이름을 입력하세요"
-        />
-      </InputGroup>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-      <Button onClick={handleSubmit} disabled={!sender.trim() || !recipient.trim()}>
-        다음
-      </Button>
-    </Container>
+      </div>
+    </>
   );
 };
 
