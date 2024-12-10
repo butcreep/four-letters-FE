@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CommonButton from "components/CommonButton";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RequestForm = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ const RequestForm = () => {
     phone: "",
     message: "",
   });
-
+  const navigate = useNavigate();
   const handleChange = e => {
     const { name, value } = e.target;
     if (name === "phone") {
@@ -37,6 +38,8 @@ const RequestForm = () => {
 
       if (response.status === 201) {
         alert("신청이 완료되었습니다!");
+        setFormData({ name: "", phone: "", message: "" });
+        navigate("/");
       } else {
         alert("신청에 실패했습니다. 다시 시도해주세요.");
       }
