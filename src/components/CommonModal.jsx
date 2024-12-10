@@ -1,51 +1,7 @@
-// import React from "react";
-// import { Modal, Button } from "antd";
-
-// const CommonModal = ({
-//   request,
-//   title,
-//   content,
-//   cancelText = "취소", // 기본 텍스트
-//   confirmText = "확인", // 기본 텍스트
-//   onCancel,
-//   onConfirm,
-//   onClose,
-//   isVisible,
-// }) => {
-//   return (
-//     <Modal
-//       title={title || (request && request.sender)}
-//       open={isVisible}
-//       onCancel={onClose || onCancel}
-//       footer={[
-//         onCancel && (
-//           <Button key="cancel" onClick={onCancel}>
-//             {cancelText}
-//           </Button>
-//         ),
-//         onConfirm && (
-//           <Button key="confirm" type="primary" onClick={onConfirm}>
-//             {confirmText}
-//           </Button>
-//         ),
-//       ]}
-//     >
-//       <p>{content || (request && request.content)}</p>
-//     </Modal>
-//   );
-// };
-
-// export default CommonModal;
 import React from "react";
 import { Modal } from "antd";
-import styled, { createGlobalStyle } from "styled-components";
-
-// 글로벌 스타일 정의
-const GlobalStyle = createGlobalStyle`
-  .ant-modal-mask {
-    background-color: rgba(0, 0, 0, 0.8) !important; /* 어두운 백그라운드 */
-  }
-`;
+import styled from "styled-components";
+import modalSettings from "settings/modalSettings"; // 분리된 설정 파일 import
 
 // 백그라운드 오버레이와 모달 스타일
 const StyledModal = styled(Modal)`
@@ -69,23 +25,14 @@ const StyledModal = styled(Modal)`
   .ant-modal-body {
     text-align: center;
   }
-
-  /* 모달 정중앙 위치 설정 */
-  .ant-modal {
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 295px !important; /* 너비 지정 */
-  }
 `;
 
-// Footer 스타일
 const FooterButton = styled.div`
   display: flex;
   justify-content: space-between;
   border-top: 1px solid #f0f0f0;
   background-color: #f7f7f7;
   width: 100%;
-  border-top: #eeeeee solid 1px;
   margin-top: 40px;
 
   button {
@@ -93,7 +40,6 @@ const FooterButton = styled.div`
     padding: 12px 0;
     font-size: 16px;
     border: none;
-
     cursor: pointer;
     transition: background-color 0.3s;
 
@@ -109,36 +55,39 @@ const FooterButton = styled.div`
 `;
 
 const CommonModal = ({
-  request,
-  title,
-  content,
-  cancelText = "취소",
-  confirmText = "확인",
+  type,
+  isVisible,
   onCancel,
   onConfirm,
   onClose,
-  isVisible,
+  data, // 추가 데이터 전달
 }) => {
-  return (
-    <>
-      <GlobalStyle />
-      <StyledModal
-        open={isVisible}
-        width={295}
-        onCancel={onClose || onCancel}
-        footer={null} // 기본 footer 제거
-      >
-        <h2 className="text-2xl font-bold pt-10 pb-4">
-          {title || (request && request.sender)}
-        </h2>
-        <p>{content || (request && request.content)}</p>
+  const currentModal = modalSettings[type] || {};
 
-        <FooterButton>
-          <button onClick={onCancel}>{cancelText}</button>
-          <button onClick={onConfirm}>{confirmText}</button>
-        </FooterButton>
-      </StyledModal>
-    </>
+  return (
+    <StyledModal
+      open={isVisible}
+      width={currentModal.width || 295}
+      onCancel={onClose || onCancel}
+      footer={null}
+      closable={currentModal.showCloseButton || false}
+    >
+      <h2 className="text-2xl font-bold pt-10 pb-4">
+        {currentModal.title(data)} {/* 동적 타이틀 처리 */}
+      </h2>
+      <p>{currentModal.content(data)}</p> {/* 동적 내용 처리 */}
+      <FooterButton>
+        {currentModal.buttons &&
+          currentModal.buttons.map((button, index) => (
+            <button
+              key={index}
+              onClick={button.actionKey === "onCancel" ? onCancel : onConfirm} // 버튼 핸들러 연결
+            >
+              {button.text}
+            </button>
+          ))}
+      </FooterButton>
+    </StyledModal>
   );
 };
 

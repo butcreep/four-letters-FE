@@ -2,9 +2,12 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "pages/Home";
 import styled from "styled-components";
-import LetterWrite from "pages/letters/LetterWrite";
+// import LetterWrite from "pages/letters/LetterWrite";
 import Intro from "pages/Intro";
-import LetterSelect from "pages/letters/LetterSelect";
+// import LetterSelect from "pages/letters/LetterSelect";
+import RequestForm from "pages/requests/RequestForm";
+import RequestLink from "pages/requests/RequestLink";
+import LetterCreation from "pages/letters/LetterCreation";
 const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 480px;
@@ -21,9 +24,11 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Intro />} />
-        <Route path="/letter-select/:id" element={<LetterSelect />} />
-        <Route path="/letter-write" element={<LetterWrite />} />
-        <Route path="/letter-write/:id" element={<LetterWrite />} />
+        <Route path="/letter/:id" element={<LetterCreation />} />
+        {/* <Route path="/letter-write" element={<LetterWrite />} />
+        <Route path="/letter-write/:id" element={<LetterWrite />} /> */}
+        <Route path="/request-link" element={<RequestLink />} />
+        <Route path="/request-form" element={<RequestForm />} />
       </Routes>
     </AppContainer>
   );
