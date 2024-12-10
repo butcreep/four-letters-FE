@@ -13,7 +13,8 @@ const AppContainer = styled.div`
   max-width: 480px;
   overflow: auto;
   width: 100%;
-  background-color: #000;
+  background: linear-gradient(180deg, #0d0d0d 0%, #1d1c20 100%);
+  padding-top: 45px;
   height: calc(var(--vh, 1vh) * 100);
   position: relative;
 `;
