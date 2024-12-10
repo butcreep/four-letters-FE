@@ -5,6 +5,8 @@ import styled from "styled-components";
 import LetterWrite from "pages/letters/LetterWrite";
 import Intro from "pages/Intro";
 import LetterSelect from "pages/letters/LetterSelect";
+import RequestForm from "pages/requests/RequestForm";
+import RequestLink from "pages/requests/RequestLink";
 const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 480px;
@@ -24,6 +26,8 @@ const App = () => {
         <Route path="/letter-select/:id" element={<LetterSelect />} />
         <Route path="/letter-write" element={<LetterWrite />} />
         <Route path="/letter-write/:id" element={<LetterWrite />} />
+        <Route path="/request-link" element={<RequestLink />} />
+        <Route path="/request-form" element={<RequestForm />} />
       </Routes>
     </AppContainer>
   );
