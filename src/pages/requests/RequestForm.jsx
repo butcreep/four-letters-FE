@@ -129,7 +129,11 @@ const RequestForm = () => {
             ></textarea>
           </div>
         </form>
-        <CommonButton text="편지 요청하기" type="submit" bgColor="#FA482C" />
+        <CommonButton
+          text="편지 요청하기"
+          onClick={handleSubmit}
+          bgColor="#FA482C"
+        />
       </div>
       <div className="text-left mt-[60px] w-[305px] max-w-md">
         <p className="mb-3 text-base">안내사항</p>
