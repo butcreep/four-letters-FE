@@ -12,3 +12,13 @@
 body {
   font-family: "Pretendard", Arial, sans-serif;
 }
+
+.form-input {
+  @apply w-full text-base py-[13px] px-[14px] rounded-lg border-[#78787E] border bg-transparent text-white;
+}
+.form-input:focus {
+  @apply bg-transparent outline-none;
+}
+.form-label {
+  @apply block text-sm font-medium mb-2 text-white;
+}

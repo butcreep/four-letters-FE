@@ -1,44 +1,72 @@
+import Header from "components/HeaderContainer";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
+const BackgroundContainer = styled.div`
+  background-image: url(${(props) => props.background});
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* 전체 화면 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ContentWrapper = styled.div`
+  padding: 30px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  width: 90%;
+  max-width: 500px;
 `;
 
 const Title = styled.h2`
   margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+`;
+
+const TextAreaWrapper = styled.div`
+  width: 100%;
+  position: relative;
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  max-width: 500px;
-  height: 300px;
+  height: 200px;
   padding: 20px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-image: url(${props => props.background});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: #333;
   outline: none;
   resize: none;
-
-  font-family: ${props => props.font}; /* 동적으로 폰트 적용 */
-  transition: font-family 0.3s ease-in-out;
+  font-family: ${(props) => props.font};
+  color: #333;
+  background-color: white;
 
   ::placeholder {
     color: rgba(51, 51, 51, 0.5);
   }
 `;
 
+const FixedText = styled.div`
+  font-size: 14px;
+  color: #888;
+  margin: 5px 0;
+`;
+
+const CharacterCount = styled.div`
+  text-align: right;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+`;
+
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
   gap: 10px;
   margin-top: 20px;
 `;
@@ -71,49 +99,43 @@ const Select = styled.select`
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
+  margin-bottom: 20px;
   width: 100%;
-  font-family: ${props => props.font}, sans-serif; /* 선택된 폰트 적용 */
-`;
-
-const Option = styled.option`
-  font-family: ${props => props.font}, sans-serif; /* 개별 옵션에 폰트 적용 */
+  font-family: ${(props) => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
   return (
     <Select value={selectedFont} onChange={onChange} font={selectedFont}>
-      <Option value="ycomputer-regular" font="Ycomputer-Regular">
-        Y콤퓨타체
-      </Option>
-      <Option value="dongle" font="Dongle">
-        Dongle
-      </Option>
-      <Option value="gaegu" font="Gaegu">
-        Gaegu
-      </Option>
-      <Option value="hi-melody" font="Hi Melody">
-        Hi Melody
-      </Option>
-      <Option value="poor-story" font="Poor Story">
-        Poor Story
-      </Option>
+      <option value="ycomputer-regular">Y콤퓨타체</option>
+      <option value="dongle">Dongle</option>
+      <option value="gaegu">Gaegu</option>
+      <option value="hi-melody">Hi Melody</option>
+      <option value="poor-story">Poor Story</option>
     </Select>
   );
 };
 
-const LetterWrite = ({ sender, recipient, template, onSubmit, onSaveDraft }) => {
+const LetterWrite = ({
+  sender,
+  recipient,
+  template,
+  onSubmit,
+  onSaveDraft,
+}) => {
   const [letterContent, setLetterContent] = useState("");
-  const [selectedFontClass, setSelectedFontClass] = useState("ycomputer-regular");
+  const [selectedFontClass, setSelectedFontClass] =
+    useState("ycomputer-regular");
   const maxTextLength = 500;
 
-  const handleContentChange = e => {
+  const handleContentChange = (e) => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = e => {
+  const handleFontChange = (e) => {
     setSelectedFontClass(e.target.value);
   };
 
@@ -122,10 +144,7 @@ const LetterWrite = ({ sender, recipient, template, onSubmit, onSaveDraft }) => 
       alert("내용을 입력해주세요.");
       return;
     }
-    onSaveDraft({
-      content: letterContent,
-      // font: selectedFontClass,
-    });
+    onSaveDraft({ content: letterContent });
   };
 
   const handleSubmit = () => {
@@ -133,37 +152,43 @@ const LetterWrite = ({ sender, recipient, template, onSubmit, onSaveDraft }) => 
       alert("내용을 입력해주세요.");
       return;
     }
-    onSubmit({
-      content: letterContent,
-      // font: selectedFontClass,
-    });
+    onSubmit({ content: letterContent });
   };
 
   return (
-    <Container>
-      <Title>편지 작성</Title>
-      <p>보내는 사람: {sender}</p>
-      <p>받는 사람: {recipient}</p>
-      <div className="mb-4">
-        <label htmlFor="font-select" className="block text-sm font-medium mb-2">
-          폰트 선택
-        </label>
-        <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
-      </div>
-      <TextArea
-        placeholder="여기에 편지를 작성하세요..."
-        value={letterContent}
-        onChange={handleContentChange}
-        background={template?.src}
-        font={selectedFontClass}
-      />
-      <ButtonGroup>
-        <Button data-variant="secondary" onClick={handleSaveDraft}>
-          임시 저장
-        </Button>
-        <Button onClick={handleSubmit}>편지 보내기</Button>
-      </ButtonGroup>
-    </Container>
+    <div>
+      <Header title="편지 작성" />
+      <BackgroundContainer
+        background={template?.src || "https://via.placeholder.com/1920x1080"}
+      >
+        <ContentWrapper>
+          <Title>편지 작성</Title>
+          <TextAreaWrapper>
+            <FixedText>To. {recipient}</FixedText>
+            <TextArea
+              placeholder="여기에 편지를 작성하세요..."
+              value={letterContent}
+              onChange={handleContentChange}
+              font={selectedFontClass}
+            />
+            <FixedText>From. {sender}</FixedText>
+            <CharacterCount>
+              {letterContent.length} / {maxTextLength}
+            </CharacterCount>
+          </TextAreaWrapper>
+          <FontSelect
+            selectedFont={selectedFontClass}
+            onChange={handleFontChange}
+          />
+          <ButtonGroup>
+            <Button data-variant="secondary" onClick={handleSaveDraft}>
+              임시 저장
+            </Button>
+            <Button onClick={handleSubmit}>편지 보내기</Button>
+          </ButtonGroup>
+        </ContentWrapper>
+      </BackgroundContainer>
+    </div>
   );
 };
 
