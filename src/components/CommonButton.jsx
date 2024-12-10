@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 // 공통 버튼 스타일
 const StyledButton = styled.button`
+  font-family: "Pretendard", sans-serif;
   background-color: ${(props) => props.bgColor || "#4B31B5"}; /* 기본 배경색 */
   color: ${(props) => props.color || "#FFF"}; /* 기본 텍스트 색상 */
   padding: ${(props) => props.padding || "15px 20px"}; /* 기본 패딩 */
@@ -12,6 +13,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   width: 295px;
+  font-weight: 500;
   margin: 0 auto;
   display: flex; /* 플렉스 컨테이너 */
   align-items: center; /* 세로 중앙 정렬 */
