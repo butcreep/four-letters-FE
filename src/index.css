@@ -9,3 +9,6 @@
   --color-light-purple: #a293ff;
   --color-pink: #dabfff;
 }
+body {
+  font-family: "Pretendard", Arial, sans-serif;
+}

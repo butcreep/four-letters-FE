@@ -15,31 +15,12 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 700;
     font-style: normal;
   }
-  /* 프리텐다드 */
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-  }
 
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-  }
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&display=swap');
-  body {
-    font-family: 'Pretendard', Arial, sans-serif; // 웹폰트 적용
-  }
+
+
   /* Font Classes */
 .poor-story {
-  font-family: 'Poor Story', sans-serif;
+  font-family: "Poor Story", sans-serif;
 }
 
 .hi-melody {
@@ -47,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
 }
 
 .gaegu {
-  font-family: 'Gaegu', cursive;
+  font-family: "Gaegu", sans-serif;
 }
 
 .dongle {
