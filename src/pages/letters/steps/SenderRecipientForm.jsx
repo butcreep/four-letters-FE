@@ -2,9 +2,10 @@ import CommonButton from "components/ui/CommonButton";
 import Header from "components/containers/HeaderContainer";
 import React, { useState } from "react";
 
-const SenderRecipientForm = ({ onNext }) => {
+const SenderRecipientForm = ({ onNext, formData }) => {
   const [sender, setSender] = useState("");
   const [recipient, setRecipient] = useState("");
+  console.log("❤❤form data", formData);
 
   const handleSubmit = () => {
     onNext({ sender, recipient });

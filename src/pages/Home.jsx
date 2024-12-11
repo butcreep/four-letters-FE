@@ -25,6 +25,11 @@ const Home = () => {
   }, []);
 
   const handleWriteLetter = () => {
+    navigate(`/letter`, {
+      state: { recipient: selectedRequest },
+    });
+  };
+  const handleEditLetter = () => {
     navigate(`/letter/${selectedRequest.id}`, {
       state: { recipient: selectedRequest },
     });
@@ -71,7 +76,13 @@ const Home = () => {
           type={modalType}
           isVisible={!!modalType}
           onCancel={handleCancel}
-          onConfirm={modalType === "deleteRequest" ? handleDeleteRequest : handleWriteLetter}
+          onConfirm={
+            modalType === "deleteRequest"
+              ? handleDeleteRequest
+              : modalType === "continueWriting"
+              ? handleEditLetter
+              : handleWriteLetter
+          }
           onClose={handleCloseModal}
           data={selectedRequest}
         />

@@ -30,6 +30,7 @@ const App = () => {
         <Route path="/archive" element={<Archive />} />
         <Route path="/archive/letter/:id" element={<LetterDetail />} />
         <Route path="/letter/:id" element={<LetterCreation />} />
+        <Route path="/letter" element={<LetterCreation />} />
         <Route path="/request-link" element={<RequestLink />} />
         <Route path="/request-form" element={<RequestForm />} />
       </Routes>

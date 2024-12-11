@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SenderRecipientForm from "./steps/SenderRecipientForm";
 import TemplateSelection from "./steps/TemplateSelection";
 import LetterWrite from "./steps/LetterWrite";
 import { createLetter } from "api/letters";
-import { updateRequest } from "api/requests";
+import { getRequestById, updateRequest } from "api/requests";
 
 const LetterCreation = () => {
   const location = useLocation(); // 현재 경로의 location 객체
   const recipient = location.state?.recipient; // state에서 recipient 추출
-
-  if (!recipient) {
-    console.error("Recipient is undefined. Ensure data is being passed correctly.");
-  }
+  const [editData, seEditData] = useState([]);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fromSender: "",
@@ -22,6 +19,34 @@ const LetterCreation = () => {
     fontClass: "",
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (recipient?.id) {
+      const fetchRequests = async () => {
+        try {
+          const data = await getRequestById(recipient.id);
+          seEditData(data); // 상태 업데이트
+        } catch (error) {
+          console.error("Error fetching requests:", error);
+        }
+      };
+      fetchRequests();
+    }
+  }, [recipient]);
+
+  useEffect(() => {
+    if (editData) {
+      setFormData(prev => ({
+        ...prev,
+        fromSender: editData.sender || "",
+        toRecipient: editData.recipient || "",
+        background: editData.background || "",
+        content: editData.content || "",
+        fontClass: editData.fontClass || "",
+      }));
+    }
+  }, [editData]);
+
   const handleBack = () => {
     setStep(prev => prev - 1);
   };
@@ -80,8 +105,8 @@ const LetterCreation = () => {
 
   return (
     <div>
-      {step === 1 && <SenderRecipientForm onNext={handleNext} />}
-      {step === 2 && <TemplateSelection onNext={handleNext} onBack={handleBack} />}
+      {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} />}
+      {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} onBack={handleBack} />}
       {step === 3 && <LetterWrite formData={formData} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} />}
     </div>
   );
