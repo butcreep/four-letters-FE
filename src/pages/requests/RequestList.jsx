@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const GradientDiv = styled.div`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
   position: relative; /* ::before가 제대로 위치하도록 설정 */
 
   &::before {
@@ -42,7 +42,7 @@ const StyledUl = styled.ul`
   /* width: 295px; */
   /* height: 390px; */
 
-  height: calc(100% - 130px); /* 화면 크기에 따라 높이 제한 */
+  height: calc(100% - 180px); /* 화면 크기에 따라 높이 제한 */
   /* height: 80%; */
   border-radius: 0 0 12px 12px;
   overflow-y: auto;
@@ -61,8 +61,9 @@ export const RequestList = ({ requests, onRequestClick }) => {
     navigate("/request-link");
   };
   return (
-    <div className="flex flex-col items-center justify-center footer-height pt-[30px]">
-      <h2 className="pretendard-title text-white text-center mb-[60px]">
+    // <div className="flex flex-col items-center justify-center footer-height pt-[30px]">
+    <div className="footer-height pt-[30px]">
+      <h2 className="pretendard-title text-white text-center mb-[50px]">
         {requests.length > 0 ? (
           <>
             {requests.length}명의 친구에게
