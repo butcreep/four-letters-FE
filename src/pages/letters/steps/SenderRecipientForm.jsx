@@ -1,5 +1,5 @@
-import CommonButton from "components/CommonButton";
-import Header from "components/HeaderContainer";
+import CommonButton from "components/ui/CommonButton";
+import Header from "components/containers/HeaderContainer";
 import React, { useState } from "react";
 
 const SenderRecipientForm = ({ onNext }) => {
@@ -24,12 +24,10 @@ const SenderRecipientForm = ({ onNext }) => {
               id="sender"
               type="text"
               value={sender}
-              onChange={(e) => setSender(e.target.value)}
+              onChange={e => setSender(e.target.value)}
               placeholder="별명, 닉네임, 이름으로 입력"
             />
-            <p className="text-xs mt-[10px] text-white">
-              1~7자 이내로 입력해주세요.
-            </p>
+            <p className="text-xs mt-[10px] text-white">1~7자 이내로 입력해주세요.</p>
           </div>
           <div>
             <label className="form-label" htmlFor="recipient">
@@ -40,19 +38,13 @@ const SenderRecipientForm = ({ onNext }) => {
               id="recipient"
               type="text"
               value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
+              onChange={e => setRecipient(e.target.value)}
               placeholder="별명, 닉네임, 이름으로 입력"
             />
-            <p className="text-xs mt-[10px] text-white">
-              1~7자 이내로 입력해주세요.
-            </p>
+            <p className="text-xs mt-[10px] text-white">1~7자 이내로 입력해주세요.</p>
           </div>
         </div>
-        <CommonButton
-          text="다음"
-          onClick={handleSubmit}
-          disabled={!sender.trim() || !recipient.trim()}
-        />
+        <CommonButton text="다음" onClick={handleSubmit} disabled={!sender.trim() || !recipient.trim()} />
       </div>
     </>
   );

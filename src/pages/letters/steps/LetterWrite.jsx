@@ -1,9 +1,10 @@
-import Header from "components/HeaderContainer";
+import Header from "components/containers/HeaderContainer";
 import React, { useState } from "react";
 import styled from "styled-components";
+import CommonModal from "components/ui/CommonModal";
 
 const BackgroundContainer = styled.div`
-  background-image: url(${(props) => props.background});
+  background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
   height: 100vh; /* 전체 화면 높이 */
@@ -43,7 +44,7 @@ const TextArea = styled.textarea`
   border-radius: 8px;
   outline: none;
   resize: none;
-  font-family: ${(props) => props.font};
+  font-family: ${props => props.font};
   color: #333;
   background-color: white;
 
@@ -101,7 +102,7 @@ const Select = styled.select`
   border-radius: 8px;
   margin-bottom: 20px;
   width: 100%;
-  font-family: ${(props) => props.font}, sans-serif;
+  font-family: ${props => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
@@ -116,78 +117,101 @@ const FontSelect = ({ selectedFont, onChange }) => {
   );
 };
 
-const LetterWrite = ({
-  sender,
-  recipient,
-  template,
-  onSubmit,
-  onSaveDraft,
-}) => {
+const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const [letterContent, setLetterContent] = useState("");
-  const [selectedFontClass, setSelectedFontClass] =
-    useState("ycomputer-regular");
+  const [selectedFontClass, setSelectedFontClass] = useState("ycomputer-regular");
+  const [selectedModalType, setSelectedModalType] = useState(null);
+  const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
   const maxTextLength = 500;
 
-  const handleContentChange = (e) => {
+  const handleContentChange = e => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = (e) => {
+  const handleFontChange = e => {
     setSelectedFontClass(e.target.value);
+    console.log("폰트클래스", selectedFontClass);
   };
 
-  const handleSaveDraft = () => {
+  const handleSaveDraft = async () => {
     if (!letterContent.trim()) {
       alert("내용을 입력해주세요.");
       return;
     }
-    onSaveDraft({ content: letterContent });
+    setSelectedModalType("letterSaveComplete"); // 임시 저장 모달 설정
   };
 
-  const handleSubmit = () => {
+  const handleSendLetter = () => {
     if (!letterContent.trim()) {
       alert("내용을 입력해주세요.");
       return;
     }
-    onSubmit({ content: letterContent });
+    if (!selectedFontClass) {
+      alert("폰트를 선택해주세요.");
+      return;
+    }
+
+    setSelectedModalType("letterSendConfirm"); // 편지 보내기 모달 설정
+  };
+
+  const handleModalConfirm = () => {
+    const updatedData = { ...formData, content: letterContent, fontClass: selectedFontClass };
+    if (selectedModalType === "letterSendConfirm") {
+      onSubmit(updatedData); // 편지 전송
+    } else if (selectedModalType === "letterSaveComplete" && isDraftSaved) {
+      onSaveDraft(updatedData); // 임시 저장 상태 초기화
+    }
+    setSelectedModalType(null); // 모달 닫기
+  };
+
+  const handleCancelModal = () => {
+    if (selectedModalType === "letterSaveComplete" && isDraftSaved) {
+      setIsDraftSaved(false); // 임시 저장 상태 초기화
+    }
+    setSelectedModalType(null); // 모달 닫기
   };
 
   return (
     <div>
       <Header title="편지 작성" />
-      <BackgroundContainer
-        background={template?.src || "https://via.placeholder.com/1920x1080"}
-      >
+      <BackgroundContainer background={formData.template || "https://via.placeholder.com/1920x1080"}>
         <ContentWrapper>
           <Title>편지 작성</Title>
           <TextAreaWrapper>
-            <FixedText>To. {recipient}</FixedText>
+            <FixedText>To. {formData.toRecipient}</FixedText>
             <TextArea
               placeholder="여기에 편지를 작성하세요..."
               value={letterContent}
               onChange={handleContentChange}
               font={selectedFontClass}
             />
-            <FixedText>From. {sender}</FixedText>
+            <FixedText>From. {formData.fromSender}</FixedText>
             <CharacterCount>
               {letterContent.length} / {maxTextLength}
             </CharacterCount>
           </TextAreaWrapper>
-          <FontSelect
-            selectedFont={selectedFontClass}
-            onChange={handleFontChange}
-          />
+          <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
           <ButtonGroup>
             <Button data-variant="secondary" onClick={handleSaveDraft}>
               임시 저장
             </Button>
-            <Button onClick={handleSubmit}>편지 보내기</Button>
+            <Button onClick={handleSendLetter}>편지 보내기</Button>
           </ButtonGroup>
         </ContentWrapper>
       </BackgroundContainer>
+
+      {selectedModalType && (
+        <CommonModal
+          type={selectedModalType}
+          isVisible={!!selectedModalType}
+          onCancel={handleCancelModal}
+          onConfirm={handleModalConfirm} // 확인 버튼 동작
+          data={{}}
+        />
+      )}
     </div>
   );
 };
