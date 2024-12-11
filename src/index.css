@@ -9,6 +9,13 @@
   --color-light-purple: #a293ff;
   --color-pink: #dabfff;
 }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* 브라우저 높이를 100%로 고정 */
+  overflow: hidden; /* 기본 스크롤 방지 */
+}
 body {
   font-family: "Pretendard", Arial, sans-serif;
 }

@@ -15,7 +15,8 @@ const AppContainer = styled.div`
   overflow: auto;
   width: 100%;
   background: linear-gradient(180deg, #0d0d0d 0%, #1d1c20 100%);
-  height: calc(var(--vh, 1vh) * 100);
+  height: calc(var(--vh, 1vh) * 100); /* 동적 높이 적용 */
+  overflow-y: hidden; /* 기본 스크롤 방지 */
   position: relative;
 `;
 
