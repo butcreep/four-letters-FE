@@ -1,6 +1,6 @@
 import React from "react";
 import Arrow from "assets/icon/Arrow-right.svg";
-import CommonButton from "components/CommonButton";
+import CommonButton from "components/ui/CommonButton";
 import styled from "styled-components";
 import EmptyLetter from "assets/Empty-letter.svg";
 import { useNavigate } from "react-router-dom";
@@ -63,8 +63,8 @@ export const RequestList = ({ requests, onRequestClick }) => {
         <StyledUl>
           {requests.length > 0 ? (
             requests
-              .filter((request) => !request.isDone)
-              .map((request) => (
+              .filter(request => !request.isDone)
+              .map(request => (
                 <li
                   key={request.id}
                   className="letter-item cursor-pointer flex pb-4 mx-5 justify-between items-center pt-6 border-b border-dashed border-[#B1B1B9]"
@@ -72,15 +72,11 @@ export const RequestList = ({ requests, onRequestClick }) => {
                 >
                   <div className="flex items-center gap-2">
                     <div className="sender text-base">{request.sender}</div>
-                    <div className="date text-xs text-[#B1B1B9]">
-                      {request.date}
-                    </div>
+                    <div className="date text-xs text-[#B1B1B9]">{request.date}</div>
                   </div>
                   <div className="flex items-center">
                     {request.isDraft && (
-                      <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">
-                        작성중
-                      </div>
+                      <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">작성중</div>
                     )}
                     <img src={Arrow} alt="Arrow" />
                   </div>
@@ -94,8 +90,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
           )}
         </StyledUl>
         <p className="pb-[10px] text-sm pt-[29px]">
-          신청서를 보내고 <span className="font-bold">편지 요청</span>을
-          받아보세요!
+          신청서를 보내고 <span className="font-bold">편지 요청</span>을 받아보세요!
         </p>
         <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
       </GradientDiv>

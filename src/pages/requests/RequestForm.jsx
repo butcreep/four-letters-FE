@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CommonButton from "components/CommonButton";
+import CommonButton from "components/ui/CommonButton";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -25,22 +25,21 @@ const RequestForm = () => {
     message: "",
   });
   const navigate = useNavigate();
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
     if (name === "phone") {
       const onlyNumbers = value.replace(/[^0-9]/g, ""); // 숫자만 남김
       if (onlyNumbers.length <= 11) {
-        setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
+        setFormData(prev => ({ ...prev, [name]: onlyNumbers }));
       }
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const baseURL =
-    process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
+  const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const requestData = {
       sender: formData.name,
@@ -129,23 +128,15 @@ const RequestForm = () => {
             ></textarea>
           </div>
         </form>
-        <CommonButton
-          text="편지 요청하기"
-          onClick={handleSubmit}
-          bgColor="#FA482C"
-        />
+        <CommonButton text="편지 요청하기" onClick={handleSubmit} $bgColor="#FA482C" />
       </div>
       <div className="text-left mt-[60px] w-[305px] max-w-md">
         <p className="mb-3 text-base">안내사항</p>
         <ul className="text-sm text-[#B1B1B9]">
           <li className="pb-[6px]">
-            편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
-            알림톡으로 편지를 보내드려요)
+            편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오 알림톡으로 편지를 보내드려요)
           </li>
-          <li>
-            작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
-            않아요)
-          </li>
+          <li>작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지 않아요)</li>
         </ul>
       </div>
     </div>
