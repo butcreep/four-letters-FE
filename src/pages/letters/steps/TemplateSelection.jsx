@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import CommonButton from "components/CommonButton"; // CommonButton 컴포넌트를 import
-import Header from "components/HeaderContainer";
+import CommonButton from "components/ui/CommonButton"; // CommonButton 컴포넌트를 import
+import Header from "components/containers/HeaderContainer";
 
 // Styled-components 정의
 const Container = styled.div`
@@ -44,8 +44,7 @@ const SmallImage = styled.div`
   width: 100px;
   height: 100px;
   cursor: pointer;
-  border: ${(props) =>
-    props.$isSelected ? "2px solid #007BFF" : "2px solid transparent"};
+  border: ${props => (props.$isSelected ? "2px solid #007BFF" : "2px solid transparent")};
   border-radius: 8px;
 
   img {
@@ -88,13 +87,13 @@ const letterTemplates = [
 const TemplateSelection = ({ onNext, onBack }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]); // 선택된 템플릿을 초기화
 
-  const handleSelectTemplate = (template) => {
+  const handleSelectTemplate = template => {
     setSelectedTemplate(template); // 선택된 템플릿 설정
   };
 
   const handleNext = () => {
     if (selectedTemplate) {
-      onNext(selectedTemplate); // 선택된 템플릿 데이터를 부모로 전달
+      onNext(selectedTemplate.src); // 선택된 템플릿 데이터를 부모로 전달
     }
   };
 
@@ -104,14 +103,11 @@ const TemplateSelection = ({ onNext, onBack }) => {
       <Container>
         <BackButton onClick={onBack}>&larr;</BackButton>
         <LargeImage>
-          <img
-            src={selectedTemplate.src}
-            alt={`Template ${selectedTemplate.id}`}
-          />
+          <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
         </LargeImage>
         <SwiperContainer>
           <Swiper spaceBetween={8} slidesPerView={3}>
-            {letterTemplates.map((template) => (
+            {letterTemplates.map(template => (
               <SwiperSlide key={template.id}>
                 <SmallImage
                   onClick={() => handleSelectTemplate(template)}
@@ -124,11 +120,7 @@ const TemplateSelection = ({ onNext, onBack }) => {
           </Swiper>
         </SwiperContainer>
         <ButtonContainer>
-          <CommonButton
-            text="다음"
-            onClick={handleNext}
-            disabled={!selectedTemplate}
-          />
+          <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
         </ButtonContainer>
       </Container>
     </>

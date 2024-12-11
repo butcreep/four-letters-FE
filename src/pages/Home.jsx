@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import RequestList from "./requests/RequestList";
-import CommonModal from "components/CommonModal";
+import CommonModal from "components/ui/CommonModal";
 import { useNavigate } from "react-router-dom";
+import Footer from "components/containers/FooterContainer";
+import { deleteRequest, getRequests } from "../api/requests"; // 공통 API 가져오기
 
 const Home = () => {
   const [requests, setRequests] = useState([]);
@@ -11,29 +12,32 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
     const fetchRequests = async () => {
       try {
-        const response = await axios.get(`${baseURL}/requests`);
-        setRequests(response.data);
+        const data = await getRequests();
+
+        setRequests(data);
       } catch (error) {
-        console.error("Error fetching fetchRequests:", error);
+        console.error("Error fetching requests:", error);
       }
     };
     fetchRequests();
   }, []);
 
   const handleWriteLetter = () => {
+    navigate(`/letter`, {
+      state: { recipient: selectedRequest },
+    });
+  };
+  const handleEditLetter = () => {
     navigate(`/letter/${selectedRequest.id}`, {
       state: { recipient: selectedRequest },
     });
   };
 
   const handleDeleteRequest = async () => {
-    const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
-
     try {
-      await axios.delete(`${baseURL}/requests/${selectedRequest.id}`);
+      await deleteRequest(selectedRequest.id); // 공통 API 호출
       setRequests(prev => prev.filter(req => req.id !== selectedRequest.id));
       setSelectedRequest(null);
       setModalType(null);
@@ -47,8 +51,18 @@ const Home = () => {
     setModalType(null);
   };
 
+  const handleCancel = () => {
+    if (modalType === "deleteRequest") {
+      handleCloseModal(); // deleteRequest에서 취소 시 모달 닫기
+    } else if (modalType === "continueWriting") {
+      handleCloseModal(); // continueWriting에서 취소 시 모달 닫기
+    } else {
+      setModalType("deleteRequest"); // friendRequest에서 취소 시 deleteRequest로 전환
+    }
+  };
+
   return (
-    <div className="app-container">
+    <>
       <RequestList
         requests={requests}
         onRequestClick={req => {
@@ -61,13 +75,20 @@ const Home = () => {
         <CommonModal
           type={modalType}
           isVisible={!!modalType}
-          onCancel={modalType === "deleteRequest" ? handleCloseModal : () => setModalType("deleteRequest")}
-          onConfirm={modalType === "deleteRequest" ? handleDeleteRequest : handleWriteLetter}
+          onCancel={handleCancel}
+          onConfirm={
+            modalType === "deleteRequest"
+              ? handleDeleteRequest
+              : modalType === "continueWriting"
+              ? handleEditLetter
+              : handleWriteLetter
+          }
           onClose={handleCloseModal}
           data={selectedRequest}
         />
       )}
-    </div>
+      <Footer />
+    </>
   );
 };
 

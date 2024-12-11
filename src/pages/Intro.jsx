@@ -1,4 +1,4 @@
-import CommonButton from "components/CommonButton";
+import CommonButton from "components/ui/CommonButton";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -39,7 +39,7 @@ const Intro = () => {
         text="카카오로 시작하기"
         onClick={handleLogin}
         icon={KakaoLogo}
-        bgColor="#FDE502"
+        $bgColor="#FDE502"
         color="#3B1E1D"
       />
     </div>

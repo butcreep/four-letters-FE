@@ -1,10 +1,11 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Modal } from "antd";
 import styled from "styled-components";
 import modalSettings from "settings/modalSettings"; // 분리된 설정 파일 import
 
-// 백그라운드 오버레이와 모달 스타일
-const StyledModal = styled(Modal)`
+const StyledModal = styled(Modal).withConfig({
+  shouldForwardProp: prop => !["ref", "forwardedRef"].includes(prop),
+})`
   .ant-modal-content {
     border-radius: 16px;
     padding: 0px;
@@ -54,14 +55,7 @@ const FooterButton = styled.div`
   }
 `;
 
-const CommonModal = ({
-  type,
-  isVisible,
-  onCancel,
-  onConfirm,
-  onClose,
-  data, // 추가 데이터 전달
-}) => {
+const CommonModal = forwardRef(({ type, isVisible, onCancel, onConfirm, onClose, data }, ref) => {
   const currentModal = modalSettings[type] || {};
 
   return (
@@ -89,6 +83,6 @@ const CommonModal = ({
       </FooterButton>
     </StyledModal>
   );
-};
+});
 
 export default CommonModal;
