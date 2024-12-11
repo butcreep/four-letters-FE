@@ -9,9 +9,6 @@ const GradientDiv = styled.div`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 const CenterImage = styled.div`
   background-image: url(${EmptyLetter});
@@ -27,7 +24,8 @@ const StyledUl = styled.ul`
   /* width: 295px; */
   /* height: 390px; */
 
-  height: 80%;
+  height: calc(100% - 160px); /* 화면 크기에 따라 높이 제한 */
+  /* height: 80%; */
   border-radius: 12px;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
@@ -63,7 +61,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
       </h2>
 
       <GradientDiv>
-        <div className="px-40">
+        <div className="px-40 h-full">
           <StyledUl>
             {requests.length > 0 ? (
               requests
