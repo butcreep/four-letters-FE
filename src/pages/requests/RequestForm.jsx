@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CommonButton from "components/ui/CommonButton";
+import CommonModal from "components/ui/CommonModal";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -24,6 +25,7 @@ const RequestForm = () => {
     phone: "",
     message: "",
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,9 +55,7 @@ const RequestForm = () => {
       const response = await axios.post(`${baseURL}/requests`, requestData);
 
       if (response.status === 201) {
-        alert("신청이 완료되었습니다!");
-        setFormData({ name: "", phone: "", message: "" });
-        navigate("/");
+        setIsModalOpen(true);
       } else {
         alert("신청에 실패했습니다. 다시 시도해주세요.");
       }
@@ -64,91 +64,110 @@ const RequestForm = () => {
       alert("서버 오류가 발생했습니다.");
     }
   };
-
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    navigate("/");
+    setFormData({ name: "", phone: "", message: "" });
+  };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-40">
-      <h1 className="yonepick-subtitle  text-center mb-[60px] pt-[30px]">
-        나한테 <GradientText className="yonepick-title">편지</GradientText>
-        <br />
-        받고 싶은 사람?
-      </h1>
-      <div className="w-full">
-        <GradientDiv>
-          <p className="text-center text-lg">
-            친구에게 크리스마스
-            <br />
-            💌 편지를 요청해 보세요!
-          </p>
-        </GradientDiv>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 mb-[30px]">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              요청자
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="이름을 입력해주세요"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium mb-2">
-              핸드폰 번호
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="핸드폰 번호를 입력해주세요"
-              pattern="\d{11}" // 11자리 숫자만 허용
-              maxLength={11} // 최대 입력 길이
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-2">
-              메시지
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              className="form-input"
-              rows="4"
-              placeholder="남길 말을 적어주세요 (최대 50자)"
-              required
-            ></textarea>
-          </div>
-        </form>
-        <CommonButton
-          text="편지 요청하기"
-          onClick={handleSubmit}
-          $bgColor="#FA482C"
+    <>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-40">
+        <h1 className="yonepick-subtitle  text-center mb-[60px] pt-[30px]">
+          나한테 <GradientText className="yonepick-title">편지</GradientText>
+          <br />
+          받고 싶은 사람?
+        </h1>
+        <div className="w-full">
+          <GradientDiv>
+            <p className="text-center text-lg">
+              친구에게 크리스마스
+              <br />
+              💌 편지를 요청해 보세요!
+            </p>
+          </GradientDiv>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-6 mb-[30px]"
+          >
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium mb-2">
+                요청자
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="이름을 입력해주세요"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                핸드폰 번호
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="핸드폰 번호를 입력해주세요"
+                pattern="\d{11}" // 11자리 숫자만 허용
+                maxLength={11} // 최대 입력 길이
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium mb-2"
+              >
+                메시지
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                className="form-input"
+                rows="4"
+                placeholder="남길 말을 적어주세요 (최대 50자)"
+                required
+              ></textarea>
+            </div>
+          </form>
+          <CommonButton
+            text="편지 요청하기"
+            onClick={handleSubmit}
+            $bgColor="#FA482C"
+          />
+        </div>
+        <div className="text-left mt-[60px] pb-[30px]">
+          <p className="mb-3 text-base">안내사항</p>
+          <ul className="text-sm text-[#B1B1B9]">
+            <li className="pb-[6px]">
+              편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
+              알림톡으로 편지를 보내드려요)
+            </li>
+            <li>
+              작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
+              않아요)
+            </li>
+          </ul>
+        </div>
+      </div>
+      {isModalOpen && (
+        <CommonModal
+          type="letterAskComplete"
+          isVisible={!!isModalOpen}
+          onConfirm={handleModalClose} // 확인 버튼 동작
         />
-      </div>
-      <div className="text-left mt-[60px] pb-[30px]">
-        <p className="mb-3 text-base">안내사항</p>
-        <ul className="text-sm text-[#B1B1B9]">
-          <li className="pb-[6px]">
-            편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
-            알림톡으로 편지를 보내드려요)
-          </li>
-          <li>
-            작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
-            않아요)
-          </li>
-        </ul>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

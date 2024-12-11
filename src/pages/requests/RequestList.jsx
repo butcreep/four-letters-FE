@@ -3,12 +3,30 @@ import Arrow from "assets/icon/Arrow-right.svg";
 import CommonButton from "components/ui/CommonButton";
 import styled from "styled-components";
 import EmptyLetter from "assets/Empty-letter.svg";
+import GradientBefore from "assets/img/Background-Img.svg";
 import { useNavigate } from "react-router-dom";
 
 const GradientDiv = styled.div`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
   width: 100%;
   height: 100%;
+  position: relative; /* ::before가 제대로 위치하도록 설정 */
+
+  &::before {
+    content: "";
+    display: block;
+    /* background-image: url(${GradientBefore}); 
+    background-size: cover; 
+    background-position: center;*/
+    position: absolute;
+    background-color: #fff;
+    border-radius: 12px 12px 0 0;
+    top: -25px;
+    left: 40px;
+    width: calc(100% - 80px); /* 이미지 크기 */
+    height: 25px;
+    z-index: 1; /* 배경 이미지가 아래쪽에 위치하도록 설정 */
+  }
 `;
 const CenterImage = styled.div`
   background-image: url(${EmptyLetter});
@@ -26,7 +44,7 @@ const StyledUl = styled.ul`
 
   height: calc(100% - 130px); /* 화면 크기에 따라 높이 제한 */
   /* height: 80%; */
-  border-radius: 12px;
+  border-radius: 0 0 12px 12px;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
@@ -44,7 +62,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
   };
   return (
     <div className="flex flex-col items-center justify-center footer-height pt-[30px]">
-      <h2 className="pretendard-title text-white text-center mb-[20px]">
+      <h2 className="pretendard-title text-white text-center mb-[60px]">
         {requests.length > 0 ? (
           <>
             {requests.length}명의 친구에게
