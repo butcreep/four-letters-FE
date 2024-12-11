@@ -59,17 +59,6 @@ const SmallImage = styled.div`
   }
 `;
 
-const BackButton = styled.button`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 5px 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -84,7 +73,7 @@ const letterTemplates = [
   { id: 4, src: "https://via.placeholder.com/300x400?text=Template+4" },
 ];
 
-const TemplateSelection = ({ onNext, onBack }) => {
+const TemplateSelection = ({ onNext }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]); // 선택된 템플릿을 초기화
 
   const handleSelectTemplate = template => {
@@ -101,7 +90,6 @@ const TemplateSelection = ({ onNext, onBack }) => {
     <>
       <Header title="편지지 선택" />
       <Container>
-        <BackButton onClick={onBack}>&larr;</BackButton>
         <LargeImage>
           <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
         </LargeImage>
