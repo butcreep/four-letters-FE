@@ -5,12 +5,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import CommonButton from "components/ui/CommonButton"; // CommonButton 컴포넌트를 import
 import Header from "components/containers/HeaderContainer";
+import LetterType01 from "assets/img/letter/Letter-Type01.svg";
+import LetterType02 from "assets/img/letter/Letter-Type02.svg";
+import LetterType03 from "assets/img/letter/Letter-Type03.svg";
+import LetterType04 from "assets/img/letter/Letter-type04.svg";
 
 // Styled-components 정의
 const Container = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
   padding-top: 30px;
   position: relative;
 `;
@@ -25,14 +26,11 @@ const LargeImage = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #ddd;
   }
 `;
 
 const SwiperContainer = styled.div`
   width: 100%;
-  /* max-width: 295px; */
-  margin-bottom: 78px;
 
   .swiper-slide {
     display: flex;
@@ -45,7 +43,9 @@ const SmallImage = styled.div`
   height: 100px;
   cursor: pointer;
   border: ${(props) =>
-    props.$isSelected ? "2px solid #007BFF" : "2px solid transparent"};
+    props.$isSelected
+      ? "2px solid var(--color-deep-purple)"
+      : "2px solid transparent"};
   border-radius: 8px;
 
   img {
@@ -54,18 +54,14 @@ const SmallImage = styled.div`
     object-fit: cover;
     border-radius: 8px;
   }
-
-  &:hover {
-    border-color: #007bff;
-  }
 `;
 
-// Mock 데이터: 편지지 이미지
+// 편지지 이미지 데이터
 const letterTemplates = [
-  { id: 1, src: "https://via.placeholder.com/300x400?text=Template+1" },
-  { id: 2, src: "https://via.placeholder.com/300x400?text=Template+2" },
-  { id: 3, src: "https://via.placeholder.com/300x400?text=Template+3" },
-  { id: 4, src: "https://via.placeholder.com/300x400?text=Template+4" },
+  { id: 1, src: LetterType01 },
+  { id: 2, src: LetterType02 },
+  { id: 3, src: LetterType03 },
+  { id: 4, src: LetterType04 },
 ];
 
 const TemplateSelection = ({ onNext }) => {
