@@ -9,7 +9,7 @@ import { getRequests } from "api/requests";
 import { getLetters } from "api/letters";
 
 const ArchiveContainer = styled.div`
-  height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height) - 60px);
   display: flex;
   flex-direction: column;
 `;
@@ -21,8 +21,8 @@ const Tabs = styled.div`
 `;
 
 const TabButton = styled.button`
-  background: ${props => (props.$active ? "#333" : "#f9f9f9")};
-  color: ${props => (props.$active ? "white" : "#333")};
+  background: ${(props) => (props.$active ? "#333" : "#f9f9f9")};
+  color: ${(props) => (props.$active ? "white" : "#333")};
   border: none;
   padding: 8px 16px;
   margin: 0 4px;
@@ -31,7 +31,7 @@ const TabButton = styled.button`
   font-size: 16px;
 
   &:hover {
-    background: ${props => (props.$active ? "#333" : "#e0e0e0")};
+    background: ${(props) => (props.$active ? "#333" : "#e0e0e0")};
   }
 `;
 
@@ -75,7 +75,7 @@ const Archive = () => {
     const fetchDrafts = async () => {
       try {
         const requests = await getRequests();
-        const draftRequests = requests.filter(request => request.isDraft);
+        const draftRequests = requests.filter((request) => request.isDraft);
         setDrafts(draftRequests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -110,15 +110,21 @@ const Archive = () => {
       </div>
       <ArchiveContainer>
         <Tabs>
-          <TabButton $active={activeTab === "drafts"} onClick={() => setActiveTab("drafts")}>
+          <TabButton
+            $active={activeTab === "drafts"}
+            onClick={() => setActiveTab("drafts")}
+          >
             작성 중
           </TabButton>
-          <TabButton $active={activeTab === "sent"} onClick={() => setActiveTab("sent")}>
+          <TabButton
+            $active={activeTab === "sent"}
+            onClick={() => setActiveTab("sent")}
+          >
             보낸 편지
           </TabButton>
         </Tabs>
         <ListContainer>
-          {letters.map(letter => (
+          {letters.map((letter) => (
             <LetterCard
               key={letter.id}
               onClick={() => handleCardClick(letter.id, activeTab)}
