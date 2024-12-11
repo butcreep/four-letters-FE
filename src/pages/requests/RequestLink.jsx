@@ -54,9 +54,9 @@ const RequestLink = () => {
   };
 
   return (
-    <div className="px-40">
+    <div className="px-40 ">
       <Header title="편지 신청서" />
-      <div className="flex flex-col items-center h-screen text-white pt-10 w-full">
+      <div className="flex flex-col items-center h-screen text-white pt-10 w-full overflow-y-auto">
         <p className="text-center text-3xl mb-10 font-semibold">
           신청서를 보내면
           <br />

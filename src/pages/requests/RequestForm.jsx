@@ -25,21 +25,22 @@ const RequestForm = () => {
     message: "",
   });
   const navigate = useNavigate();
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
       const onlyNumbers = value.replace(/[^0-9]/g, ""); // 숫자만 남김
       if (onlyNumbers.length <= 11) {
-        setFormData(prev => ({ ...prev, [name]: onlyNumbers }));
+        setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       }
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const baseURL = process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
+  const baseURL =
+    process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me";
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const requestData = {
       sender: formData.name,
@@ -65,13 +66,13 @@ const RequestForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
-      <h1 className="yonepick-subtitle  text-center mb-[60px] ">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-40">
+      <h1 className="yonepick-subtitle  text-center mb-[60px] pt-[30px]">
         나한테 <GradientText className="yonepick-title">편지</GradientText>
         <br />
         받고 싶은 사람?
       </h1>
-      <div className="w-[295px]">
+      <div className="w-full">
         <GradientDiv>
           <p className="text-center text-lg">
             친구에게 크리스마스
@@ -128,15 +129,23 @@ const RequestForm = () => {
             ></textarea>
           </div>
         </form>
-        <CommonButton text="편지 요청하기" onClick={handleSubmit} $bgColor="#FA482C" />
+        <CommonButton
+          text="편지 요청하기"
+          onClick={handleSubmit}
+          $bgColor="#FA482C"
+        />
       </div>
-      <div className="text-left mt-[60px] w-[305px] max-w-md">
+      <div className="text-left mt-[60px] pb-[30px]">
         <p className="mb-3 text-base">안내사항</p>
         <ul className="text-sm text-[#B1B1B9]">
           <li className="pb-[6px]">
-            편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오 알림톡으로 편지를 보내드려요)
+            편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
+            알림톡으로 편지를 보내드려요)
           </li>
-          <li>작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지 않아요)</li>
+          <li>
+            작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
+            않아요)
+          </li>
         </ul>
       </div>
     </div>
