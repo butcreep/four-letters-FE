@@ -14,6 +14,7 @@ const ArchiveContainer = styled.div`
   ); /* 동적 높이 */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const Tabs = styled.div`
@@ -40,7 +41,7 @@ const TabButton = styled.button`
 const ListContainer = styled.div`
   flex: 1; /* 남은 공간을 차지하여 스크롤 가능 영역 확보 */
   overflow-y: auto; /* 세로 스크롤 활성화 */
-  padding: 16px;
+
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 
@@ -106,7 +107,7 @@ const Archive = () => {
     }
   };
   return (
-    <>
+    <div className="px-40">
       <div ref={headerRef}>
         <Header title="보관함" />
       </div>
@@ -139,7 +140,7 @@ const Archive = () => {
         </ListContainer>
         <Footer />
       </ArchiveContainer>
-    </>
+    </div>
   );
 };
 

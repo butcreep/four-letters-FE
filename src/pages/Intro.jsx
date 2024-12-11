@@ -27,7 +27,7 @@ const Intro = () => {
     navigate("/home");
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-slate-50 px-10">
+    <div className="flex flex-col items-center justify-center h-full text-slate-50 px-10">
       <h1 className="yonepick-subtitle  text-center mb-[60px] ">
         나한테 <GradientText className="yonepick-title">편지</GradientText>
         <br />
