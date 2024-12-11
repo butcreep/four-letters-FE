@@ -9,7 +9,9 @@ import { getRequests } from "api/requests";
 import { getLetters } from "api/letters";
 
 const ArchiveContainer = styled.div`
-  height: calc(100vh - var(--header-height) - 60px);
+  height: calc(
+    var(--vh, 1vh) * 100 - var(--header-height) - 60px
+  ); /* 동적 높이 */
   display: flex;
   flex-direction: column;
 `;
