@@ -4,30 +4,15 @@ import styled from "styled-components";
 import CommonModal from "components/ui/CommonModal";
 
 const BackgroundContainer = styled.div`
-  background-image: url(${props => props.background});
+  background-image: url(${(props) => props.background});
   background-size: cover;
   background-position: center;
   height: 100vh; /* 전체 화면 높이 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ContentWrapper = styled.div`
-  padding: 30px;
+  padding: 40px;
   border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 500px;
-`;
-
-const Title = styled.h2`
-  margin-bottom: 20px;
-  font-size: 24px;
-  text-align: center;
-  color: #333;
 `;
 
 const TextAreaWrapper = styled.div`
@@ -44,7 +29,7 @@ const TextArea = styled.textarea`
   border-radius: 8px;
   outline: none;
   resize: none;
-  font-family: ${props => props.font};
+  font-family: ${(props) => props.font};
   color: #333;
   background-color: white;
 
@@ -67,23 +52,21 @@ const CharacterCount = styled.div`
 `;
 
 const ButtonGroup = styled.div`
+  width: 100%;
   display: flex;
-  gap: 10px;
+
+  gap: 15px;
   margin-top: 20px;
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
+  padding: 15px 0px;
+  background-color: #000;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
+  width: 50%;
 
   &[data-variant="secondary"] {
     background-color: #ddd;
@@ -102,7 +85,7 @@ const Select = styled.select`
   border-radius: 8px;
   margin-bottom: 20px;
   width: 100%;
-  font-family: ${props => props.font}, sans-serif;
+  font-family: ${(props) => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
@@ -119,19 +102,20 @@ const FontSelect = ({ selectedFont, onChange }) => {
 
 const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const [letterContent, setLetterContent] = useState("");
-  const [selectedFontClass, setSelectedFontClass] = useState("ycomputer-regular");
+  const [selectedFontClass, setSelectedFontClass] =
+    useState("ycomputer-regular");
   const [selectedModalType, setSelectedModalType] = useState(null);
   const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
   const maxTextLength = 500;
 
-  const handleContentChange = e => {
+  const handleContentChange = (e) => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = e => {
+  const handleFontChange = (e) => {
     setSelectedFontClass(e.target.value);
     console.log("폰트클래스", selectedFontClass);
   };
@@ -158,7 +142,11 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   };
 
   const handleModalConfirm = () => {
-    const updatedData = { ...formData, content: letterContent, fontClass: selectedFontClass };
+    const updatedData = {
+      ...formData,
+      content: letterContent,
+      fontClass: selectedFontClass,
+    };
     if (selectedModalType === "letterSendConfirm") {
       onSubmit(updatedData); // 편지 전송
     } else if (selectedModalType === "letterSaveComplete" && isDraftSaved) {
@@ -176,10 +164,15 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
 
   return (
     <div>
-      <Header title="편지 작성" />
-      <BackgroundContainer background={formData.template || "https://via.placeholder.com/1920x1080"}>
+      <div className="px-40">
+        <Header title="편지 작성" />
+      </div>
+      <BackgroundContainer
+        background={
+          formData.template || "https://via.placeholder.com/1920x1080"
+        }
+      >
         <ContentWrapper>
-          <Title>편지 작성</Title>
           <TextAreaWrapper>
             <FixedText>To. {formData.toRecipient}</FixedText>
             <TextArea
@@ -193,12 +186,17 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
               {letterContent.length} / {maxTextLength}
             </CharacterCount>
           </TextAreaWrapper>
-          <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
+          <FontSelect
+            selectedFont={selectedFontClass}
+            onChange={handleFontChange}
+          />
           <ButtonGroup>
-            <Button data-variant="secondary" onClick={handleSaveDraft}>
+            <Button onClick={handleSaveDraft} className="pretendard-button">
               임시 저장
             </Button>
-            <Button onClick={handleSendLetter}>편지 보내기</Button>
+            <Button onClick={handleSendLetter} className="pretendard-button">
+              편지 보내기
+            </Button>
           </ButtonGroup>
         </ContentWrapper>
       </BackgroundContainer>

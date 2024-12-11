@@ -4,7 +4,7 @@ import styled from "styled-components";
 import modalSettings from "settings/modalSettings"; // 분리된 설정 파일 import
 
 const StyledModal = styled(Modal).withConfig({
-  shouldForwardProp: prop => !["ref", "forwardedRef"].includes(prop),
+  shouldForwardProp: (prop) => !["ref", "forwardedRef"].includes(prop),
 })`
   .ant-modal-content {
     border-radius: 16px;
@@ -55,34 +55,36 @@ const FooterButton = styled.div`
   }
 `;
 
-const CommonModal = forwardRef(({ type, isVisible, onCancel, onConfirm, onClose, data }, ref) => {
-  const currentModal = modalSettings[type] || {};
+const CommonModal = forwardRef(
+  ({ type, isVisible, onCancel, onConfirm, onClose, data }, ref) => {
+    const currentModal = modalSettings[type] || {};
 
-  return (
-    <StyledModal
-      open={isVisible}
-      width={currentModal.width || 295}
-      onCancel={onClose || onCancel}
-      footer={null}
-      closable={currentModal.showCloseButton || false}
-    >
-      <h2 className="text-2xl font-bold pt-10 pb-4">
-        {currentModal.title(data)} {/* 동적 타이틀 처리 */}
-      </h2>
-      <p>{currentModal.content(data)}</p> {/* 동적 내용 처리 */}
-      <FooterButton>
-        {currentModal.buttons &&
-          currentModal.buttons.map((button, index) => (
-            <button
-              key={index}
-              onClick={button.actionKey === "onCancel" ? onCancel : onConfirm} // 버튼 핸들러 연결
-            >
-              {button.text}
-            </button>
-          ))}
-      </FooterButton>
-    </StyledModal>
-  );
-});
+    return (
+      <StyledModal
+        open={isVisible}
+        width={currentModal.width || 295}
+        onCancel={onClose || onCancel}
+        footer={null}
+        closable={currentModal.showCloseButton || false}
+      >
+        <h2 className="text-xl font-bold pt-10 pb-4">
+          {currentModal.title(data)} {/* 동적 타이틀 처리 */}
+        </h2>
+        <p>{currentModal.content(data)}</p> {/* 동적 내용 처리 */}
+        <FooterButton>
+          {currentModal.buttons &&
+            currentModal.buttons.map((button, index) => (
+              <button
+                key={index}
+                onClick={button.actionKey === "onCancel" ? onCancel : onConfirm} // 버튼 핸들러 연결
+              >
+                {button.text}
+              </button>
+            ))}
+        </FooterButton>
+      </StyledModal>
+    );
+  }
+);
 
 export default CommonModal;
