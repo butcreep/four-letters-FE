@@ -36,7 +36,7 @@ const LetterCreation = () => {
 
   useEffect(() => {
     if (editData) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         fromSender: editData.sender || "",
         toRecipient: editData.recipient || "",
@@ -48,26 +48,30 @@ const LetterCreation = () => {
   }, [editData]);
 
   const handleBack = () => {
-    setStep(prev => prev - 1);
+    setStep((prev) => prev - 1);
   };
-  const handleNext = data => {
+  const handleNext = (data) => {
     if (step === 1) {
-      setFormData(prev => {
-        const updatedData = { ...prev, fromSender: data.sender, toRecipient: data.recipient };
+      setFormData((prev) => {
+        const updatedData = {
+          ...prev,
+          fromSender: data.sender,
+          toRecipient: data.recipient,
+        };
 
         return updatedData;
       });
     } else if (step === 2) {
-      setFormData(prev => {
+      setFormData((prev) => {
         const updatedData = { ...prev, background: data };
 
         return updatedData;
       });
     }
-    setStep(prev => prev + 1);
+    setStep((prev) => prev + 1);
   };
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data) => {
     const updatedFormData = {
       ...formData,
       content: data.content, // 최신 content 반영
@@ -88,7 +92,7 @@ const LetterCreation = () => {
     }
   };
 
-  const handleSaveDraft = async draftData => {
+  const handleSaveDraft = async (draftData) => {
     try {
       await updateRequest(recipient.id, {
         ...formData,
@@ -104,11 +108,25 @@ const LetterCreation = () => {
   };
 
   return (
-    <div>
-      {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} />}
-      {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} onBack={handleBack} />}
-      {step === 3 && <LetterWrite formData={formData} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} />}
-    </div>
+    <>
+      {step === 1 && (
+        <SenderRecipientForm formData={formData} onNext={handleNext} />
+      )}
+      {step === 2 && (
+        <TemplateSelection
+          formData={formData}
+          onNext={handleNext}
+          onBack={handleBack}
+        />
+      )}
+      {step === 3 && (
+        <LetterWrite
+          formData={formData}
+          onSubmit={handleSubmit}
+          onSaveDraft={handleSaveDraft}
+        />
+      )}
+    </>
   );
 };
 

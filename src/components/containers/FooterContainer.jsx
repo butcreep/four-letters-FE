@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import storage from "assets/icon/Storage-Box-On.svg";
+import home from "assets/icon/Home-On.svg";
 const FooterContainer = styled.div`
   position: absolute; /* 부모 컨테이너 기준 위치 고정 */
   bottom: 0;
@@ -19,12 +20,11 @@ const FooterContainer = styled.div`
 const FooterButton = styled.button`
   border: none;
   color: #fff;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
 
   &:hover {
     opacity: 0.8;
@@ -36,8 +36,13 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <FooterButton onClick={() => navigate("/")}>🏠 홈</FooterButton>
-      <FooterButton onClick={() => navigate("/archive")}>📦 보관함</FooterButton>
+      <FooterButton onClick={() => navigate("/")}>
+        <img src={home} alt="" />홈
+      </FooterButton>
+      <FooterButton onClick={() => navigate("/archive")}>
+        <img src={storage} alt="" />
+        보관함
+      </FooterButton>
     </FooterContainer>
   );
 };

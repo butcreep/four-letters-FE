@@ -17,7 +17,6 @@ const GradientText = styled.span`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
   -webkit-background-clip: text; /* 텍스트로 배경을 클리핑 */
   -webkit-text-fill-color: transparent; /* 텍스트를 투명하게 */
-  font-size: 52px; /* "편지"의 크기 */
 `;
 
 const Intro = () => {
@@ -28,7 +27,7 @@ const Intro = () => {
     navigate("/home");
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-slate-50">
+    <div className="flex flex-col items-center justify-center h-screen text-slate-50 px-10">
       <h1 className="yonepick-subtitle  text-center mb-[60px] ">
         나한테 <GradientText className="yonepick-title">편지</GradientText>
         <br />

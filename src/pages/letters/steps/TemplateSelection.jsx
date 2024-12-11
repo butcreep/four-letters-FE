@@ -11,12 +11,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+
   position: relative;
 `;
 
 const LargeImage = styled.div`
-  width: 295px;
+  width: 100%;
   height: 295px;
   margin-bottom: 24px;
 
@@ -31,7 +31,7 @@ const LargeImage = styled.div`
 
 const SwiperContainer = styled.div`
   width: 100%;
-  max-width: 295px;
+  /* max-width: 295px; */
   margin-bottom: 78px;
 
   .swiper-slide {
@@ -44,7 +44,8 @@ const SmallImage = styled.div`
   width: 100px;
   height: 100px;
   cursor: pointer;
-  border: ${props => (props.$isSelected ? "2px solid #007BFF" : "2px solid transparent")};
+  border: ${(props) =>
+    props.$isSelected ? "2px solid #007BFF" : "2px solid transparent"};
   border-radius: 8px;
 
   img {
@@ -59,12 +60,6 @@ const SmallImage = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
 // Mock 데이터: 편지지 이미지
 const letterTemplates = [
   { id: 1, src: "https://via.placeholder.com/300x400?text=Template+1" },
@@ -76,7 +71,7 @@ const letterTemplates = [
 const TemplateSelection = ({ onNext }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]); // 선택된 템플릿을 초기화
 
-  const handleSelectTemplate = template => {
+  const handleSelectTemplate = (template) => {
     setSelectedTemplate(template); // 선택된 템플릿 설정
   };
 
@@ -87,15 +82,18 @@ const TemplateSelection = ({ onNext }) => {
   };
 
   return (
-    <>
+    <div className="px-40">
       <Header title="편지지 선택" />
       <Container>
         <LargeImage>
-          <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
+          <img
+            src={selectedTemplate.src}
+            alt={`Template ${selectedTemplate.id}`}
+          />
         </LargeImage>
         <SwiperContainer>
           <Swiper spaceBetween={8} slidesPerView={3}>
-            {letterTemplates.map(template => (
+            {letterTemplates.map((template) => (
               <SwiperSlide key={template.id}>
                 <SmallImage
                   onClick={() => handleSelectTemplate(template)}
@@ -107,11 +105,14 @@ const TemplateSelection = ({ onNext }) => {
             ))}
           </Swiper>
         </SwiperContainer>
-        <ButtonContainer>
-          <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
-        </ButtonContainer>
+
+        <CommonButton
+          text="다음"
+          onClick={handleNext}
+          disabled={!selectedTemplate}
+        />
       </Container>
-    </>
+    </div>
   );
 };
 
