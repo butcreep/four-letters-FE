@@ -29,3 +29,7 @@ body {
 .form-label {
   @apply block text-sm font-medium mb-2 text-white;
 }
+
+.footer-height {
+  height: calc(100% - 60px);
+}
