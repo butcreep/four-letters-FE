@@ -24,7 +24,7 @@ const StyledUl = styled.ul`
   /* width: 295px; */
   /* height: 390px; */
 
-  height: calc(100% - 145px); /* 화면 크기에 따라 높이 제한 */
+  height: calc(100% - 130px); /* 화면 크기에 따라 높이 제한 */
   /* height: 80%; */
   border-radius: 12px;
   overflow-y: auto;

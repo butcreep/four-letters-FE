@@ -82,7 +82,7 @@ const TemplateSelection = ({ onNext }) => {
   };
 
   return (
-    <div className="px-40 h-full">
+    <div className="px-40 footer-height">
       <Header title="편지지 선택" />
       <div className="footer-height flex flex-col justify-between">
         <Container>
