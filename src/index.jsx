@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
-import GlobalStyle from "components/GlobalStyle";
+import GlobalStyle from "components/global/GlobalStyle";
 
 document.body.style.backgroundColor = "#f0f0f0";
 const root = ReactDOM.createRoot(document.getElementById("root"));
