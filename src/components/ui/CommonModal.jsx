@@ -70,7 +70,8 @@ const CommonModal = forwardRef(
         <h2 className="text-xl font-bold pt-10 pb-4">
           {currentModal.title(data)} {/* 동적 타이틀 처리 */}
         </h2>
-        <p>{currentModal.content(data)}</p> {/* 동적 내용 처리 */}
+        <p className="text-[#78787E]">{currentModal.content(data)}</p>{" "}
+        {/* 동적 내용 처리 */}
         <FooterButton>
           {currentModal.buttons &&
             currentModal.buttons.map((button, index) => (
