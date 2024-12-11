@@ -12,9 +12,9 @@ const SenderRecipientForm = ({ onNext, formData }) => {
   };
 
   return (
-    <div className="px-40">
+    <div className="px-40 h-full">
       <Header title="보내는 이/받는 이" />
-      <div className="pt-[40px] mx-auto flex flex-col justify-between items-center">
+      <div className="pt-[50px] mx-auto flex flex-col justify-between items-center footer-height">
         <div className="flex flex-col gap-6 w-full">
           <div>
             <label className="form-label" htmlFor="sender">

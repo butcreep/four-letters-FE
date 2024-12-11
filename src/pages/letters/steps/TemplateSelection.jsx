@@ -8,10 +8,10 @@ import Header from "components/containers/HeaderContainer";
 
 // Styled-components 정의
 const Container = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
-
+  align-items: center; */
+  padding-top: 30px;
   position: relative;
 `;
 
@@ -82,36 +82,37 @@ const TemplateSelection = ({ onNext }) => {
   };
 
   return (
-    <div className="px-40">
+    <div className="px-40 h-full">
       <Header title="편지지 선택" />
-      <Container>
-        <LargeImage>
-          <img
-            src={selectedTemplate.src}
-            alt={`Template ${selectedTemplate.id}`}
-          />
-        </LargeImage>
-        <SwiperContainer>
-          <Swiper spaceBetween={8} slidesPerView={3}>
-            {letterTemplates.map((template) => (
-              <SwiperSlide key={template.id}>
-                <SmallImage
-                  onClick={() => handleSelectTemplate(template)}
-                  $isSelected={template.id === selectedTemplate?.id}
-                >
-                  <img src={template.src} alt={`Template ${template.id}`} />
-                </SmallImage>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </SwiperContainer>
-
+      <div className="footer-height flex flex-col justify-between">
+        <Container>
+          <LargeImage>
+            <img
+              src={selectedTemplate.src}
+              alt={`Template ${selectedTemplate.id}`}
+            />
+          </LargeImage>
+          <SwiperContainer>
+            <Swiper spaceBetween={8} slidesPerView={3}>
+              {letterTemplates.map((template) => (
+                <SwiperSlide key={template.id}>
+                  <SmallImage
+                    onClick={() => handleSelectTemplate(template)}
+                    $isSelected={template.id === selectedTemplate?.id}
+                  >
+                    <img src={template.src} alt={`Template ${template.id}`} />
+                  </SmallImage>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </SwiperContainer>
+        </Container>
         <CommonButton
           text="다음"
           onClick={handleNext}
           disabled={!selectedTemplate}
         />
-      </Container>
+      </div>
     </div>
   );
 };
