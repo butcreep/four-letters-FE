@@ -9,6 +9,7 @@ const GradientDiv = styled.div`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
   width: 100%;
   height: 70%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,7 +43,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
     navigate("/request-link");
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-[calc(100% - 60px)]">
       <h2 className="pretendard-title text-white text-center mb-[20px]">
         {requests.length > 0 ? (
           <>
