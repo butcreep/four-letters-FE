@@ -91,7 +91,7 @@ const LetterDetail = () => {
         <img src={backgroundIcon} alt="letter-icon" className="w-20 h-20 mx-auto" />
         <ContentWrapper className={detail.fontClass || "ycomputer-regular"}>
           <Title>To. {detail.toRecipient}</Title>
-          <ContentText>{detail.content}</ContentText>
+          <ContentText>{detail.message}</ContentText>
           <FixedText>From. {detail.fromSender}</FixedText>
         </ContentWrapper>
       </BackgroundContainer>
