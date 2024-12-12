@@ -105,7 +105,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
   const [selectedFontClass, setSelectedFontClass] = useState(formData.fontClass || "ycomputer-regular");
   const [selectedModalType, setSelectedModalType] = useState(null);
-  const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
+  // const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
   const maxTextLength = 500;
 
   const handleContentChange = e => {
@@ -148,16 +148,13 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
     };
     if (selectedModalType === "letterSendConfirm") {
       onSubmit(updatedData); // 편지 전송
-    } else if (selectedModalType === "letterSaveComplete" && isDraftSaved) {
-      onSaveDraft(updatedData); // 임시 저장 상태 초기화
+    } else if (selectedModalType === "letterSaveComplete") {
+      onSaveDraft(updatedData);
     }
     setSelectedModalType(null); // 모달 닫기
   };
 
   const handleCancelModal = () => {
-    if (selectedModalType === "letterSaveComplete" && isDraftSaved) {
-      setIsDraftSaved(false); // 임시 저장 상태 초기화
-    }
     setSelectedModalType(null); // 모달 닫기
   };
   const backgroundIndex = (formData.background || 1) - 1; // 기본값 1로 설정
