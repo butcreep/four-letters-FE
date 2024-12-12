@@ -11,7 +11,7 @@ const FooterContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 60px;
+  height: 50px;
   background-color: #333;
   color: white;
 `;
@@ -29,7 +29,7 @@ const FooterButton = styled.button`
 const buttons = [
   {
     path: "/home",
-    label: "홈",
+
     icon: {
       active: images.footerIcons.homeOn,
       inactive: images.footerIcons.homeOff,
@@ -37,7 +37,7 @@ const buttons = [
   },
   {
     path: "/archive",
-    label: "보관함",
+
     icon: {
       active: images.footerIcons.storageOn,
       inactive: images.footerIcons.storageOff,
@@ -50,14 +50,20 @@ const Footer = () => {
   const location = useLocation();
   return (
     <FooterContainer>
-      {buttons.map(button => (
+      {buttons.map((button) => (
         <FooterButton
           key={button.path}
           onClick={() => navigate(button.path)}
           active={location.pathname === button.path}
         >
-          <img src={location.pathname === button.path ? button.icon.active : button.icon.inactive} alt={button.label} />
-          {button.label}
+          <img
+            src={
+              location.pathname === button.path
+                ? button.icon.active
+                : button.icon.inactive
+            }
+            alt={button.label}
+          />
         </FooterButton>
       ))}
     </FooterContainer>
