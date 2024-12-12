@@ -48,7 +48,7 @@ const modalSettings = {
     title: () => "편지가 저장되었습니다.",
     content: () => "작성 중이던 편지가 보관함에 저장되었습니다.",
     buttons: [{ text: "확인", actionKey: "onConfirm" }],
-    showCloseButton: true,
+    showCloseButton: false,
   },
   letterSendConfirm: {
     title: () => "편지를 보낼까요?",
