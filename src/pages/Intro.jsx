@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SantaLetterImage from "assets/img/Santa-Letter.svg";
 import KakaoLogo from "assets/icon/Kakao.svg";
+import Snowbg from "assets/img/Intro_Snowbg.svg";
 
 const CenterImage = styled.div`
   background-image: url(${SantaLetterImage});
@@ -28,11 +29,16 @@ const Intro = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center h-full text-slate-50 px-10">
-      <h1 className="yonepick-subtitle  text-center mb-[60px] ">
-        나한테 <GradientText className="yonepick-title">편지</GradientText>
-        <br />
-        받고 싶은 사람?
-      </h1>
+      <div className="relative">
+        <h1 className="yonepick-subtitle  text-center mb-[60px] ">
+          나한테 <GradientText className="yonepick-title">편지</GradientText>
+          <br />
+          받고 싶은 사람?
+        </h1>
+        <div className="absolute top-[-40px] w-[316px] left-[-15px]">
+          <img src={Snowbg} alt="" className="w-full" />
+        </div>
+      </div>
       <CenterImage />
       <CommonButton
         text="카카오로 시작하기"
