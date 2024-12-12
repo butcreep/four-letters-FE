@@ -135,8 +135,7 @@ const LetterCreation = () => {
         ...draftData,
         isDraft: true,
       });
-
-      navigate("/home");
+      // navigate("/home");
     } catch (error) {
       console.error("임시 저장 중 오류 발생:", error);
       alert("임시 저장에 실패했습니다. 다시 시도해주세요.");
