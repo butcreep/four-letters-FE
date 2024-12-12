@@ -9,7 +9,9 @@ import { getRequests } from "api/requests";
 import { getLetters } from "api/letters";
 
 const ArchiveContainer = styled.div`
-  height: calc(var(--vh, 1vh) * 100 - var(--header-height) - 60px); /* 동적 높이 */
+  height: calc(
+    var(--vh, 1vh) * 100 - var(--header-height) - 60px
+  ); /* 동적 높이 */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -23,8 +25,8 @@ const Tabs = styled.div`
 `;
 
 const TabButton = styled.button`
-  /* background: ${props => (props.$active ? "#333" : "#f9f9f9")}; */
-  color: ${props => (props.$active ? "white" : "#333")};
+  /* background: ${(props) => (props.$active ? "#333" : "#f9f9f9")}; */
+  color: ${(props) => (props.$active ? "white" : "#333")};
   /* border: none;
   padding: 8px 16px;
   margin: 0 4px;
@@ -33,10 +35,10 @@ const TabButton = styled.button`
   font-size: 16px;
   text-align: center;
   flex: 1; /* 버튼을 반반 배치 */
-  border-bottom: ${props => (props.$active ? "2px solid white" : "none")};
+  border-bottom: ${(props) => (props.$active ? "2px solid white" : "none")};
 
   /* &:hover {
-    background: ${props => (props.$active ? "#333" : "#e0e0e0")};
+    background: ${(props) => (props.$active ? "#333" : "#e0e0e0")};
   } */
 `;
 
@@ -80,7 +82,7 @@ const Archive = () => {
     const fetchDrafts = async () => {
       try {
         const requests = await getRequests();
-        const draftRequests = requests.filter(request => request.isDraft);
+        const draftRequests = requests.filter((request) => request.isDraft);
         setDrafts(draftRequests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -103,7 +105,7 @@ const Archive = () => {
   const letters = activeTab === "drafts" ? drafts : sent;
   const handleCardClick = (id, tab) => {
     if (tab === "drafts") {
-      const recipient = drafts.find(draft => draft.id === id); // recipient 객체 찾기
+      const recipient = drafts.find((draft) => draft.id === id); // recipient 객체 찾기
       if (!recipient) {
         console.error(`Draft not found for id: ${id}`);
         return;
@@ -122,22 +124,28 @@ const Archive = () => {
       </div>
       <ArchiveContainer>
         <Tabs>
-          <TabButton $active={activeTab === "drafts"} onClick={() => setActiveTab("drafts")}>
+          <TabButton
+            $active={activeTab === "drafts"}
+            onClick={() => setActiveTab("drafts")}
+          >
             작성 중
           </TabButton>
-          <TabButton $active={activeTab === "sent"} onClick={() => setActiveTab("sent")}>
+          <TabButton
+            $active={activeTab === "sent"}
+            onClick={() => setActiveTab("sent")}
+          >
             보낸 편지
           </TabButton>
         </Tabs>
         <ListContainer className="px-40">
-          {letters.map(letter => (
+          {letters.map((letter) => (
             <LetterCard
               key={letter.id}
               onClick={() => handleCardClick(letter.id, activeTab)}
               className="cursor-pointer"
             >
               <h3>{letter.toRecipient || letter.title}</h3>
-              <p>
+              {/* <p>
                 {letter.message
                   ? letter.message.length > 20
                     ? `${letter.message.slice(0, 15)}...`
@@ -145,7 +153,7 @@ const Archive = () => {
                   : letter.content.length > 20
                   ? `${letter.content.slice(0, 15)}...`
                   : letter.content}
-              </p>
+              </p> */}
             </LetterCard>
           ))}
         </ListContainer>
