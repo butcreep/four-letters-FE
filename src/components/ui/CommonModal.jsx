@@ -67,9 +67,9 @@ const CommonModal = forwardRef(({ type, isVisible, onCancel, onConfirm, onClose,
       closable={currentModal.showCloseButton || false}
     >
       <h2 className="text-xl font-bold pt-10 pb-4">{currentModal.title(data)}</h2>
-      {data.date && <p className="text-[#78787E]">{data.date}</p>}
-      <p className={data.date ? "text-black" : "text-[#78787E]"}>{currentModal.content(data)}</p>
-      {/* 동적 내용 처리 */}
+      {data?.date && <p className="text-[#78787E]">{data.date}</p>}
+      <p className={data?.date ? "text-black" : "text-[#78787E]"}>{currentModal.content(data)}</p>
+
       <FooterButton>
         {currentModal.buttons &&
           currentModal.buttons.map((button, index) => (
