@@ -143,7 +143,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const handleModalConfirm = () => {
     const updatedData = {
       ...formData,
-      content: letterContent,
+      message: letterContent,
       fontClass: selectedFontClass,
     };
     if (selectedModalType === "letterSendConfirm") {

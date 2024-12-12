@@ -20,7 +20,7 @@ const LetterCreation = () => {
     fromSender: "",
     toRecipient: "",
     background: "",
-    content: "",
+    message: "",
     fontClass: "",
   });
   const stepTitles = {
@@ -49,7 +49,7 @@ const LetterCreation = () => {
         fromSender: editData.fromSender || "",
         toRecipient: editData.toRecipient || "",
         background: editData.background || "",
-        content: editData.content || "",
+        message: editData.message || "",
         fontClass: editData.fontClass || "",
       }));
     }
@@ -89,7 +89,7 @@ const LetterCreation = () => {
         fromSender: "",
         toRecipient: "",
         background: "",
-        content: "",
+        message: "",
         fontClass: "",
       });
 
@@ -110,7 +110,7 @@ const LetterCreation = () => {
   const handleSubmit = async data => {
     const updatedFormData = {
       ...formData,
-      content: data.content, // 최신 content 반영
+      message: data.message, // 최신 content 반영
       fontClass: data.fontClass,
     };
     try {
