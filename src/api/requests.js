@@ -28,3 +28,17 @@ export const deleteRequest = async id => {
   const response = await apiClient.delete(`/requests/${id}`);
   return response.data;
 };
+
+export const createRequest = async data => {
+  try {
+    const response = await apiClient.post("/requests", data);
+    if (response.status === 201) {
+      return response.data; // 성공적으로 생성된 데이터를 반환
+    } else {
+      throw new Error(`Unexpected status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error creating request:", error.message || error);
+    throw new Error("요청 생성에 실패했습니다. 다시 시도해주세요.");
+  }
+};
