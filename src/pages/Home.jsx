@@ -15,8 +15,8 @@ const Home = () => {
     const fetchRequests = async () => {
       try {
         const data = await getRequests();
-
-        setRequests(data);
+        const filterData = data.filter(request => !request.isDone);
+        setRequests(filterData);
       } catch (error) {
         console.error("Error fetching requests:", error);
       }
