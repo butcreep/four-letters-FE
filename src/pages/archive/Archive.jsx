@@ -137,7 +137,7 @@ const Archive = () => {
               className="cursor-pointer"
             >
               <h3>{letter.toRecipient || letter.title}</h3>
-              <p> {letter.content.length > 20 ? `${letter.content.slice(0, 15)}...` : letter.content}</p>
+              <p> {letter.message.length > 20 ? `${letter.message.slice(0, 15)}...` : letter.content}</p>
             </LetterCard>
           ))}
         </ListContainer>
