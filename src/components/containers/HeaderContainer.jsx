@@ -8,8 +8,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   height: 75px;
   color: white;
-
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0 20px;
 `;
 
 const BackButton = styled.button`
@@ -32,7 +31,7 @@ const Title = styled.h1`
   flex-grow: 1;
 `;
 
-const Header = ({ title = "편지 작성", onBack }) => {
+const Header = ({ title = "편지 작성", onBack, onDelete }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -47,7 +46,7 @@ const Header = ({ title = "편지 작성", onBack }) => {
     <HeaderContainer>
       <BackButton onClick={handleBack}>← {/* 왼쪽 화살표 표시 */}</BackButton>
       <Title className="pretendard-button">{title}</Title>
-      <div style={{ width: "30px" }} /> {/* 오른쪽 공간 확보 */}
+      {onDelete ? <p onClick={onDelete}>삭제</p> : <div style={{ width: "30px" }} />} {/* 삭제 버튼 또는 여백 */}
     </HeaderContainer>
   );
 };
