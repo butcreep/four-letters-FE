@@ -110,7 +110,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
         <div className="absolute top-[-64px] left-[15px] w-[64px]">
           <img src={Tree} alt="" />
         </div>
-        <div className="absolute top-[-40px] right-0 w-[40px]">
+        <div className="absolute top-[-30px] right-0 w-[40px]">
           <img src={LetterSide} alt="" />
         </div>
         <div className="px-40 h-full">
