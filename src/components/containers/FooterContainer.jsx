@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import storage from "assets/icon/Storage-Box-On.svg";
-import home from "assets/icon/Home-On.svg";
+import images from "assets";
+
 const FooterContainer = styled.div`
   position: absolute; /* 부모 컨테이너 기준 위치 고정 */
   bottom: 0;
@@ -14,35 +14,52 @@ const FooterContainer = styled.div`
   height: 60px;
   background-color: #333;
   color: white;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 const FooterButton = styled.button`
   border: none;
-  color: #fff;
+  color: ${({ active }) => (active ? "#fff" : "#777779")};
   font-size: 12px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  &:hover {
-    opacity: 0.8;
-  }
 `;
+
+const buttons = [
+  {
+    path: "/home",
+    label: "홈",
+    icon: {
+      active: images.footerIcons.homeOn,
+      inactive: images.footerIcons.homeOff,
+    },
+  },
+  {
+    path: "/archive",
+    label: "보관함",
+    icon: {
+      active: images.footerIcons.storageOn,
+      inactive: images.footerIcons.storageOff,
+    },
+  },
+];
 
 const Footer = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   return (
     <FooterContainer>
-      <FooterButton onClick={() => navigate("/")}>
-        <img src={home} alt="" />홈
-      </FooterButton>
-      <FooterButton onClick={() => navigate("/archive")}>
-        <img src={storage} alt="" />
-        보관함
-      </FooterButton>
+      {buttons.map(button => (
+        <FooterButton
+          key={button.path}
+          onClick={() => navigate(button.path)}
+          active={location.pathname === button.path}
+        >
+          <img src={location.pathname === button.path ? button.icon.active : button.icon.inactive} alt={button.label} />
+          {button.label}
+        </FooterButton>
+      ))}
     </FooterContainer>
   );
 };
