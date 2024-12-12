@@ -1,10 +1,10 @@
-import Header from "components/containers/HeaderContainer";
 import React, { useState } from "react";
 import styled from "styled-components";
 import CommonModal from "components/ui/CommonModal";
+import images from "assets";
 
 const BackgroundContainer = styled.div`
-  background-image: url(${(props) => props.background});
+  background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
   height: 100vh; /* 전체 화면 높이 */
@@ -18,6 +18,7 @@ const ContentWrapper = styled.div`
 const TextAreaWrapper = styled.div`
   width: 100%;
   position: relative;
+  background-color: white;
 `;
 
 const TextArea = styled.textarea`
@@ -29,9 +30,8 @@ const TextArea = styled.textarea`
   border-radius: 8px;
   outline: none;
   resize: none;
-  font-family: ${(props) => props.font};
+  font-family: ${props => props.font};
   color: #333;
-  background-color: white;
 
   ::placeholder {
     color: rgba(51, 51, 51, 0.5);
@@ -85,7 +85,7 @@ const Select = styled.select`
   border-radius: 8px;
   margin-bottom: 20px;
   width: 100%;
-  font-family: ${(props) => props.font}, sans-serif;
+  font-family: ${props => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
@@ -101,23 +101,22 @@ const FontSelect = ({ selectedFont, onChange }) => {
 };
 
 const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
-  const [letterContent, setLetterContent] = useState("");
-  const [selectedFontClass, setSelectedFontClass] =
-    useState("ycomputer-regular");
+  const { letterBackgrounds, letterIcons } = images;
+  const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
+  const [selectedFontClass, setSelectedFontClass] = useState(formData.fontClass || "ycomputer-regular");
   const [selectedModalType, setSelectedModalType] = useState(null);
   const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
   const maxTextLength = 500;
 
-  const handleContentChange = (e) => {
+  const handleContentChange = e => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = (e) => {
+  const handleFontChange = e => {
     setSelectedFontClass(e.target.value);
-    console.log("폰트클래스", selectedFontClass);
   };
 
   const handleSaveDraft = async () => {
@@ -161,18 +160,14 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
     }
     setSelectedModalType(null); // 모달 닫기
   };
-
+  const backgroundIndex = (formData.background || 1) - 1; // 기본값 1로 설정
+  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <div>
-      <div className="px-40">
-        <Header title="편지 작성" />
-      </div>
-      <BackgroundContainer
-        background={
-          formData.template || "https://via.placeholder.com/1920x1080"
-        }
-      >
+      <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>
+          <img src={backgroundIcon} alt="letter-icon" className="w-20 h-20 mx-auto" />
           <TextAreaWrapper>
             <FixedText>To. {formData.toRecipient}</FixedText>
             <TextArea
@@ -186,10 +181,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
               {letterContent.length} / {maxTextLength}
             </CharacterCount>
           </TextAreaWrapper>
-          <FontSelect
-            selectedFont={selectedFontClass}
-            onChange={handleFontChange}
-          />
+          <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
           <ButtonGroup>
             <Button onClick={handleSaveDraft} className="pretendard-button">
               임시 저장

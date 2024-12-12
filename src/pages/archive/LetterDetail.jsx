@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useSetVh from "hooks/useSetVh";
 import { getLetterById } from "api/letters";
+import images from "assets";
+import Header from "components/containers/HeaderContainer";
 
 const BackgroundContainer = styled.div`
   background-image: url(${props => props.background});
@@ -54,6 +56,7 @@ const LetterDetail = () => {
   const [detail, setDetail] = useState(null);
   const [error, setError] = useState(null);
   const headerRef = useRef(null);
+  const { letterBackgrounds, letterIcons } = images;
 
   useSetVh(headerRef);
 
@@ -78,10 +81,14 @@ const LetterDetail = () => {
   if (!detail) {
     return <p>로딩 중...</p>;
   }
-
+  const backgroundIndex = (detail.background || 1) - 1; // 기본값 1로 설정
+  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <>
-      <BackgroundContainer background={detail.background || "https://via.placeholder.com/1920x1080"}>
+      <Header title="작성된 편지" />
+      <BackgroundContainer background={backgroundImage}>
+        <img src={backgroundIcon} alt="letter-icon" className="w-20 h-20 mx-auto" />
         <ContentWrapper className={detail.fontClass || "ycomputer-regular"}>
           <Title>To. {detail.toRecipient}</Title>
           <ContentText>{detail.content}</ContentText>

@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
+import Header from "components/containers/HeaderContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import SenderRecipientForm from "./steps/SenderRecipientForm";
 import TemplateSelection from "./steps/TemplateSelection";
 import LetterWrite from "./steps/LetterWrite";
 import { createLetter } from "api/letters";
 import { getRequestById, updateRequest } from "api/requests";
+import CommonModal from "components/ui/CommonModal";
 
 const LetterCreation = () => {
   const location = useLocation(); // 현재 경로의 location 객체
   const recipient = location.state?.recipient; // state에서 recipient 추출
   const [editData, seEditData] = useState([]);
   const [step, setStep] = useState(1);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fromSender: "",
     toRecipient: "",
@@ -18,8 +23,11 @@ const LetterCreation = () => {
     content: "",
     fontClass: "",
   });
-  const navigate = useNavigate();
-
+  const stepTitles = {
+    1: "보내는이/받는이",
+    2: "편지지 선택",
+    3: "편지 쓰기",
+  };
   useEffect(() => {
     if (recipient?.id) {
       const fetchRequests = async () => {
@@ -32,14 +40,14 @@ const LetterCreation = () => {
       };
       fetchRequests();
     }
-  }, [recipient]);
+  }, [recipient.id]);
 
   useEffect(() => {
     if (editData) {
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        fromSender: editData.sender || "",
-        toRecipient: editData.recipient || "",
+        fromSender: editData.fromSender || "",
+        toRecipient: editData.toRecipient || "",
         background: editData.background || "",
         content: editData.content || "",
         fontClass: editData.fontClass || "",
@@ -48,11 +56,15 @@ const LetterCreation = () => {
   }, [editData]);
 
   const handleBack = () => {
-    setStep((prev) => prev - 1);
+    if (step > 1) {
+      setStep(prev => prev - 1);
+    } else {
+      navigate(-1);
+    }
   };
-  const handleNext = (data) => {
+  const handleNext = data => {
     if (step === 1) {
-      setFormData((prev) => {
+      setFormData(prev => {
         const updatedData = {
           ...prev,
           fromSender: data.sender,
@@ -62,16 +74,40 @@ const LetterCreation = () => {
         return updatedData;
       });
     } else if (step === 2) {
-      setFormData((prev) => {
+      setFormData(prev => {
         const updatedData = { ...prev, background: data };
 
         return updatedData;
       });
     }
-    setStep((prev) => prev + 1);
+    setStep(prev => prev + 1);
+  };
+  const handleDelete = async () => {
+    try {
+      // 폼 데이터 초기화
+      setFormData({
+        fromSender: "",
+        toRecipient: "",
+        background: "",
+        content: "",
+        fontClass: "",
+      });
+
+      // 요청 상태 업데이트
+      await updateRequest(recipient.id, {
+        isDraft: false, // 임시저장 여부 초기화
+        isDone: false, // 완료 상태 초기화
+      });
+    } catch (error) {
+      console.error("Error clearing letter content:", error);
+      alert("편지 내용을 초기화하는 데 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsDeleteModalVisible(false); // 모달 닫기
+      navigate("/home"); // 홈으로 이동
+    }
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async data => {
     const updatedFormData = {
       ...formData,
       content: data.content, // 최신 content 반영
@@ -82,7 +118,7 @@ const LetterCreation = () => {
       await createLetter(updatedFormData);
 
       // 상태 업데이트
-      console.log("Updating Status for Recipient:", recipient.id);
+
       await updateRequest(recipient.id, { isDone: true });
 
       navigate("/home");
@@ -92,7 +128,7 @@ const LetterCreation = () => {
     }
   };
 
-  const handleSaveDraft = async (draftData) => {
+  const handleSaveDraft = async draftData => {
     try {
       await updateRequest(recipient.id, {
         ...formData,
@@ -106,24 +142,26 @@ const LetterCreation = () => {
       alert("임시 저장에 실패했습니다. 다시 시도해주세요.");
     }
   };
-
+  const handleCloseModal = () => {
+    setIsDeleteModalVisible(false);
+  };
   return (
     <>
-      {step === 1 && (
-        <SenderRecipientForm formData={formData} onNext={handleNext} />
-      )}
-      {step === 2 && (
-        <TemplateSelection
-          formData={formData}
-          onNext={handleNext}
-          onBack={handleBack}
-        />
-      )}
-      {step === 3 && (
-        <LetterWrite
-          formData={formData}
-          onSubmit={handleSubmit}
-          onSaveDraft={handleSaveDraft}
+      <Header
+        title={stepTitles[step]}
+        onBack={handleBack}
+        onDelete={step === 3 ? () => setIsDeleteModalVisible(true) : null}
+      />
+      {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} />}
+      {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} />}
+      {step === 3 && <LetterWrite formData={formData} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} />}
+
+      {isDeleteModalVisible && (
+        <CommonModal
+          type="letterDelete"
+          isVisible={!!setIsDeleteModalVisible}
+          onCancel={handleCloseModal}
+          onConfirm={handleDelete}
         />
       )}
     </>

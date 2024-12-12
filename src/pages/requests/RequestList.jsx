@@ -61,7 +61,6 @@ export const RequestList = ({ requests, onRequestClick }) => {
     navigate("/request-link");
   };
   return (
-    // <div className="flex flex-col items-center justify-center footer-height pt-[30px]">
     <div className="footer-height pt-[30px]">
       <h2 className="pretendard-title text-white text-center mb-[50px]">
         {requests.length > 0 ? (
@@ -83,30 +82,24 @@ export const RequestList = ({ requests, onRequestClick }) => {
         <div className="px-40 h-full">
           <StyledUl>
             {requests.length > 0 ? (
-              requests
-                .filter((request) => !request.isDone)
-                .map((request) => (
-                  <li
-                    key={request.id}
-                    className="letter-item cursor-pointer flex pb-[10px] mx-5 justify-between items-center pt-6 border-b border-dashed border-[#eeeeee]"
-                    onClick={() => onRequestClick(request)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="sender text-base">{request.sender}</div>
-                      <div className="date text-xs text-[#B1B1B9]">
-                        {request.date}
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      {request.isDraft && (
-                        <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">
-                          작성중
-                        </div>
-                      )}
-                      <img src={Arrow} alt="Arrow" />
-                    </div>
-                  </li>
-                ))
+              requests.map(request => (
+                <li
+                  key={request.id}
+                  className="letter-item cursor-pointer flex pb-[10px] mx-5 justify-between items-center pt-6 border-b border-dashed border-[#eeeeee]"
+                  onClick={() => onRequestClick(request)}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="sender text-base">{request.sender}</div>
+                    <div className="date text-xs text-[#B1B1B9]">{request.date}</div>
+                  </div>
+                  <div className="flex items-center">
+                    {request.isDraft && (
+                      <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">작성중</div>
+                    )}
+                    <img src={Arrow} alt="Arrow" />
+                  </div>
+                </li>
+              ))
             ) : (
               <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
                 <CenterImage />
@@ -115,8 +108,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
             )}
           </StyledUl>
           <p className="pb-[10px] text-sm pt-[29px]">
-            신청서를 보내고 <span className="font-bold">편지 요청</span>을
-            받아보세요!
+            신청서를 보내고 <span className="font-bold">편지 요청</span>을 받아보세요!
           </p>
           <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
         </div>

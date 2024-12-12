@@ -4,11 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import CommonButton from "components/ui/CommonButton"; // CommonButton 컴포넌트를 import
-import Header from "components/containers/HeaderContainer";
-import LetterType01 from "assets/img/letter/Letter-Type01.svg";
-import LetterType02 from "assets/img/letter/Letter-Type02.svg";
-import LetterType03 from "assets/img/letter/Letter-Type03.svg";
-import LetterType04 from "assets/img/letter/Letter-type04.svg";
+
+import images from "assets";
 
 // Styled-components 정의
 const Container = styled.div`
@@ -42,10 +39,7 @@ const SmallImage = styled.div`
   width: 100px;
   height: 100px;
   cursor: pointer;
-  border: ${(props) =>
-    props.$isSelected
-      ? "2px solid var(--color-deep-purple)"
-      : "2px solid transparent"};
+  border: ${props => (props.$isSelected ? "2px solid var(--color-deep-purple)" : "2px solid transparent")};
   border-radius: 8px;
 
   img {
@@ -56,41 +50,30 @@ const SmallImage = styled.div`
   }
 `;
 
-// 편지지 이미지 데이터
-const letterTemplates = [
-  { id: 1, src: LetterType01 },
-  { id: 2, src: LetterType02 },
-  { id: 3, src: LetterType03 },
-  { id: 4, src: LetterType04 },
-];
-
-const TemplateSelection = ({ onNext }) => {
-  const [selectedTemplate, setSelectedTemplate] = useState(letterTemplates[0]); // 선택된 템플릿을 초기화
-
-  const handleSelectTemplate = (template) => {
+const TemplateSelection = ({ onNext, formData }) => {
+  const { previewLetters } = images;
+  // const [selectedTemplate, setSelectedTemplate] = useState(previewLetters[0]); // 선택된 템플릿을 초기화
+  const [selectedTemplate, setSelectedTemplate] = useState(previewLetters[formData.background] || previewLetters[0]); // 선택된 템플릿을 초기화
+  const handleSelectTemplate = template => {
     setSelectedTemplate(template); // 선택된 템플릿 설정
   };
 
   const handleNext = () => {
     if (selectedTemplate) {
-      onNext(selectedTemplate.src); // 선택된 템플릿 데이터를 부모로 전달
+      onNext(selectedTemplate.id); // 선택된 템플릿 데이터를 부모로 전달
     }
   };
 
   return (
-    <div className="px-40 footer-height">
-      <Header title="편지지 선택" />
+    <div className="footer-height">
       <div className="footer-height flex flex-col justify-between">
         <Container>
-          <LargeImage>
-            <img
-              src={selectedTemplate.src}
-              alt={`Template ${selectedTemplate.id}`}
-            />
+          <LargeImage className="px-40 ">
+            <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
           </LargeImage>
-          <SwiperContainer>
-            <Swiper spaceBetween={8} slidesPerView={3}>
-              {letterTemplates.map((template) => (
+          <SwiperContainer className="pl-[40px]">
+            <Swiper spaceBetween={8} slidesPerView={3} style={{ paddingRight: "40px" }}>
+              {previewLetters.map(template => (
                 <SwiperSlide key={template.id}>
                   <SmallImage
                     onClick={() => handleSelectTemplate(template)}
@@ -103,11 +86,9 @@ const TemplateSelection = ({ onNext }) => {
             </Swiper>
           </SwiperContainer>
         </Container>
-        <CommonButton
-          text="다음"
-          onClick={handleNext}
-          disabled={!selectedTemplate}
-        />
+        <div className="px-40">
+          <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
+        </div>
       </div>
     </div>
   );
