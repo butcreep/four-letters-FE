@@ -62,26 +62,16 @@ const LetterCreation = () => {
       navigate(-1);
     }
   };
+
   const handleNext = (data) => {
-    if (step === 1) {
-      setFormData((prev) => {
-        const updatedData = {
-          ...prev,
-          fromSender: data.sender,
-          toRecipient: data.recipient,
-        };
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, ...data };
 
-        return updatedData;
-      });
-    } else if (step === 2) {
-      setFormData((prev) => {
-        const updatedData = { ...prev, background: data };
-
-        return updatedData;
-      });
-    }
+      return updatedFormData;
+    });
     setStep((prev) => prev + 1);
   };
+
   const handleDelete = async () => {
     try {
       // 폼 데이터 초기화
@@ -113,6 +103,8 @@ const LetterCreation = () => {
       message: data.message, // 최신 content 반영
       fontClass: data.fontClass,
     };
+    console.log("Updated formData:", updatedFormData, recipient.id); // 업데이트된 formData 확인
+
     try {
       // 편지 전송
       await createLetter(updatedFormData);

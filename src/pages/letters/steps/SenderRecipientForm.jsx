@@ -10,7 +10,7 @@ const SenderRecipientForm = ({ onNext, formData }) => {
   }, [formData]);
 
   const handleSubmit = () => {
-    onNext({ sender, recipient });
+    onNext({ fromSender: sender, toRecipient: recipient });
   };
   const validateInput = (value) => {
     // 첫 번째 글자는 공백 불가능, 전체 길이는 1~7자
@@ -28,7 +28,7 @@ const SenderRecipientForm = ({ onNext, formData }) => {
 
   return (
     <div className="px-40 h-full">
-      <div className="pt-[20px] mx-auto flex flex-col justify-between items-center header-height">
+      <div className="pt-[30px] mx-auto flex flex-col justify-between items-center footer-height">
         <div className="flex flex-col gap-6 w-full">
           <div>
             <label className="form-label" htmlFor="sender">
