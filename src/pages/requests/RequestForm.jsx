@@ -73,7 +73,12 @@ const RequestForm = () => {
     (setter, minLength, maxLength, noLeadingSpace = false) =>
     (e) => {
       const value = e.target.value;
-      if (validateInput(value, minLength, maxLength, noLeadingSpace)) {
+
+      // 빈 문자열일 경우 검사를 통과하도록 설정
+      if (
+        value === "" ||
+        validateInput(value, minLength, maxLength, noLeadingSpace)
+      ) {
         setter(value);
       }
     };
