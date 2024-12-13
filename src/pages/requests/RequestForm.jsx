@@ -111,9 +111,7 @@ const RequestForm = () => {
 
   return (
     <>
-      {loading && (
-        <Spinner text="요청을 처리 중입니다..." hasBackground={true} />
-      )}
+      {loading && <Spinner text="요청을 처리 중입니다..." opacity={0.8} />}
       <div className="bg-[#8B80DE] pt-5 ">
         <img src={HomeBg} alt="" className="w-full relative bottom-[-1px]" />
       </div>

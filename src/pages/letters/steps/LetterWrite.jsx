@@ -4,6 +4,7 @@ import CommonModal from "components/ui/CommonModal";
 import images from "assets";
 import useSetVh from "hooks/useSetVh";
 import Spinner from "components/ui/Spinner";
+import loadImg from "assets/img/Load50.svg";
 
 const BackgroundContainer = styled.div`
   background-image: url(${(props) => props.background});
@@ -192,7 +193,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, isLoading }) => {
   return (
     <div className="h-full">
       {isLoading && (
-        <Spinner text="편지를 보내는 중 입니다" hasBackground={true} />
+        <Spinner text="편지를 보내는 중 입니다" opacity={0.8} image={loadImg} />
       )}
       <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>

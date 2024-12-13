@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Tree from "assets/icon/Tree.svg";
 import ListTitleSnow from "assets/icon/Snow/ListTitleSnow.svg";
 import LetterSide from "assets/img/Background-Side.svg";
+import Spinner from "components/ui/Spinner";
 
 const GradientDiv = styled.div`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
