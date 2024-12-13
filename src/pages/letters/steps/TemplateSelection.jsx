@@ -54,7 +54,6 @@ const SmallImage = styled.div`
 
 const TemplateSelection = ({ onNext, formData }) => {
   const { previewLetters } = images;
-  // const [selectedTemplate, setSelectedTemplate] = useState(previewLetters[0]); // 선택된 템플릿을 초기화
   const [selectedTemplate, setSelectedTemplate] = useState(
     previewLetters[formData.background] || previewLetters[0]
   ); // 선택된 템플릿을 초기화
