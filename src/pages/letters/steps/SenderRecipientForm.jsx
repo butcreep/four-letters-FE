@@ -12,10 +12,23 @@ const SenderRecipientForm = ({ onNext, formData }) => {
   const handleSubmit = () => {
     onNext({ sender, recipient });
   };
+  const validateInput = (value) => {
+    // 첫 번째 글자는 공백 불가능, 전체 길이는 1~7자
+    if (value.length > 0 && value[0] === " ") return false; // 첫 글자가 공백이면 유효하지 않음
+    if (value.length > 7) return false; // 길이가 7자를 초과하면 유효하지 않음
+    return true;
+  };
+
+  const handleInputChange = (setter) => (e) => {
+    const value = e.target.value;
+    if (validateInput(value)) {
+      setter(value); // 입력값이 유효하면 상태 업데이트
+    }
+  };
 
   return (
-    <div className="px-40 footer-height">
-      <div className="pt-[20px] mx-auto flex flex-col justify-between items-center footer-height">
+    <div className="px-40 h-full">
+      <div className="pt-[20px] mx-auto flex flex-col justify-between items-center header-height">
         <div className="flex flex-col gap-6 w-full">
           <div>
             <label className="form-label" htmlFor="sender">
@@ -27,7 +40,7 @@ const SenderRecipientForm = ({ onNext, formData }) => {
               type="text"
               maxLength={7}
               value={sender}
-              onChange={(e) => setSender(e.target.value)}
+              onChange={handleInputChange(setSender)}
               placeholder="별명, 닉네임, 이름으로 입력"
             />
             <p className="text-xs mt-[10px] text-white">
@@ -44,7 +57,7 @@ const SenderRecipientForm = ({ onNext, formData }) => {
               type="text"
               maxLength={7}
               value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
+              onChange={handleInputChange(setRecipient)}
               placeholder="별명, 닉네임, 이름으로 입력"
             />
             <p className="text-xs mt-[10px] text-white">

@@ -55,22 +55,43 @@ const RequestForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // 유효성 검사 함수
+  const validateInput = (
+    value,
+    minLength,
+    maxLength,
+    noLeadingSpace = false
+  ) => {
+    if (noLeadingSpace && value[0] === " ") return false; // 첫 글자가 공백이면 유효하지 않음
+    if (value.trim().length < minLength || value.trim().length > maxLength)
+      return false;
+    return true;
+  };
+
   // 입력값 변경 핸들러
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      const onlyNumbers = value.replace(/[^0-9]/g, ""); // 숫자만 남김
-      if (onlyNumbers.length <= 11) {
-        setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
+  const handleInputChange =
+    (setter, minLength, maxLength, noLeadingSpace = false) =>
+    (e) => {
+      const value = e.target.value;
+      if (validateInput(value, minLength, maxLength, noLeadingSpace)) {
+        setter(value);
       }
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+  const handlePhoneChange = (e) => {
+    const { value } = e.target;
+    const onlyNumbers = value.replace(/[^0-9]/g, ""); // 숫자만 남김
+    if (onlyNumbers.length <= 11) {
+      setFormData((prev) => ({ ...prev, phone: onlyNumbers }));
     }
   };
 
-  // 입력값 검증
   const isFormValid = () => {
-    return formData.name.trim() !== "" && formData.phone.trim().length === 11;
+    return (
+      validateInput(formData.name, 1, 7, true) && // 요청자: 1~7자, 첫 글자 공백 불가
+      formData.phone.trim().length === 11 && // 핸드폰 번호: 11자
+      validateInput(formData.message, 1, 50) // 메시지: 1~50자
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -142,7 +163,12 @@ const RequestForm = () => {
                 id="name"
                 name="name"
                 value={formData.name}
-                onChange={handleChange}
+                onChange={handleInputChange(
+                  (value) => setFormData((prev) => ({ ...prev, name: value })),
+                  1,
+                  7,
+                  true // 첫 글자 공백 불가
+                )}
                 className="form-input"
                 placeholder="이름을 입력해주세요"
                 required
@@ -157,7 +183,7 @@ const RequestForm = () => {
                 id="phone"
                 name="phone"
                 value={formData.phone}
-                onChange={handleChange}
+                onChange={handlePhoneChange}
                 className="form-input"
                 placeholder="핸드폰 번호를 입력해주세요"
                 pattern="\d{11}" // 11자리 숫자만 허용
@@ -176,7 +202,12 @@ const RequestForm = () => {
                 id="message"
                 name="message"
                 value={formData.message}
-                onChange={handleChange}
+                onChange={handleInputChange(
+                  (value) =>
+                    setFormData((prev) => ({ ...prev, message: value })),
+                  1,
+                  50
+                )}
                 className="form-input"
                 rows="4"
                 placeholder="남길 말을 적어주세요 (최대 50자)"

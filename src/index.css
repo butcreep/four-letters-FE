@@ -8,6 +8,7 @@
   --color-deep-purple: #5f3fff;
   --color-light-purple: #a293ff;
   --color-pink: #dabfff;
+  --header-height: 70px;
 }
 html,
 body {
@@ -36,8 +37,13 @@ body {
   @apply block text-sm font-medium mb-2 text-white;
 }
 
+.header-height {
+  height: calc(100% - 70px);
+  overflow: hidden;
+}
 .footer-height {
-  height: calc(100% - 60px);
+  height: calc(100% - 50px);
+  /* overflow: hidden; */
 }
 
 .px-40 {
