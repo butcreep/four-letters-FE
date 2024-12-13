@@ -44,7 +44,7 @@ const LetterCreation = () => {
 
   useEffect(() => {
     if (editData) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         fromSender: editData.fromSender || "",
         toRecipient: editData.toRecipient || "",
@@ -57,14 +57,14 @@ const LetterCreation = () => {
 
   const handleBack = () => {
     if (step > 1) {
-      setStep(prev => prev - 1);
+      setStep((prev) => prev - 1);
     } else {
       navigate(-1);
     }
   };
-  const handleNext = data => {
+  const handleNext = (data) => {
     if (step === 1) {
-      setFormData(prev => {
+      setFormData((prev) => {
         const updatedData = {
           ...prev,
           fromSender: data.sender,
@@ -74,13 +74,13 @@ const LetterCreation = () => {
         return updatedData;
       });
     } else if (step === 2) {
-      setFormData(prev => {
+      setFormData((prev) => {
         const updatedData = { ...prev, background: data };
 
         return updatedData;
       });
     }
-    setStep(prev => prev + 1);
+    setStep((prev) => prev + 1);
   };
   const handleDelete = async () => {
     try {
@@ -107,7 +107,7 @@ const LetterCreation = () => {
     }
   };
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data) => {
     const updatedFormData = {
       ...formData,
       message: data.message, // 최신 content 반영
@@ -128,7 +128,7 @@ const LetterCreation = () => {
     }
   };
 
-  const handleSaveDraft = async draftData => {
+  const handleSaveDraft = async (draftData) => {
     try {
       await updateRequest(recipient.id, {
         ...formData,
@@ -151,9 +151,21 @@ const LetterCreation = () => {
         onBack={handleBack}
         onDelete={step === 3 ? () => setIsDeleteModalVisible(true) : null}
       />
-      {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} />}
-      {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} />}
-      {step === 3 && <LetterWrite formData={formData} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} />}
+      <div className="header-height">
+        {step === 1 && (
+          <SenderRecipientForm formData={formData} onNext={handleNext} />
+        )}
+        {step === 2 && (
+          <TemplateSelection formData={formData} onNext={handleNext} />
+        )}
+        {step === 3 && (
+          <LetterWrite
+            formData={formData}
+            onSubmit={handleSubmit}
+            onSaveDraft={handleSaveDraft}
+          />
+        )}
+      </div>
 
       {isDeleteModalVisible && (
         <CommonModal

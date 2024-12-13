@@ -54,7 +54,7 @@ const RequestLink = () => {
   };
 
   return (
-    <div className="background-[]">
+    <>
       <Header title="편지 신청서" />
       <div className="px-40 flex flex-col items-center h-screen text-white pt-10 w-full overflow-y-auto">
         <p className="text-center text-3xl mb-10 font-semibold">
@@ -127,7 +127,7 @@ const RequestLink = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

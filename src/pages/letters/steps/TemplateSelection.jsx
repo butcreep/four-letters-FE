@@ -69,8 +69,8 @@ const TemplateSelection = ({ onNext, formData }) => {
   };
 
   return (
-    <div className="footer-height">
-      <div className="footer-height flex flex-col justify-between">
+    <div className="h-full">
+      <div className="header-height flex flex-col justify-between">
         <Container>
           <LargeImage className="px-40 ">
             <img
