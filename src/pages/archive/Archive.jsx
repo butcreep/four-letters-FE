@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 
 import styled from "styled-components";
 import Footer from "components/containers/FooterContainer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useSetVh from "hooks/useSetVh";
 import Header from "components/containers/HeaderContainer";
 import { getRequests } from "api/requests";
 import { getLetters } from "api/letters";
+import EmptyLetter from "assets/Empty-letter.svg";
 
 const ArchiveContainer = styled.div`
   height: calc(
@@ -20,7 +21,7 @@ const ArchiveContainer = styled.div`
 const Tabs = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   /* border-bottom: 2px solid #ccc; */
 `;
 
@@ -35,13 +36,21 @@ const TabButton = styled.button`
   font-size: 16px;
   text-align: center;
   flex: 1; /* 버튼을 반반 배치 */
-  border-bottom: ${(props) => (props.$active ? "2px solid white" : "none")};
+  padding: 16px 0;
+  border-bottom: ${(props) => (props.$active ? "1px solid white" : "none")};
 
   /* &:hover {
     background: ${(props) => (props.$active ? "#333" : "#e0e0e0")};
   } */
 `;
-
+const CenterImage = styled.div`
+  background-image: url(${EmptyLetter});
+  background-size: cover;
+  background-position: center;
+  width: 100px; /* 원하는 너비 */
+  height: 90px; /* 원하는 높이 */
+  margin: 0 auto 24px; /* 가운데 정렬 */
+`;
 const ListContainer = styled.div`
   flex: 1; /* 남은 공간을 차지하여 스크롤 가능 영역 확보 */
   overflow-y: auto; /* 세로 스크롤 활성화 */
@@ -60,14 +69,6 @@ const LetterCard = styled.div`
   padding: 16px;
   margin-bottom: 16px;
   background-color: #f9f9f9;
-
-  h3 {
-    margin: 0 0 8px 0;
-  }
-
-  p {
-    margin: 0;
-  }
 `;
 
 const Archive = () => {
@@ -75,14 +76,26 @@ const Archive = () => {
   const [drafts, setDrafts] = useState([]);
   const [sent, setSent] = useState([]);
   const headerRef = useRef(null);
+  const location = useLocation();
   const navigate = useNavigate();
   useSetVh(headerRef);
+  useEffect(() => {
+    // URL 경로에 따라 activeTab 설정
+    const path = location.pathname.split("/")[2]; // /archive/drafts -> drafts
+    if (path === "sent") {
+      setActiveTab("sent");
+    } else {
+      setActiveTab("drafts"); // 기본값
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const fetchDrafts = async () => {
       try {
         const requests = await getRequests();
-        const draftRequests = requests.filter((request) => request.isDraft);
+        const draftRequests = requests.filter(
+          (request) => request.isDraft && !request.isDone
+        );
         setDrafts(draftRequests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -101,7 +114,10 @@ const Archive = () => {
     fetchDrafts();
     fetchSentLetters();
   }, []);
-
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    navigate(`/archive/${tab}`); // 경로 변경
+  };
   const letters = activeTab === "drafts" ? drafts : sent;
 
   const handleCardClick = (id, tab) => {
@@ -131,28 +147,38 @@ const Archive = () => {
         <Tabs>
           <TabButton
             $active={activeTab === "drafts"}
-            onClick={() => setActiveTab("drafts")}
+            onClick={() => handleTabClick("drafts")}
           >
-            작성 중
+            작성 중 ({drafts?.length})
           </TabButton>
           <TabButton
             $active={activeTab === "sent"}
-            onClick={() => setActiveTab("sent")}
+            onClick={() => handleTabClick("sent")}
           >
-            보낸 편지
+            보낸 편지 ({sent?.length})
           </TabButton>
         </Tabs>
         <ListContainer className="px-40">
-          {letters.map((letter) => (
-            <LetterCard
-              key={letter.id}
-              onClick={() => handleCardClick(letter.id, activeTab)}
-              className="cursor-pointer"
-            >
-              <h3>{letter.toRecipient || letter.title}</h3>
-              <p>{getShortenedText(letter?.message || letter?.content)}</p>
-            </LetterCard>
-          ))}
+          {letters.length > 0 ? (
+            letters.map((letter) => (
+              <LetterCard
+                key={letter.id}
+                onClick={() => handleCardClick(letter.id, activeTab)}
+                className="cursor-pointer"
+              >
+                <div className="flex items-center">
+                  <h3>To. {letter.toRecipient || letter.title}</h3>
+                  <p className="text-xs ml-1">2024-12-13</p>
+                </div>
+                <p>{getShortenedText(letter?.message || letter?.content)}</p>
+              </LetterCard>
+            ))
+          ) : (
+            <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
+              <CenterImage />
+              작성할 편지가 없어요.
+            </div>
+          )}
         </ListContainer>
         <Footer />
       </ArchiveContainer>

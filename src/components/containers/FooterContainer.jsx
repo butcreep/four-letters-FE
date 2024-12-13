@@ -36,7 +36,7 @@ const buttons = [
     },
   },
   {
-    path: "/archive",
+    path: "/archive/drafts",
 
     icon: {
       active: images.footerIcons.storageOn,
