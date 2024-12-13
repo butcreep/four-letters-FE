@@ -8,7 +8,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 60px;
   color: white;
   padding: 0 20px;
 `;
@@ -32,7 +32,7 @@ const Title = styled.h1`
   text-align: center;
   flex-grow: 1;
   height: 24px;
-  line-height: 24px;
+  line-height: 24px !important;
 `;
 
 const Header = ({ title = "편지 작성", onBack, onDelete }) => {

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { createRequest } from "api/requests";
 import HomeBg from "assets/img/Home-bg.svg";
 import Hello from "assets/icon/Hello-Santa.svg";
+import Spinner from "components/ui/Spinner";
 
 const GradientText = styled.span`
   background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
@@ -19,30 +20,6 @@ const GradientDiv = styled.div`
   border-radius: 8px;
   margin-bottom: 40px;
   line-height: 130%;
-`;
-const Spinner = styled.div`
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top: 4px solid #fff;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  animation: spin 1s linear infinite;
-
-  /* 화면 중앙 배치 */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 `;
 
 const RequestForm = () => {
@@ -134,7 +111,9 @@ const RequestForm = () => {
 
   return (
     <>
-      {loading && <Spinner />}
+      {loading && (
+        <Spinner text="요청을 처리 중입니다..." hasBackground={false} />
+      )}
       <div className="bg-[#8B80DE] pt-5 ">
         <img src={HomeBg} alt="" className="w-full relative bottom-[-1px]" />
       </div>

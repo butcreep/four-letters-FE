@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CommonModal from "components/ui/CommonModal";
 import images from "assets";
 import useSetVh from "hooks/useSetVh";
+import Spinner from "components/ui/Spinner";
 
 const BackgroundContainer = styled.div`
   background-image: url(${(props) => props.background});
@@ -27,29 +28,27 @@ const ContentWrapper = styled.div`
 const TextAreaWrapper = styled.div`
   width: 100%;
   position: relative;
-  background-color: #ffe7a6;
+  background-color: #ece5dd;
   border-radius: 12px;
-  height: 50%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  .toSender {
-    margin-top: 10%;
-  }
+  justify-content: center;
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  height: 90%;
+  height: 60%;
   text-align: center;
   padding: 20px;
+  margin: 20px 0;
   font-size: 16px;
-  background-color: #ffe7a6;
+  background-color: #ece5dd;
   outline: none;
   resize: none;
   font-family: ${(props) => props.font};
-  color: #333;
+  color: #000;
   ::-webkit-scrollbar {
     display: none; /* 스크롤바 숨기기 */
   }
@@ -61,8 +60,8 @@ const TextArea = styled.textarea`
 `;
 
 const FixedText = styled.div`
-  font-size: 14px;
-  color: #888;
+  font-size: 16px;
+  color: #000;
   margin: 5px 0;
   font-family: ${(props) => props.font}, sans-serif;
 `;
@@ -70,11 +69,11 @@ const FixedText = styled.div`
 const CharacterCount = styled.div`
   text-align: right;
   font-size: 12px;
-  color: #666;
+  color: #b6b6b6;
   margin-top: 5px;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 20px;
+  right: 20px;
 `;
 
 const ButtonGroup = styled.div`
@@ -105,11 +104,11 @@ const Button = styled.button`
 `;
 
 const Select = styled.select`
-  padding: 10px;
+  padding: 14px 14px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  margin: 20px 0;
+  margin: 15px 20px;
   width: 100%;
   font-family: ${(props) => props.font}, sans-serif;
 `;
@@ -126,7 +125,7 @@ const FontSelect = ({ selectedFont, onChange }) => {
   );
 };
 
-const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
+const LetterWrite = ({ formData, onSubmit, onSaveDraft, isLoading }) => {
   const { letterBackgrounds, letterIcons } = images;
   const [letterContent, setLetterContent] = useState(formData.message || ""); // formData로 초기값 설정
   const [selectedFontClass, setSelectedFontClass] = useState(
@@ -192,6 +191,9 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
 
   return (
     <div className="h-full">
+      {isLoading && (
+        <Spinner text="편지를 보내는 중 입니다" hasBackground={true} />
+      )}
       <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>
           <TextAreaWrapper>
