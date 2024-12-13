@@ -103,6 +103,8 @@ const Archive = () => {
   }, []);
 
   const letters = activeTab === "drafts" ? drafts : sent;
+  console.log("💾", letters);
+
   const handleCardClick = (id, tab) => {
     if (tab === "drafts") {
       const recipient = drafts.find((draft) => draft.id === id); // recipient 객체 찾기
@@ -116,6 +118,10 @@ const Archive = () => {
     } else {
       navigate(`/archive/letter/${id}`);
     }
+  };
+  const getShortenedText = (text) => {
+    if (!text) return ""; // 빈 값 처리
+    return text.length > 20 ? `${text.slice(0, 15)}...` : text;
   };
   return (
     <>
@@ -145,15 +151,7 @@ const Archive = () => {
               className="cursor-pointer"
             >
               <h3>{letter.toRecipient || letter.title}</h3>
-              {/* <p>
-                {letter.message
-                  ? letter.message.length > 20
-                    ? `${letter.message.slice(0, 15)}...`
-                    : letter.message
-                  : letter.content.length > 20
-                  ? `${letter.content.slice(0, 15)}...`
-                  : letter.content}
-              </p> */}
+              <p>{getShortenedText(letter?.message || letter?.content)}</p>
             </LetterCard>
           ))}
         </ListContainer>
