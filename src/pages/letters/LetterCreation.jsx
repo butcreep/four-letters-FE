@@ -15,6 +15,7 @@ const LetterCreation = () => {
   const [step, setStep] = useState(1);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [requestLoading, setRequestLoading] = useState(false); // 로딩 상태 추가
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -32,11 +33,14 @@ const LetterCreation = () => {
   useEffect(() => {
     if (recipient?.id) {
       const fetchRequests = async () => {
+        setIsLoading(true); // 로딩 종료
         try {
           const data = await getRequestById(recipient.id);
           seEditData(data); // 상태 업데이트
         } catch (error) {
           console.error("Error fetching requests:", error);
+        } finally {
+          setIsLoading(false); // 로딩 종료
         }
       };
       fetchRequests();
@@ -99,7 +103,7 @@ const LetterCreation = () => {
   };
 
   const handleSubmit = async (data) => {
-    setIsLoading(true); // 로딩 시작
+    setRequestLoading(true); // 로딩 시작
     const updatedFormData = {
       ...formData,
       message: data.message, // 최신 content 반영
@@ -116,7 +120,7 @@ const LetterCreation = () => {
       console.error("Error Sending Letter:", error);
       alert("편지 전송 또는 상태 업데이트에 실패했습니다. 다시 시도해주세요.");
     } finally {
-      setIsLoading(false); // 로딩 종료
+      setRequestLoading(false); // 로딩 종료
     }
   };
 
@@ -140,7 +144,11 @@ const LetterCreation = () => {
       <Header title={stepTitles[step]} onBack={handleBack} />
       <div className="header-height">
         {step === 1 && (
-          <SenderRecipientForm formData={formData} onNext={handleNext} />
+          <SenderRecipientForm
+            formData={formData}
+            onNext={handleNext}
+            isLoading={isLoading}
+          />
         )}
         {step === 2 && (
           <TemplateSelection formData={formData} onNext={handleNext} />
@@ -148,7 +156,7 @@ const LetterCreation = () => {
         {step === 3 && (
           <LetterWrite
             formData={formData}
-            isLoading={isLoading}
+            requestLoading={requestLoading}
             onSubmit={handleSubmit}
             onSaveDraft={handleSaveDraft}
           />

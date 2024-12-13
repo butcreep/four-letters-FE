@@ -126,7 +126,7 @@ const FontSelect = ({ selectedFont, onChange }) => {
   );
 };
 
-const LetterWrite = ({ formData, onSubmit, onSaveDraft, isLoading }) => {
+const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   const { letterBackgrounds, letterIcons } = images;
   const [letterContent, setLetterContent] = useState(formData.message || ""); // formData로 초기값 설정
   const [selectedFontClass, setSelectedFontClass] = useState(
@@ -192,7 +192,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, isLoading }) => {
 
   return (
     <div className="h-full">
-      {isLoading && (
+      {requestLoading && (
         <Spinner text="편지를 보내는 중 입니다" opacity={0.8} image={loadImg} />
       )}
       <BackgroundContainer background={backgroundImage}>

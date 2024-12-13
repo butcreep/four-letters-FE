@@ -8,6 +8,7 @@ import Header from "components/containers/HeaderContainer";
 import { getRequests } from "api/requests";
 import { getLetters } from "api/letters";
 import EmptyLetter from "assets/Empty-letter.svg";
+import Spinner from "components/ui/Spinner";
 
 const ArchiveContainer = styled.div`
   height: calc(
@@ -75,6 +76,7 @@ const Archive = () => {
   const [activeTab, setActiveTab] = useState("drafts");
   const [drafts, setDrafts] = useState([]);
   const [sent, setSent] = useState([]);
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const headerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -91,6 +93,7 @@ const Archive = () => {
 
   useEffect(() => {
     const fetchDrafts = async () => {
+      setLoading(true); // 로딩 시작
       try {
         const requests = await getRequests();
         const draftRequests = requests.filter(
@@ -99,15 +102,20 @@ const Archive = () => {
         setDrafts(draftRequests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
+      } finally {
+        setLoading(false); // 로딩 끝
       }
     };
 
     const fetchSentLetters = async () => {
+      setLoading(true); // 로딩 시작
       try {
         const letters = await getLetters();
         setSent(letters);
       } catch (error) {
         console.error("Error fetching sent letters:", error);
+      } finally {
+        setLoading(false); // 로딩 끝
       }
     };
 
@@ -140,6 +148,7 @@ const Archive = () => {
   };
   return (
     <>
+      {loading && <Spinner />}
       <div ref={headerRef}>
         <Header title="보관함" />
       </div>
@@ -158,28 +167,30 @@ const Archive = () => {
             보낸 편지 ({sent?.length})
           </TabButton>
         </Tabs>
-        <ListContainer className="px-40">
-          {letters.length > 0 ? (
-            letters.map((letter) => (
-              <LetterCard
-                key={letter.id}
-                onClick={() => handleCardClick(letter.id, activeTab)}
-                className="cursor-pointer"
-              >
-                <div className="flex items-center">
-                  <h3>To. {letter.toRecipient || letter.title}</h3>
-                  <p className="text-xs ml-1">2024-12-13</p>
-                </div>
-                <p>{getShortenedText(letter?.message || letter?.content)}</p>
-              </LetterCard>
-            ))
-          ) : (
-            <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
-              <CenterImage />
-              작성할 편지가 없어요.
-            </div>
-          )}
-        </ListContainer>
+        {loading || (
+          <ListContainer className="px-40">
+            {letters.length > 0 ? (
+              letters.map((letter) => (
+                <LetterCard
+                  key={letter.id}
+                  onClick={() => handleCardClick(letter.id, activeTab)}
+                  className="cursor-pointer"
+                >
+                  <div className="flex items-center">
+                    <h3>To. {letter.toRecipient || letter.title}</h3>
+                    <p className="text-xs ml-1">2024-12-13</p>
+                  </div>
+                  <p>{getShortenedText(letter?.message || letter?.content)}</p>
+                </LetterCard>
+              ))
+            ) : (
+              <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
+                <CenterImage />
+                작성할 편지가 없어요.
+              </div>
+            )}
+          </ListContainer>
+        )}
         <Footer />
       </ArchiveContainer>
     </>

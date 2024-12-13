@@ -41,7 +41,7 @@ const GradientSpin = ({ size }) => (
 );
 
 const Spinner = ({
-  opacity = 0.7, // 기본 투명도
+  opacity = 0, // 기본 투명도
   size = 48, // 기본 스피너 크기
   text = "", // 기본 텍스트
   image = null, // 기본 이미지 없음

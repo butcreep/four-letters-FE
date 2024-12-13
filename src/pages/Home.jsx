@@ -9,16 +9,20 @@ const Home = () => {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [modalType, setModalType] = useState(null); // 모달 타입 관리
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRequests = async () => {
+      setLoading(true); // 로딩 시작
       try {
         const data = await getRequests();
-        const filterData = data.filter(request => !request.isDone);
+        const filterData = data.filter((request) => !request.isDone);
         setRequests(filterData);
       } catch (error) {
         console.error("Error fetching requests:", error);
+      } finally {
+        setLoading(false); // 로딩 끝
       }
     };
     fetchRequests();
@@ -38,7 +42,9 @@ const Home = () => {
   const handleDeleteRequest = async () => {
     try {
       await deleteRequest(selectedRequest.id); // 공통 API 호출
-      setRequests(prev => prev.filter(req => req.id !== selectedRequest.id));
+      setRequests((prev) =>
+        prev.filter((req) => req.id !== selectedRequest.id)
+      );
       setSelectedRequest(null);
       setModalType(null);
     } catch (error) {
@@ -65,7 +71,8 @@ const Home = () => {
     <>
       <RequestList
         requests={requests}
-        onRequestClick={req => {
+        loading={loading}
+        onRequestClick={(req) => {
           setSelectedRequest(req);
           setModalType(req.isDraft ? "continueWriting" : "friendRequest");
         }}
