@@ -144,7 +144,7 @@ const Archive = () => {
   };
   const getShortenedText = (text) => {
     if (!text) return ""; // 빈 값 처리
-    return text.length > 20 ? `${text.slice(0, 15)}...` : text;
+    return text.length > 20 ? `${text.slice(0, 20)}...` : text;
   };
   return (
     <>
