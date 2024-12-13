@@ -53,9 +53,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   height: 100%;
   padding-top: 30px;
+  margin-top: 80px;
 `;
 
 const TextAreaWrapper = styled.div`
@@ -71,7 +72,7 @@ const TextAreaWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  margin-bottom: 20px;
+  margin-top: 20px;
   font-size: 24px;
   text-align: center;
   color: #333;

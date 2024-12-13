@@ -186,7 +186,9 @@ const Archive = () => {
             ) : (
               <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
                 <CenterImage />
-                작성할 편지가 없어요.
+                {activeTab === "drafts"
+                  ? "작성할 편지가 없어요."
+                  : "보낸 편지가 없어요."}
               </div>
             )}
           </ListContainer>
