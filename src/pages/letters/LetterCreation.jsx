@@ -14,6 +14,7 @@ const LetterCreation = () => {
   const [editData, seEditData] = useState([]);
   const [step, setStep] = useState(1);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -98,25 +99,24 @@ const LetterCreation = () => {
   };
 
   const handleSubmit = async (data) => {
+    setIsLoading(true); // 로딩 시작
     const updatedFormData = {
       ...formData,
       message: data.message, // 최신 content 반영
       fontClass: data.fontClass,
     };
-    console.log("Updated formData:", updatedFormData, recipient.id); // 업데이트된 formData 확인
 
     try {
       // 편지 전송
       await createLetter(updatedFormData);
-
-      // 상태 업데이트
-
       await updateRequest(recipient.id, { isDone: true });
-
-      navigate("/home");
+      // 전송 완료 페이지로 이동
+      navigate("/letter-send-complete");
     } catch (error) {
       console.error("Error Sending Letter:", error);
       alert("편지 전송 또는 상태 업데이트에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
@@ -127,7 +127,6 @@ const LetterCreation = () => {
         ...draftData,
         isDraft: true,
       });
-      // navigate("/home");
     } catch (error) {
       console.error("임시 저장 중 오류 발생:", error);
       alert("임시 저장에 실패했습니다. 다시 시도해주세요.");
@@ -149,6 +148,7 @@ const LetterCreation = () => {
         {step === 3 && (
           <LetterWrite
             formData={formData}
+            isLoading={isLoading}
             onSubmit={handleSubmit}
             onSaveDraft={handleSaveDraft}
           />
