@@ -103,7 +103,6 @@ const Archive = () => {
   }, []);
 
   const letters = activeTab === "drafts" ? drafts : sent;
-  console.log("💾", letters);
 
   const handleCardClick = (id, tab) => {
     if (tab === "drafts") {

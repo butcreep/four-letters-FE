@@ -76,6 +76,7 @@ const LetterDetail = () => {
     const fetchDetail = async () => {
       try {
         const data = await getLetterById(id);
+
         setDetail(data);
       } catch (err) {
         console.error("Error fetching detail:", err);
@@ -93,7 +94,8 @@ const LetterDetail = () => {
   if (!detail) {
     return <p>로딩 중...</p>;
   }
-  const backgroundIndex = (detail.background || 1) - 1; // 기본값 1로 설정
+  const backgroundIndex = detail?.background;
+
   const backgroundImage =
     letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];

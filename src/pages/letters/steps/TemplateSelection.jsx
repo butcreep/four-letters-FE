@@ -64,13 +64,13 @@ const TemplateSelection = ({ onNext, formData }) => {
 
   const handleNext = () => {
     if (selectedTemplate) {
-      onNext(selectedTemplate.id); // 선택된 템플릿 데이터를 부모로 전달
+      onNext({ background: selectedTemplate.id }); // 선택된 템플릿 데이터를 부모로 전달
     }
   };
 
   return (
     <div className="h-full">
-      <div className="header-height flex flex-col justify-between">
+      <div className="footer-height flex flex-col justify-between">
         <Container>
           <LargeImage className="px-40 ">
             <img

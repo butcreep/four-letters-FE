@@ -21,6 +21,7 @@ const ContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding-top: 30px;
 `;
 
 const TextAreaWrapper = styled.div`
@@ -132,7 +133,6 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
     formData.fontClass || "ycomputer-regular"
   );
   const [selectedModalType, setSelectedModalType] = useState(null);
-  // const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
   const maxTextLength = 300;
 
   useSetVh();
@@ -185,10 +185,11 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const handleCancelModal = () => {
     setSelectedModalType(null); // 모달 닫기
   };
-  const backgroundIndex = (formData.background || 1) - 1; // 기본값 1로 설정
+  const backgroundIndex = formData.background ? formData.background : 0; // background 값이 없으면 기본값 0 사용
   const backgroundImage =
     letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
+
   return (
     <div className="h-full">
       <BackgroundContainer background={backgroundImage}>

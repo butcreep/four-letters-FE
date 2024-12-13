@@ -20,10 +20,10 @@ const images = {
   letterBackgrounds: [LetterBg1, LetterBg2, LetterBg3, LetterBg4],
   letterIcons: [LetterIcon1, LetterIcon2, LetterIcon3, LetterIcon4],
   previewLetters: [
-    { id: 1, src: LetterType01 },
-    { id: 2, src: LetterType02 },
-    { id: 3, src: LetterType03 },
-    { id: 4, src: LetterType04 },
+    { id: 0, src: LetterType01 },
+    { id: 1, src: LetterType02 },
+    { id: 2, src: LetterType03 },
+    { id: 3, src: LetterType04 },
   ],
   footerIcons: {
     homeOn: HomeOn,
