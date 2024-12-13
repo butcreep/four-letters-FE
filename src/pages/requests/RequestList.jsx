@@ -79,7 +79,7 @@ const GradientOverlay = styled.div`
   pointer-events: none; /* 스크롤, 클릭 이벤트 방지 */
   z-index: 1; /* 컨텐츠 위로 고정 */
 `;
-export const RequestList = ({ requests, onRequestClick }) => {
+export const RequestList = ({ requests, onRequestClick, loading }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const handleNavigateToForm = () => {
@@ -95,6 +95,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
   const letterComplete = location.pathname === "/letter-complete";
   return (
     <div className="footer-height pt-[30px]">
+      {loading && <Spinner />}
       <div className="relative">
         {letterComplete ? (
           <h2 className="pretendard-title text-white text-center mb-[40px]">
@@ -141,7 +142,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
               </p>
             )}
             <StyledUl>
-              {requests.length > 0 ? (
+              {loading || requests.length > 0 ? (
                 requests.map((request) => (
                   <li
                     key={request.id}
