@@ -55,6 +55,7 @@ const StyledUl = styled.ul`
   height: 100%;
   /* height: calc(100% - 180px);  */
   /* height: 80%; */
+  padding-bottom: 80px;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
@@ -95,7 +96,7 @@ export const RequestList = ({ requests, onRequestClick }) => {
             </>
           ) : (
             <>
-              아직 편지를 요청한
+              아직 💌 편지를 요청한
               <br />
               친구가 없어요
             </>
