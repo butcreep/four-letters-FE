@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Back from "assets/icon/Back-button.svg";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -44,9 +45,16 @@ const Header = ({ title = "편지 작성", onBack, onDelete }) => {
 
   return (
     <HeaderContainer>
-      <BackButton onClick={handleBack}>← {/* 왼쪽 화살표 표시 */}</BackButton>
+      <BackButton onClick={handleBack}>
+        <img src={Back} alt="" />
+      </BackButton>
       <Title className="pretendard-button">{title}</Title>
-      {onDelete ? <p onClick={onDelete}>삭제</p> : <div style={{ width: "30px" }} />} {/* 삭제 버튼 또는 여백 */}
+      {onDelete ? (
+        <p onClick={onDelete}>삭제</p>
+      ) : (
+        <div style={{ width: "30px" }} />
+      )}{" "}
+      {/* 삭제 버튼 또는 여백 */}
     </HeaderContainer>
   );
 };
