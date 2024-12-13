@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Back from "assets/icon/Back-button.svg";
+import Home from "assets/icon/Home-On.svg";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -30,6 +31,8 @@ const BackButton = styled.button`
 const Title = styled.h1`
   text-align: center;
   flex-grow: 1;
+  height: 24px;
+  line-height: 24px;
 `;
 
 const Header = ({ title = "편지 작성", onBack, onDelete }) => {
@@ -49,12 +52,9 @@ const Header = ({ title = "편지 작성", onBack, onDelete }) => {
         <img src={Back} alt="" />
       </BackButton>
       <Title className="pretendard-button">{title}</Title>
-      {onDelete ? (
-        <p onClick={onDelete}>삭제</p>
-      ) : (
-        <div style={{ width: "30px" }} />
-      )}{" "}
-      {/* 삭제 버튼 또는 여백 */}
+      <div onClick={() => navigate("/home")}>
+        <img src={Home} alt="" />
+      </div>
     </HeaderContainer>
   );
 };
