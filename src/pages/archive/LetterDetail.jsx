@@ -86,7 +86,6 @@ const FixedText = styled.div`
   font-size: 16px;
   color: #000;
   margin: 5px 0;
-  font-family: ${(props) => props.font}, sans-serif;
 `;
 
 const ContentText = styled.div`
@@ -107,7 +106,6 @@ const ContentText = styled.div`
   background-color: #ece5dd;
   outline: none;
   resize: none;
-  font-family: ${(props) => props.font};
   color: #000;
   ::-webkit-scrollbar {
     display: none; /* 스크롤바 숨기기 */
