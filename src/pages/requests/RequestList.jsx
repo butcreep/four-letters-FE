@@ -4,7 +4,7 @@ import CommonButton from "components/ui/CommonButton";
 import styled from "styled-components";
 import EmptyLetter from "assets/Empty-letter.svg";
 import GradientBefore from "assets/img/Background-Img.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Tree from "assets/icon/Tree.svg";
 import ListTitleSnow from "assets/icon/Snow/ListTitleSnow.svg";
 import LetterSide from "assets/img/Background-Side.svg";
@@ -80,28 +80,44 @@ const GradientOverlay = styled.div`
 `;
 export const RequestList = ({ requests, onRequestClick }) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleNavigateToForm = () => {
     navigate("/request-link");
   };
+  const handleNavigateToHome = () => {
+    navigate("/home");
+  };
+
+  const handleNavigateToArchive = () => {
+    navigate("/archive");
+  };
+  const letterComplete = location.pathname === "/letter-complete";
   return (
     <div className="footer-height pt-[30px]">
       <div className="relative">
-        <h2 className="pretendard-title text-white text-center mb-[40px]">
-          {requests.length > 0 ? (
-            <>
-              {requests.length}명의 친구에게
-              <br />
-              💌 편지 요청이 왔어요!
-            </>
-          ) : (
-            <>
-              아직 💌 편지를 요청한
-              <br />
-              친구가 없어요
-            </>
-          )}
-        </h2>
+        {letterComplete ? (
+          <h2 className="pretendard-title text-white text-center mb-[40px]">
+            💌 편지를
+            <br />
+            전송했어요!
+          </h2>
+        ) : (
+          <h2 className="pretendard-title text-white text-center mb-[40px]">
+            {requests.length > 0 ? (
+              <>
+                {requests.length}명의 친구에게
+                <br />
+                💌 편지 요청이 왔어요!
+              </>
+            ) : (
+              <>
+                아직 💌 편지를 요청한
+                <br />
+                친구가 없어요
+              </>
+            )}
+          </h2>
+        )}
         <div className="absolute top-[-10px] right-[37px]">
           <img src={ListTitleSnow} alt="" />
         </div>
@@ -116,6 +132,13 @@ export const RequestList = ({ requests, onRequestClick }) => {
         </div>
         <div className="px-40 h-full">
           <StyledUlWrapper>
+            {letterComplete && (
+              <p className="text-center bg-white text-[#867cdd] pb-3 font-semibold text-lg">
+                {requests.length}명의 친구가
+                <br />
+                편지를 기다리고 있어요
+              </p>
+            )}
             <StyledUl>
               {requests.length > 0 ? (
                 requests.map((request) => (
@@ -149,11 +172,27 @@ export const RequestList = ({ requests, onRequestClick }) => {
             </StyledUl>
             <GradientOverlay />
           </StyledUlWrapper>
-          <p className="pb-[10px] text-sm pt-[29px] text-center">
-            신청서를 보내고 <span className="font-bold">편지 요청</span>을
-            받아보세요!
-          </p>
-          <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
+          {letterComplete || (
+            <p className="pb-[10px] text-sm pt-[29px] text-center">
+              신청서를 보내고 <span className="font-bold">편지 요청</span>을
+              받아보세요!
+            </p>
+          )}
+          {letterComplete ? (
+            <>
+              <CommonButton
+                text="보관함으로 가기"
+                onClick={handleNavigateToArchive}
+              />
+              <CommonButton
+                text="홈으로"
+                onClick={handleNavigateToHome}
+                $bgColor="#000"
+              />
+            </>
+          ) : (
+            <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
+          )}
         </div>
       </GradientDiv>
     </div>
