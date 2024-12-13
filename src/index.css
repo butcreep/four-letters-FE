@@ -15,6 +15,12 @@ body {
   padding: 0;
   height: 100%; /* 브라우저 높이를 100%로 고정 */
   overflow: hidden; /* 기본 스크롤 방지 */
+  -ms-overflow-style: none; /* IE, Edge 스크롤바 숨기기 */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera용 스크롤바 숨기기 */
 }
 body {
   font-family: "Pretendard", Arial, sans-serif;
