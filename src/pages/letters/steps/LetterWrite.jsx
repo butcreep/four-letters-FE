@@ -48,7 +48,7 @@ const TextArea = styled.textarea`
   background-color: #ece5dd;
   outline: none;
   resize: none;
-  font-family: ${(props) => props.font};
+  /* font-family: ${(props) => props.font}; */
   color: #000;
   ::-webkit-scrollbar {
     display: none; /* 스크롤바 숨기기 */
@@ -64,7 +64,7 @@ const FixedText = styled.div`
   font-size: 16px;
   color: #000;
   margin: 5px 0;
-  font-family: ${(props) => props.font}, sans-serif;
+  /* font-family: ${(props) => props.font}, sans-serif; */
 `;
 
 const CharacterCount = styled.div`
@@ -203,7 +203,10 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <FixedText font={selectedFontClass} className="toSender">
+            <FixedText
+              font={selectedFontClass}
+              className={`toSender ${selectedFontClass}`}
+            >
               To. {formData.toRecipient}
             </FixedText>
             <TextArea
@@ -211,10 +214,15 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               value={letterContent}
               onChange={handleContentChange}
               font={selectedFontClass}
+              className={` ${selectedFontClass}`}
             />
-            <FixedText font={selectedFontClass}>
+            <FixedText
+              font={selectedFontClass}
+              className={` ${selectedFontClass}`}
+            >
               From. {formData.fromSender}
             </FixedText>
+
             <CharacterCount>
               {letterContent.length} / {maxTextLength}
             </CharacterCount>

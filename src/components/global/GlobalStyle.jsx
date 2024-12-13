@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
 
 
   /* Font Classes */
-.poor-story {
+/* .poor-story {
   font-family: "Poor Story", sans-serif;
 }
 
@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
 
 .dongle {
   font-family: 'Dongle', sans-serif;
-}
+} */
 
 .ycomputer-regular {
   font-family: 'Ycomputer-Regular', sans-serif;
