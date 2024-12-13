@@ -1,15 +1,35 @@
 import CommonButton from "components/ui/CommonButton";
 import KakaoLogo from "assets/icon/Kakao.svg";
-import React from "react";
+import React, { useEffect } from "react";
+// import React, { useEffect, useState } from "react";
 import Header from "components/containers/HeaderContainer";
-
+// import { useSelector } from "react-redux";
+// import { getRequestLinks } from "api/requests";
 const RequestLink = () => {
-  const requestFormLink = "https://four-letters-fe.vercel.app/request-form";
+  // const [requestId, setRequestId] = useState("");
 
-  // const handleCopyLink = () => {
-  //   navigator.clipboard.writeText(requestFormLink);
-  //   alert("링크가 복사되었습니다!");
-  // };
+  // const userId = useSelector((state) => state.user?.userId);
+  useEffect(() => {
+    if (!window.Kakao?.isInitialized()) {
+      window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY); // 카카오 JavaScript 키로 초기화
+    }
+    console.log(window.Kakao.isInitialized());
+  }, []);
+  // useEffect(() => {
+  //   const fetchRequests = async () => {
+  //     try {
+  //       const data = await getRequestLinks(userId);
+  //       setRequestId(data?.linkId || "123");
+  //     } catch (error) {
+  //       console.error("Error fetching requests:", error);
+  //     }
+  //   };
+  //   fetchRequests();
+  // }, [userId]);
+
+  // const requestFormLink = `https://four-letters-fe.vercel.app/request-form/${requestId}`;
+  const requestFormLink = `https://four-letters-fe.vercel.app/request-form/123`;
+
   const handleCopyLink = () => {
     if (
       navigator.clipboard &&
@@ -45,12 +65,31 @@ const RequestLink = () => {
   };
 
   const handleKakaoShare = () => {
-    window.open(
-      `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(
-        requestFormLink
-      )}`,
-      "_blank"
-    );
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: "편지 신청서",
+          description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
+          imageUrl: "", // 대표 이미지 URL
+          link: {
+            mobileWebUrl: requestFormLink,
+            webUrl: requestFormLink,
+          },
+        },
+        buttons: [
+          {
+            title: "신청서 작성하기",
+            link: {
+              mobileWebUrl: requestFormLink,
+              webUrl: requestFormLink,
+            },
+          },
+        ],
+      });
+    } else {
+      alert("카카오 SDK를 로드하지 못했습니다.");
+    }
   };
 
   return (

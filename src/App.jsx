@@ -9,7 +9,8 @@ import LetterCreation from "pages/letters/LetterCreation";
 import useSetVh from "hooks/useSetVh";
 import Archive from "pages/archive/Archive";
 import LetterDetail from "pages/archive/LetterDetail";
-import LetterComplete from "pages/letters/LetterComplete";
+// import KakaoCallback from "api/KakaoCallBack";
+
 const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 480px;
@@ -37,8 +38,9 @@ const App = () => {
         <Route path="/letter/:id" element={<LetterCreation />} />
         <Route path="/letter" element={<LetterCreation />} />
         <Route path="/request-link" element={<RequestLink />} />
-        <Route path="/request-form" element={<RequestForm />} />
+        <Route path="/request-form/:requestId" element={<RequestForm />} />
         <Route path="/letter-complete" element={<Home />} />
+        {/* <Route path="/kakao/callback" element={<KakaoCallback />} /> */}
       </Routes>
     </AppContainer>
   );
