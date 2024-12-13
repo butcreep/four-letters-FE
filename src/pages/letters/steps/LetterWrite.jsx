@@ -13,8 +13,14 @@ const BackgroundContainer = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  padding: 40px;
+  padding: 0 40px;
   border-radius: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
 
 const TextAreaWrapper = styled.div`
@@ -22,11 +28,20 @@ const TextAreaWrapper = styled.div`
   position: relative;
   background-color: #ffe7a6;
   border-radius: 12px;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  .toSender {
+    margin-top: 10%;
+  }
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  height: 200px;
+  height: 90%;
+  text-align: center;
   padding: 20px;
   font-size: 16px;
   background-color: #ffe7a6;
@@ -34,7 +49,11 @@ const TextArea = styled.textarea`
   resize: none;
   font-family: ${(props) => props.font};
   color: #333;
-
+  ::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 */
+  }
+  -ms-overflow-style: none; /* IE, Edge 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox 스크롤바 숨기기 */
   ::placeholder {
     color: rgba(51, 51, 51, 0.5);
   }
@@ -44,6 +63,7 @@ const FixedText = styled.div`
   font-size: 14px;
   color: #888;
   margin: 5px 0;
+  font-family: ${(props) => props.font}, sans-serif;
 `;
 
 const CharacterCount = styled.div`
@@ -51,6 +71,9 @@ const CharacterCount = styled.div`
   font-size: 12px;
   color: #666;
   margin-top: 5px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
 
 const ButtonGroup = styled.div`
@@ -104,13 +127,13 @@ const FontSelect = ({ selectedFont, onChange }) => {
 
 const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
   const { letterBackgrounds, letterIcons } = images;
-  const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
+  const [letterContent, setLetterContent] = useState(formData.message || ""); // formData로 초기값 설정
   const [selectedFontClass, setSelectedFontClass] = useState(
     formData.fontClass || "ycomputer-regular"
   );
   const [selectedModalType, setSelectedModalType] = useState(null);
   // const [isDraftSaved, setIsDraftSaved] = useState(false); // 임시 저장 상태
-  const maxTextLength = 500;
+  const maxTextLength = 300;
 
   useSetVh();
   const handleContentChange = (e) => {
@@ -170,20 +193,24 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft }) => {
     <div className="h-full">
       <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>
-          <img
-            src={backgroundIcon}
-            alt="letter-icon"
-            className="w-20 h-20 mx-auto"
-          />
           <TextAreaWrapper>
-            <FixedText>To. {formData.toRecipient}</FixedText>
+            <img
+              src={backgroundIcon}
+              alt="letter-icon"
+              className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
+            />
+            <FixedText font={selectedFontClass} className="toSender">
+              To. {formData.toRecipient}
+            </FixedText>
             <TextArea
               placeholder="여기에 편지를 작성하세요..."
               value={letterContent}
               onChange={handleContentChange}
               font={selectedFontClass}
             />
-            <FixedText>From. {formData.fromSender}</FixedText>
+            <FixedText font={selectedFontClass}>
+              From. {formData.fromSender}
+            </FixedText>
             <CharacterCount>
               {letterContent.length} / {maxTextLength}
             </CharacterCount>

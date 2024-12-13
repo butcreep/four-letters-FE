@@ -7,25 +7,37 @@ import images from "assets";
 import Header from "components/containers/HeaderContainer";
 
 const BackgroundContainer = styled.div`
-  background-image: url(${props => props.background});
+  background-image: url(${(props) => props.background});
   background-size: cover;
   background-position: center;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const ContentWrapper = styled.div`
-  padding: 30px;
   border-radius: 12px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 500px;
+  justify-content: center;
+  margin: 0 40px;
+  height: 100%;
 `;
-
+const TextAreaWrapper = styled.div`
+  background-color: #ffe7a6;
+  width: 100%;
+  position: relative;
+  border-radius: 12px;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  .toSender {
+    margin-top: 10%;
+  }
+`;
 const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 24px;
@@ -82,17 +94,24 @@ const LetterDetail = () => {
     return <p>로딩 중...</p>;
   }
   const backgroundIndex = (detail.background || 1) - 1; // 기본값 1로 설정
-  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage =
+    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <>
       <Header title="작성된 편지" />
       <BackgroundContainer background={backgroundImage}>
-        <img src={backgroundIcon} alt="letter-icon" className="w-20 h-20 mx-auto" />
         <ContentWrapper className={detail.fontClass || "ycomputer-regular"}>
-          <Title>To. {detail.toRecipient}</Title>
-          <ContentText>{detail.message}</ContentText>
-          <FixedText>From. {detail.fromSender}</FixedText>
+          <TextAreaWrapper>
+            <img
+              src={backgroundIcon}
+              alt="letter-icon"
+              className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
+            />
+            <Title>To. {detail.toRecipient}</Title>
+            <ContentText>{detail.message}</ContentText>
+            <FixedText>From. {detail.fromSender}</FixedText>
+          </TextAreaWrapper>
         </ContentWrapper>
       </BackgroundContainer>
     </>

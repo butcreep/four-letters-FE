@@ -55,7 +55,7 @@ const StyledUl = styled.ul`
   height: 100%;
   /* height: calc(100% - 180px);  */
   /* height: 80%; */
-  padding-bottom: 80px;
+  padding-bottom: 30px;
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
