@@ -111,7 +111,7 @@ const LetterCreation = () => {
       await createLetter(updatedFormData);
       await updateRequest(recipient.id, { isDone: true });
       // 전송 완료 페이지로 이동
-      navigate("/letter-send-complete");
+      navigate("/letter-complete");
     } catch (error) {
       console.error("Error Sending Letter:", error);
       alert("편지 전송 또는 상태 업데이트에 실패했습니다. 다시 시도해주세요.");
