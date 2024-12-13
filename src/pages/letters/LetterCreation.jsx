@@ -146,11 +146,7 @@ const LetterCreation = () => {
   };
   return (
     <>
-      <Header
-        title={stepTitles[step]}
-        onBack={handleBack}
-        onDelete={step === 3 ? () => setIsDeleteModalVisible(true) : null}
-      />
+      <Header title={stepTitles[step]} onBack={handleBack} />
       <div className="header-height">
         {step === 1 && (
           <SenderRecipientForm formData={formData} onNext={handleNext} />
