@@ -41,7 +41,7 @@ const Intro = () => {
     const redirectUri =
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/kakao/callback" // 로컬 환경
-        : "https://mushy-marisa-dgnppr-a63d5cc2.koyeb.app/kakao/callback"; // 프로덕션 환경
+        : "https://four-letters-fe.vercel.app/kakao/callback"; // 프로덕션 환경
 
     window.Kakao.Auth.authorize({
       redirectUri,

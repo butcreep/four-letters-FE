@@ -18,6 +18,11 @@ const Home = () => {
   // const state = useSelector((state) => state.user);
   console.log("userId:", userId);
   useEffect(() => {
+    const authorizationCode = new URLSearchParams(window.location.search).get(
+      "code"
+    );
+    console.log("authorizationCode", authorizationCode);
+
     const fetchRequests = async () => {
       try {
         const data = await getRequestLinks(userId);
