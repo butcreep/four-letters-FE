@@ -5,6 +5,7 @@ import Header from "components/containers/HeaderContainer";
 import { useSelector } from "react-redux";
 import { getRequestLinks } from "api/requests";
 import Spinner from "components/ui/Spinner";
+import kakaoThumbnail from "assets/img/Thumbnail_img.png";
 const RequestLink = () => {
   const [requestId, setRequestId] = useState("");
   const [loading, setLoading] = useState(true);
@@ -85,7 +86,7 @@ const RequestLink = () => {
         content: {
           title: "편지 신청서",
           description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
-          imageUrl: "https://yourdomain.com/image.jpg", // 대표 이미지 URL
+          imageUrl: `${kakaoThumbnail}`, // 대표 이미지 URL
           link: {
             mobileWebUrl: requestFormLink,
             webUrl: requestFormLink,
