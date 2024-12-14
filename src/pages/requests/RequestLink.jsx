@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import Header from "components/containers/HeaderContainer";
 import { useSelector } from "react-redux";
 import { getRequestLinks } from "api/requests";
+import Spinner from "components/ui/Spinner";
 const RequestLink = () => {
   const [requestId, setRequestId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const userId = useSelector((state) => state.user?.userId);
   useEffect(() => {
@@ -17,11 +19,14 @@ const RequestLink = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
+        setLoading(true);
         const data = await getRequestLinks(userId);
 
         setRequestId(data?.data.linkId || "123");
       } catch (error) {
         console.error("Error fetching requests:", error);
+      } finally {
+        setLoading(false); // 로딩 종료
       }
     };
     fetchRequests();
@@ -103,6 +108,7 @@ const RequestLink = () => {
 
   return (
     <>
+      {loading && <Spinner opacity={0.8} />}
       <Header title="편지 신청서" />
       <div className="px-40 flex flex-col items-center h-screen text-white pt-10 w-full overflow-y-auto">
         <p className="text-center text-3xl mb-10 font-semibold">

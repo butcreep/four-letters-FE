@@ -5,7 +5,6 @@ import Footer from "components/containers/FooterContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import useSetVh from "hooks/useSetVh";
 import Header from "components/containers/HeaderContainer";
-import { getRequests } from "api/requests";
 import { getDraftLetters, getLetters } from "api/letters";
 import EmptyLetter from "assets/Empty-letter.svg";
 import Spinner from "components/ui/Spinner";
@@ -74,79 +73,64 @@ const LetterCard = styled.div`
 
 const Archive = () => {
   const [activeTab, setActiveTab] = useState("drafts");
-  const [drafts, setDrafts] = useState([]);
-  const [sent, setSent] = useState([]);
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [drafts, setDrafts] = useState({ data: { content: [] } });
+  const [sent, setSent] = useState({ data: { content: [] } });
+  const [loading, setLoading] = useState(false);
   const headerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   useSetVh(headerRef);
+
   useEffect(() => {
-    // URL 경로에 따라 activeTab 설정
     const path = location.pathname.split("/")[2];
-    if (path === "sent") {
-      setActiveTab("sent");
-    } else {
-      setActiveTab("drafts"); // 기본값
-    }
+    setActiveTab(path === "sent" ? "sent" : "drafts");
   }, [location.pathname]);
 
   useEffect(() => {
     const fetchDrafts = async () => {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       try {
         const requests = await getDraftLetters();
-        console.log("requests", requests);
-        setDrafts(requests);
+        setDrafts(requests || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching drafts:", error);
       } finally {
-        setLoading(false); // 로딩 끝
+        setLoading(false);
       }
     };
 
     const fetchSentLetters = async () => {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       try {
         const letters = await getLetters();
-        console.log("letters", letters);
-
-        setSent(letters);
+        setSent(letters || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching sent letters:", error);
       } finally {
-        setLoading(false); // 로딩 끝
+        setLoading(false);
       }
     };
 
     fetchDrafts();
     fetchSentLetters();
   }, []);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    navigate(`/archive/${tab}`); // 경로 변경
+    navigate(`/archive/${tab}`);
   };
-  const letters = activeTab === "drafts" ? drafts : sent;
 
   const handleCardClick = (id, tab) => {
-    if (tab === "drafts") {
-      // const recipient = drafts.find((draft) => draft.id === id); // recipient 객체 찾기
-      const recipient = drafts; // recipient 객체 찾기
-      if (!recipient) {
-        console.error(`Draft not found for id: ${id}`);
-        return;
-      }
-      navigate(`/letter/${id}`, {
-        state: { recipient }, // 객체를 state에 전달
-      });
-    } else {
-      navigate(`/archive/letter/${id}`);
-    }
+    const recipient = drafts.data.content.find((draft) => draft.id === id);
+    if (!recipient) return;
+    navigate(`/letter/${id}`, { state: { recipient } });
   };
-  const getShortenedText = (text) => {
-    if (!text) return ""; // 빈 값 처리
-    return text.length > 20 ? `${text.slice(0, 20)}...` : text;
-  };
+
+  const getShortenedText = (text) =>
+    text?.length > 20 ? `${text.slice(0, 20)}...` : text;
+
+  const letters = activeTab === "drafts" ? drafts : sent;
+
   return (
     <>
       {loading && <Spinner />}
@@ -159,16 +143,16 @@ const Archive = () => {
             $active={activeTab === "drafts"}
             onClick={() => handleTabClick("drafts")}
           >
-            작성 중 ({drafts?.data.content.length})
+            작성 중 ({drafts?.data?.content?.length || 0})
           </TabButton>
           <TabButton
             $active={activeTab === "sent"}
             onClick={() => handleTabClick("sent")}
           >
-            보낸 편지 ({sent?.data.content.length})
+            보낸 편지 ({sent?.data?.content?.length || 0})
           </TabButton>
         </Tabs>
-        {loading || (
+        {!loading && (
           <ListContainer className="px-40">
             {letters.data.content.length > 0 ? (
               letters.data.content.map((letter) => (
