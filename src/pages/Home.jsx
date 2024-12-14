@@ -3,7 +3,8 @@ import RequestList from "./requests/RequestList";
 import CommonModal from "components/ui/CommonModal";
 import { useNavigate } from "react-router-dom";
 import Footer from "components/containers/FooterContainer";
-import { deleteRequest, getRequests } from "../api/requests"; // 공통 API 가져오기
+import { deleteRequest, getRequestLinks, getRequests } from "../api/requests"; // 공통 API 가져오기
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [requests, setRequests] = useState([]);
@@ -11,14 +12,34 @@ const Home = () => {
   const [modalType, setModalType] = useState(null); // 모달 타입 관리
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const navigate = useNavigate();
+  const [linkId, setLinkId] = useState("");
+
+  const userId = useSelector((state) => state.user?.userId);
+  // const state = useSelector((state) => state.user);
+  console.log("userId:", userId);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const data = await getRequestLinks(userId);
+        setLinkId(data?.data.linkId || "123");
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+      }
+    };
+    fetchRequests();
+  }, [userId]);
 
   useEffect(() => {
     const fetchRequests = async () => {
       setLoading(true); // 로딩 시작
+
       try {
-        const data = await getRequests();
-        const filterData = data.filter((request) => !request.isDone);
-        setRequests(filterData);
+        console.log("linkId", linkId);
+
+        const data = await getRequests(linkId);
+        console.log("ddd", data);
+
+        setRequests(data.data.content);
       } catch (error) {
         console.error("Error fetching requests:", error);
       } finally {
@@ -26,7 +47,7 @@ const Home = () => {
       }
     };
     fetchRequests();
-  }, []);
+  }, [linkId]);
 
   const handleWriteLetter = () => {
     navigate(`/letter`, {

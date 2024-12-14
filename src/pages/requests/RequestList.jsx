@@ -98,7 +98,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
       {loading && <Spinner />}
       <div className="relative">
         {letterComplete ? (
-          <h2 className="pretendard-title text-white text-center mb-[40px]">
+          <h2 className="pretendard-title text-white text-center mb-[45px]">
             💌 편지를
             <br />
             전송했어요!
@@ -145,14 +145,16 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
               {loading || requests.length > 0 ? (
                 requests.map((request) => (
                   <li
-                    key={request.id}
+                    key={request.requestId}
                     className="letter-item cursor-pointer flex pb-[10px] mx-5 justify-between items-center pt-5 border-b border-dashed border-[#eeeeee]"
                     onClick={() => onRequestClick(request)}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="sender text-base">{request.sender}</div>
+                      <div className="sender text-base">
+                        {request.requesterName}
+                      </div>
                       <div className="date text-xs text-[#B1B1B9]">
-                        {request.date}
+                        {request.updatedAt}
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -181,7 +183,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
             </p>
           )}
           {letterComplete ? (
-            <>
+            <div className="flex justify-center gap-1 mt-3">
               <CommonButton
                 text="보관함으로 가기"
                 onClick={handleNavigateToArchive}
@@ -191,7 +193,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
                 onClick={handleNavigateToHome}
                 $bgColor="#000"
               />
-            </>
+            </div>
           ) : (
             <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
           )}

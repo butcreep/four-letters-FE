@@ -1,34 +1,33 @@
 import CommonButton from "components/ui/CommonButton";
 import KakaoLogo from "assets/icon/Kakao.svg";
-import React, { useEffect } from "react";
-// import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "components/containers/HeaderContainer";
-// import { useSelector } from "react-redux";
-// import { getRequestLinks } from "api/requests";
+import { useSelector } from "react-redux";
+import { getRequestLinks } from "api/requests";
 const RequestLink = () => {
-  // const [requestId, setRequestId] = useState("");
+  const [requestId, setRequestId] = useState("");
 
-  // const userId = useSelector((state) => state.user?.userId);
+  const userId = useSelector((state) => state.user?.userId);
   useEffect(() => {
     if (!window.Kakao?.isInitialized()) {
       window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY); // 카카오 JavaScript 키로 초기화
     }
     console.log(window.Kakao.isInitialized());
   }, []);
-  // useEffect(() => {
-  //   const fetchRequests = async () => {
-  //     try {
-  //       const data = await getRequestLinks(userId);
-  //       setRequestId(data?.linkId || "123");
-  //     } catch (error) {
-  //       console.error("Error fetching requests:", error);
-  //     }
-  //   };
-  //   fetchRequests();
-  // }, [userId]);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const data = await getRequestLinks(userId);
 
-  // const requestFormLink = `https://four-letters-fe.vercel.app/request-form/${requestId}`;
-  const requestFormLink = `https://four-letters-fe.vercel.app/request-form/123`;
+        setRequestId(data?.data.linkId || "123");
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+      }
+    };
+    fetchRequests();
+  }, [userId]);
+
+  const requestFormLink = `https://four-letters-fe.vercel.app/request-form/${requestId}`;
 
   const handleCopyLink = () => {
     if (
@@ -65,13 +64,23 @@ const RequestLink = () => {
   };
 
   const handleKakaoShare = () => {
+    if (!navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/)) {
+      alert("데스크톱 환경에서는 링크로 이동합니다.");
+      window.open(requestFormLink, "_blank");
+      return;
+    }
+
     if (window.Kakao) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY);
+      }
+
       window.Kakao.Link.sendDefault({
         objectType: "feed",
         content: {
           title: "편지 신청서",
           description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
-          imageUrl: "", // 대표 이미지 URL
+          imageUrl: "https://yourdomain.com/image.jpg", // 대표 이미지 URL
           link: {
             mobileWebUrl: requestFormLink,
             webUrl: requestFormLink,
@@ -88,7 +97,7 @@ const RequestLink = () => {
         ],
       });
     } else {
-      alert("카카오 SDK를 로드하지 못했습니다.");
+      alert("카카오톡 SDK가 로드되지 않았습니다.");
     }
   };
 
