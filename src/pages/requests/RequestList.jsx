@@ -154,7 +154,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
                         {request.requesterName}
                       </div>
                       <div className="date text-xs text-[#B1B1B9]">
-                        {request.updatedAt}
+                        {request.updatedAt.split("T")[0]}
                       </div>
                     </div>
                     <div className="flex items-center">

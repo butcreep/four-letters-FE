@@ -91,6 +91,7 @@ const Archive = () => {
       setLoading(true);
       try {
         const requests = await getDraftLetters();
+        console.log("임시저장", requests.data.content);
         setDrafts(requests || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -170,7 +171,7 @@ const Archive = () => {
                   className="cursor-pointer"
                 >
                   <div className="flex items-center">
-                    <h3>To. {letter.toRecipient || letter.title}</h3>
+                    <h3>To. {letter.receiver || letter.title}</h3>
                     <p className="text-xs ml-1">2024-12-13</p>
                   </div>
                   <p>{getShortenedText(letter?.message || letter?.content)}</p>
