@@ -15,17 +15,13 @@ const Home = () => {
   const [linkId, setLinkId] = useState("");
 
   const userId = useSelector((state) => state.user?.userId);
-  // const state = useSelector((state) => state.user);
-  console.log("userId:", userId);
-  useEffect(() => {
-    const authorizationCode = new URLSearchParams(window.location.search).get(
-      "code"
-    );
-    console.log("authorizationCode", authorizationCode);
 
+  useEffect(() => {
     const fetchRequests = async () => {
       try {
+        setLoading(true); // 로딩 시작
         const data = await getRequestLinks(userId);
+
         setLinkId(data?.data.linkId || "123");
       } catch (error) {
         console.error("Error fetching requests:", error);
@@ -37,7 +33,6 @@ const Home = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       setLoading(true); // 로딩 시작
-
       try {
         console.log("linkId", linkId);
 
@@ -51,7 +46,7 @@ const Home = () => {
         setLoading(false); // 로딩 끝
       }
     };
-    fetchRequests();
+    if (linkId) fetchRequests();
   }, [linkId]);
 
   const handleWriteLetter = () => {
