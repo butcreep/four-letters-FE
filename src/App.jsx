@@ -9,7 +9,7 @@ import LetterCreation from "pages/letters/LetterCreation";
 import useSetVh from "hooks/useSetVh";
 import Archive from "pages/archive/Archive";
 import LetterDetail from "pages/archive/LetterDetail";
-// import KakaoCallback from "api/KakaoCallBack";
+import KakaoCallback from "api/KakaoCallBack";
 
 const AppContainer = styled.div`
   margin: 0 auto;
@@ -40,7 +40,7 @@ const App = () => {
         <Route path="/request-link" element={<RequestLink />} />
         <Route path="/request-form/:requestId" element={<RequestForm />} />
         <Route path="/letter-complete" element={<Home />} />
-        {/* <Route path="/kakao/callback" element={<KakaoCallback />} /> */}
+        <Route path="/kakao/callback" element={<KakaoCallback />} />
       </Routes>
     </AppContainer>
   );

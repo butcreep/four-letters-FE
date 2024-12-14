@@ -1,7 +1,7 @@
 const modalSettings = {
   continueWriting: {
-    title: data => "이어서 작성할까요?",
-    content: data => "작성 중이던 편지가 있습니다.",
+    title: (data) => "이어서 작성할까요?",
+    content: (data) => "작성 중이던 편지가 있습니다.",
     buttons: [
       { text: "취소", actionKey: "onCancel" },
       { text: "이어서 작성", actionKey: "onConfirm" },
@@ -9,8 +9,8 @@ const modalSettings = {
     showCloseButton: false,
   },
   friendRequest: {
-    title: data => data.sender,
-    content: data => data.content,
+    title: (data) => data.requesterName,
+    content: (data) => data.message,
     buttons: [
       { text: "요청 삭제", actionKey: "onCancel" },
       { text: "편지 쓰기", actionKey: "onConfirm" },

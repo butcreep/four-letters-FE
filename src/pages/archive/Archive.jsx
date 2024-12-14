@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useSetVh from "hooks/useSetVh";
 import Header from "components/containers/HeaderContainer";
 import { getRequests } from "api/requests";
-import { getLetters } from "api/letters";
+import { getDraftLetters, getLetters } from "api/letters";
 import EmptyLetter from "assets/Empty-letter.svg";
 import Spinner from "components/ui/Spinner";
 
@@ -83,7 +83,7 @@ const Archive = () => {
   useSetVh(headerRef);
   useEffect(() => {
     // URL 경로에 따라 activeTab 설정
-    const path = location.pathname.split("/")[2]; // /archive/drafts -> drafts
+    const path = location.pathname.split("/")[2];
     if (path === "sent") {
       setActiveTab("sent");
     } else {
@@ -95,11 +95,9 @@ const Archive = () => {
     const fetchDrafts = async () => {
       setLoading(true); // 로딩 시작
       try {
-        const requests = await getRequests();
-        const draftRequests = requests.filter(
-          (request) => request.isDraft && !request.isDone
-        );
-        setDrafts(draftRequests);
+        const requests = await getDraftLetters();
+
+        setDrafts(requests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
       } finally {
@@ -111,6 +109,8 @@ const Archive = () => {
       setLoading(true); // 로딩 시작
       try {
         const letters = await getLetters();
+        console.log("letters", letters);
+
         setSent(letters);
       } catch (error) {
         console.error("Error fetching sent letters:", error);
@@ -130,7 +130,8 @@ const Archive = () => {
 
   const handleCardClick = (id, tab) => {
     if (tab === "drafts") {
-      const recipient = drafts.find((draft) => draft.id === id); // recipient 객체 찾기
+      // const recipient = drafts.find((draft) => draft.id === id); // recipient 객체 찾기
+      const recipient = drafts; // recipient 객체 찾기
       if (!recipient) {
         console.error(`Draft not found for id: ${id}`);
         return;

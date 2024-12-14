@@ -1,6 +1,6 @@
 import CommonButton from "components/ui/CommonButton";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SantaLetterImage from "assets/img/Santa-Letter.svg";
 import KakaoLogo from "assets/icon/Kakao.svg";
@@ -21,12 +21,33 @@ const GradientText = styled.span`
 `;
 
 const Intro = () => {
-  const navigate = useNavigate();
-  // 로그인 버튼 클릭 핸들러
+  // const navigate = useNavigate();
+  useEffect(() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.REACT_APP_KAKAO_REST_API_KEY);
+      console.log("Kakao SDK initialized");
+    } else if (!window.Kakao) {
+      console.error("Kakao SDK 로드 실패: window.Kakao가 정의되지 않았습니다.");
+    }
+  }, []);
+
   const handleLogin = () => {
-    console.log("카카오 로그인 버튼 클릭");
-    navigate("/home");
+    if (!window.Kakao) {
+      console.error("Kakao 객체가 정의되지 않았습니다.");
+      alert("카카오 SDK가 로드되지 않았습니다.");
+      return;
+    }
+
+    const redirectUri =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/kakao/callback" // 로컬 환경
+        : "https://mushy-marisa-dgnppr-a63d5cc2.koyeb.app/kakao/callback"; // 프로덕션 환경
+
+    window.Kakao.Auth.authorize({
+      redirectUri,
+    });
   };
+
   return (
     <div className="flex flex-col items-center justify-center h-full text-slate-50 px-10">
       <div className="relative">

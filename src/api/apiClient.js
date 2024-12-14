@@ -1,22 +1,21 @@
 import axios from "axios";
+import store from "../redux/store";
 
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_GLITCH_URL || "https://four-lettwes.glitch.me",
+  baseURL: "https://mushy-marisa-dgnppr-a63d5cc2.koyeb.app/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 요청 인터셉터 (필요 시 추가)
-apiClient.interceptors.request.use(
-  config => config,
-  error => Promise.reject(error),
-);
+apiClient.interceptors.request.use((config) => {
+  const state = store.getState();
+  const token = state.user?.token;
 
-// 응답 인터셉터 (필요 시 추가)
-apiClient.interceptors.response.use(
-  response => response,
-  error => Promise.reject(error),
-);
+  if (token) {
+    config.headers.Authorization = token;
+  }
+  return config;
+});
 
 export default apiClient;
