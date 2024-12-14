@@ -6,7 +6,9 @@ import apiClient from "./apiClient";
  */
 export const getLetters = async () => {
   try {
-    const response = await apiClient.get("/letters?status=SENT&page=0&size=10");
+    const response = await apiClient.get(
+      "/letters?status=COMPLETED&page=0&size=10"
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching letters:", error.message || error);

@@ -96,7 +96,7 @@ const Archive = () => {
       setLoading(true); // 로딩 시작
       try {
         const requests = await getDraftLetters();
-
+        console.log("requests", requests);
         setDrafts(requests);
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -159,21 +159,21 @@ const Archive = () => {
             $active={activeTab === "drafts"}
             onClick={() => handleTabClick("drafts")}
           >
-            작성 중 ({drafts?.length})
+            작성 중 ({drafts?.data.content.length})
           </TabButton>
           <TabButton
             $active={activeTab === "sent"}
             onClick={() => handleTabClick("sent")}
           >
-            보낸 편지 ({sent?.length})
+            보낸 편지 ({sent?.data.content.length})
           </TabButton>
         </Tabs>
         {loading || (
           <ListContainer className="px-40">
-            {letters.length > 0 ? (
-              letters.map((letter) => (
+            {letters.data.content.length > 0 ? (
+              letters.data.content.map((letter) => (
                 <LetterCard
-                  key={letter.id}
+                  key={letter.letterId}
                   onClick={() => handleCardClick(letter.id, activeTab)}
                   className="cursor-pointer"
                 >
