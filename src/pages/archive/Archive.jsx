@@ -91,6 +91,7 @@ const Archive = () => {
       setLoading(true);
       try {
         const requests = await getDraftLetters();
+        console.log("임시저장", requests.data.content);
         setDrafts(requests || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -103,6 +104,8 @@ const Archive = () => {
       setLoading(true);
       try {
         const letters = await getLetters();
+        console.log("letters", letters);
+
         setSent(letters || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching sent letters:", error);
@@ -120,10 +123,16 @@ const Archive = () => {
     navigate(`/archive/${tab}`);
   };
 
-  const handleCardClick = (id, tab) => {
-    const recipient = drafts.data.content.find((draft) => draft.id === id);
-    if (!recipient) return;
-    navigate(`/letter/${id}`, { state: { recipient } });
+  const handleCardClick = (id) => {
+    const recipient = drafts.data.content.find(
+      (draft) => draft.letterId === id
+    );
+
+    if (!recipient) {
+      navigate(`/archive/letter/${id}`, { state: { id } });
+    } else {
+      navigate(`/letter/${id}`, { state: { recipient } });
+    }
   };
 
   const getShortenedText = (text) =>
@@ -158,11 +167,11 @@ const Archive = () => {
               letters.data.content.map((letter) => (
                 <LetterCard
                   key={letter.letterId}
-                  onClick={() => handleCardClick(letter.id, activeTab)}
+                  onClick={() => handleCardClick(letter.letterId, activeTab)}
                   className="cursor-pointer"
                 >
                   <div className="flex items-center">
-                    <h3>To. {letter.toRecipient || letter.title}</h3>
+                    <h3>To. {letter.receiver || letter.title}</h3>
                     <p className="text-xs ml-1">2024-12-13</p>
                   </div>
                   <p>{getShortenedText(letter?.message || letter?.content)}</p>

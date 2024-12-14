@@ -62,8 +62,14 @@ const TemplateSelection = ({ onNext, formData }) => {
   };
 
   const handleNext = () => {
+    console.log(selectedTemplate.id);
+
     if (selectedTemplate) {
-      onNext({ background: selectedTemplate.id }); // 선택된 템플릿 데이터를 부모로 전달
+      onNext({
+        metadata: {
+          stationery: selectedTemplate.id,
+        },
+      }); // 선택된 템플릿 데이터를 부모로 전달
     }
   };
 

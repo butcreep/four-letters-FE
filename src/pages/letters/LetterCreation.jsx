@@ -197,11 +197,13 @@ const LetterCreation = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    fromSender: "",
-    toRecipient: "",
-    background: "",
-    message: "",
-    fontClass: "",
+    writer: "",
+    receiver: "",
+    content: "",
+    metadata: {
+      font: "",
+      stationery: "",
+    },
   });
 
   const stepTitles = {
@@ -232,9 +234,11 @@ const LetterCreation = () => {
       setFormData({
         fromSender: editData.fromSender || "",
         toRecipient: editData.toRecipient || "",
-        background: editData.background || "",
         message: editData.message || "",
-        fontClass: editData.fontClass || "",
+        metadata: {
+          font: editData.metadata?.font || "",
+          stationery: editData.metadata?.stationery || "",
+        },
       });
     }
   }, [editData]);
@@ -255,11 +259,13 @@ const LetterCreation = () => {
   const handleDelete = async () => {
     try {
       setFormData({
-        fromSender: "",
-        toRecipient: "",
-        background: "",
-        message: "",
-        fontClass: "",
+        writer: "",
+        receiver: "",
+        content: "",
+        metadata: {
+          font: "",
+          stationery: "",
+        },
       });
     } catch (error) {
       console.error("Error clearing letter content:", error);
@@ -274,19 +280,20 @@ const LetterCreation = () => {
     setRequestLoading(true);
     const requestBody = {
       requestId: recipient.requestId,
-      writer: formData.fromSender,
-      receiver: formData.toRecipient,
-      content: data.message,
+      writer: formData.writer,
+      receiver: formData.receiver,
+      content: data.content,
       metadata: {
-        font: data.fontClass,
-        stationery: formData.background,
+        font: data.metadata.font,
+        stationery: data.metadata.stationery,
       },
       status: "COMPLETED",
     };
+    console.log("편지 전송 데이터", requestBody);
 
     try {
       const response = await createLetter(requestBody);
-      console.log("response", response);
+
       if (response.message === "CREATED") {
         await updateRequest(recipient.id, { isDone: true });
         navigate("/letter-complete");
@@ -303,14 +310,15 @@ const LetterCreation = () => {
 
   const handleSaveDraft = async (draftData) => {
     try {
-      await updateRequest(recipient.id, {
+      await createLetter({
         ...formData,
         ...draftData,
-        isDraft: true,
+        status: "DRAFT",
       });
+      console.log("임시저장데이터", draftData);
     } catch (error) {
       console.error("임시 저장 중 오류 발생:", error);
-      alert("임시 저장에 실패했습니다. 다시 시도해주세요.");
+      alert("임시 저장에 실패했습니다. 다시 시도해ㄴ주세요.");
     }
   };
 

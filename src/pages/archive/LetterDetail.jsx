@@ -129,7 +129,7 @@ const LetterDetail = () => {
       try {
         const data = await getLetterById(id);
 
-        setDetail(data);
+        setDetail(data.data);
       } catch (err) {
         console.error("Error fetching detail:", err);
         setError("데이터를 불러오지 못했습니다.");
@@ -139,6 +139,7 @@ const LetterDetail = () => {
     fetchDetail();
   }, [id]);
 
+  console.log("detailData", detail);
   if (error) {
     return <p>{error}</p>;
   }
@@ -146,7 +147,7 @@ const LetterDetail = () => {
   if (!detail) {
     return <p>로딩 중...</p>;
   }
-  const backgroundIndex = detail?.background;
+  const backgroundIndex = detail?.metadata?.stationery;
 
   const backgroundImage =
     letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
@@ -155,16 +156,18 @@ const LetterDetail = () => {
     <>
       <Header title="작성된 편지" />
       <BackgroundContainer background={backgroundImage}>
-        <ContentWrapper className={detail.fontClass || "ycomputer-regular"}>
+        <ContentWrapper
+          className={detail.metadata?.font || "ycomputer-regular"}
+        >
           <TextAreaWrapper>
             <img
               src={backgroundIcon}
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <Title>To. {detail.toRecipient}</Title>
-            <ContentText>{detail.message}</ContentText>
-            <FixedText>From. {detail.fromSender}</FixedText>
+            <Title>To. {detail.writer}</Title>
+            <ContentText>{detail.content}</ContentText>
+            <FixedText>From. {detail.receiver}</FixedText>
           </TextAreaWrapper>
         </ContentWrapper>
       </BackgroundContainer>
