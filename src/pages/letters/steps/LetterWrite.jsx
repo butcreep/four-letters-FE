@@ -128,7 +128,7 @@ const FontSelect = ({ selectedFont, onChange }) => {
 
 const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   const { letterBackgrounds, letterIcons } = images;
-  const [letterContent, setLetterContent] = useState(formData.message || ""); // formData로 초기값 설정
+  const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
   const [selectedFontClass, setSelectedFontClass] = useState(
     formData.fontClass || "ycomputer-regular"
   );
@@ -171,8 +171,11 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   const handleModalConfirm = () => {
     const updatedData = {
       ...formData,
-      message: letterContent,
-      fontClass: selectedFontClass,
+      content: letterContent,
+      metadata: {
+        font: selectedFontClass,
+        stationery: formData.metadata.stationery,
+      },
     };
     if (selectedModalType === "letterSendConfirm") {
       onSubmit(updatedData); // 편지 전송
@@ -185,7 +188,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   const handleCancelModal = () => {
     setSelectedModalType(null); // 모달 닫기
   };
-  const backgroundIndex = formData.background ? formData.background : 0; // background 값이 없으면 기본값 0 사용
+  const backgroundIndex = formData ? formData.metadata.stationery : 0; // background 값이 없으면 기본값 0 사용
   const backgroundImage =
     letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
@@ -213,7 +216,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               font={selectedFontClass}
               className={`toSender ${selectedFontClass}`}
             >
-              To. {formData.toRecipient}
+              To. {formData.receiver}
             </FixedText>
             <TextArea
               placeholder="여기에 편지를 작성하세요..."
@@ -226,7 +229,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               font={selectedFontClass}
               className={` ${selectedFontClass}`}
             >
-              From. {formData.fromSender}
+              From. {formData.writer}
             </FixedText>
 
             <CharacterCount>

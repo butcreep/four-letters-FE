@@ -11,7 +11,7 @@ const SenderRecipientForm = ({ onNext, formData, isLoading }) => {
   }, [formData]);
 
   const handleSubmit = () => {
-    onNext({ fromSender: sender, toRecipient: recipient });
+    onNext({ receiver: sender, writer: recipient });
   };
   const validateInput = (value) => {
     // 첫 번째 글자는 공백 불가능, 전체 길이는 1~7자
