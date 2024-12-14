@@ -193,8 +193,14 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   return (
     <div className="h-full">
       {requestLoading && (
-        <Spinner text="편지를 보내는 중 입니다" opacity={0.8} image={loadImg} />
+        <Spinner
+          text="편지를 전송하고 있어요"
+          size={180}
+          opacity={0.8}
+          image={loadImg}
+        />
       )}
+
       <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>
           <TextAreaWrapper>

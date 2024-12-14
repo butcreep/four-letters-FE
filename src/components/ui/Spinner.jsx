@@ -11,7 +11,7 @@ const GradientIcon = styled.div`
     /* SVG에 대한 그라데이션 스타일 추가 */
     circle {
       stroke: url(#gradient);
-      stroke-width: 4;
+      stroke-width: 3;
       fill: none; /* 투명한 배경 유지 */
     }
   }
@@ -64,14 +64,16 @@ const Spinner = ({
     >
       {/* 이미지가 있으면 렌더링 */}
       {image && (
-        <img
-          src={image}
-          alt="spinner-icon"
-          style={{
-            width: size * 1.5, // 이미지 크기 조정 (스피너보다 약간 큼)
-            marginBottom: 16, // 스피너와 간격
-          }}
-        />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[80%]">
+          <img
+            src={image}
+            alt="spinner-icon"
+            style={{
+              width: "84px", // 이미지 크기 조정 (스피너보다 약간 큼)
+              // marginBottom: 16,
+            }}
+          />
+        </div>
       )}
       <Spin indicator={<GradientSpin size={size} />} />
       {/* 텍스트가 있으면 렌더링 */}
@@ -80,7 +82,8 @@ const Spinner = ({
           style={{
             marginTop: 16,
             color: "#fff",
-            fontSize: 16,
+            fontSize: 18,
+            fontWeight: "bold",
             textAlign: "center",
           }}
         >
