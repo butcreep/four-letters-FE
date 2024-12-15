@@ -6,28 +6,30 @@ import { useSelector } from "react-redux";
 import { getRequestLinks } from "api/requests";
 import Spinner from "components/ui/Spinner";
 import kakaoThumbnail from "assets/img/Thumbnail_img.png";
+
 const RequestLink = () => {
   const [requestId, setRequestId] = useState("");
   const [loading, setLoading] = useState(true);
 
   const userId = useSelector((state) => state.user?.userId);
+
   useEffect(() => {
     if (!window.Kakao?.isInitialized()) {
-      window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY); // 카카오 JavaScript 키로 초기화
+      window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY);
+      console.log("Kakao SDK initialized:", window.Kakao.isInitialized());
     }
-    console.log(window.Kakao.isInitialized());
   }, []);
+
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         setLoading(true);
         const data = await getRequestLinks(userId);
-
         setRequestId(data?.data.linkId || "123");
       } catch (error) {
         console.error("Error fetching requests:", error);
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     };
     fetchRequests();
@@ -36,15 +38,10 @@ const RequestLink = () => {
   const requestFormLink = `https://four-letters-fe.vercel.app/request-form/${requestId}`;
 
   const handleCopyLink = () => {
-    if (
-      navigator.clipboard &&
-      typeof navigator.clipboard.writeText === "function"
-    ) {
+    if (navigator.clipboard?.writeText) {
       navigator.clipboard
         .writeText(requestFormLink)
-        .then(() => {
-          alert("링크가 복사되었습니다!");
-        })
+        .then(() => alert("링크가 복사되었습니다!"))
         .catch((err) => {
           console.error("복사 실패:", err);
           fallbackCopyTextToClipboard(requestFormLink);
@@ -65,45 +62,36 @@ const RequestLink = () => {
     } catch (err) {
       console.error("Fallback 복사 실패:", err);
       alert("복사에 실패했습니다. 수동으로 복사해주세요.");
+    } finally {
+      document.body.removeChild(input);
     }
-    document.body.removeChild(input);
   };
-
   const handleKakaoShare = () => {
-    if (!navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/)) {
-      alert("데스크톱 환경에서는 링크로 이동합니다.");
-      window.open(requestFormLink, "_blank");
-      return;
-    }
-
-    if (window.Kakao) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.REACT_APP_KAKAO_JAVASCRIPT_API_KEY);
-      }
-
-      window.Kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: "편지 신청서",
-          description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
-          imageUrl: `${kakaoThumbnail}`, // 대표 이미지 URL
-          link: {
+    window.open(
+      `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(
+        requestFormLink
+      )}`,
+      "_blank"
+    );
+    try {
+      if (window.Kakao && window.Kakao.isInitialized()) {
+        // 템플릿 아이디로 공유
+        window.Kakao.Link.sendCustom({
+          templateId: 115325, // 카카오 디벨로퍼스에서 생성한 템플릿 아이디
+          templateArgs: {
+            title: "편지 신청서",
+            description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
             mobileWebUrl: requestFormLink,
             webUrl: requestFormLink,
+            imageUrl: kakaoThumbnail,
           },
-        },
-        buttons: [
-          {
-            title: "신청서 작성하기",
-            link: {
-              mobileWebUrl: requestFormLink,
-              webUrl: requestFormLink,
-            },
-          },
-        ],
-      });
-    } else {
-      alert("카카오톡 SDK가 로드되지 않았습니다.");
+        });
+      } else {
+        alert("카카오 SDK가 초기화되지 않았습니다.");
+      }
+    } catch (error) {
+      console.error("카카오 공유 실패:", error);
+      alert("카카오 공유에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -134,7 +122,7 @@ const RequestLink = () => {
                   type="text"
                   readOnly
                   value={requestFormLink}
-                  className="bg-transparent text-[var(--color-deep-white)] w-5/6 mr-2overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="bg-transparent text-[var(--color-deep-white)] w-5/6 mr-2 overflow-hidden text-ellipsis whitespace-nowrap"
                 />
                 <button
                   onClick={handleCopyLink}
@@ -149,7 +137,7 @@ const RequestLink = () => {
             </div>
             <div>
               <label
-                htmlFor="requestLink"
+                htmlFor="kakaoShare"
                 className="block text-sm font-medium mb-2"
               >
                 카카오로 공유
@@ -168,7 +156,7 @@ const RequestLink = () => {
           </div>
         </div>
         <div className="w-full h-[1px] bg-[#242228]"></div>
-        <div className="text-left mt-[30px] ">
+        <div className="text-left mt-[30px]">
           <p className="mb-3 text-base">안내사항</p>
           <ul className="text-sm text-[#B1B1B9] list-disc list-inside">
             <li className="pb-[6px]">
