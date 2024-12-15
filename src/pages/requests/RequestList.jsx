@@ -95,7 +95,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
   const letterComplete = location.pathname === "/letter-complete";
   return (
     <div className="footer-height pt-[30px]">
-      {loading && <Spinner />}
+      {loading && <Spinner opacity={0.7} />}
       <div className="relative">
         {letterComplete ? (
           <h2 className="pretendard-title text-white text-center mb-[45px]">
