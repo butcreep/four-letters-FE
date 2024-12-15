@@ -5,7 +5,6 @@ import Header from "components/containers/HeaderContainer";
 import { useSelector } from "react-redux";
 import { getRequestLinks } from "api/requests";
 import Spinner from "components/ui/Spinner";
-import kakaoThumbnail from "assets/img/Thumbnail_img.png";
 
 const RequestLink = () => {
   const [requestId, setRequestId] = useState("");
