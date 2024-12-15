@@ -67,23 +67,21 @@ const RequestLink = () => {
     }
   };
   const handleKakaoShare = () => {
-    window.open(
-      `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(
-        requestFormLink
-      )}`,
-      "_blank"
-    );
+    console.log("Request ID for sharing:", requestId); // 디버깅용 로그
+
+    // requestId 값이 없을 경우 알림 표시
+    if (!requestId) {
+      alert("링크 ID가 없습니다. 다시 시도해주세요.");
+      return;
+    }
+
     try {
       if (window.Kakao && window.Kakao.isInitialized()) {
-        // 템플릿 아이디로 공유
+        // 템플릿 ID를 사용하여 카카오톡 공유
         window.Kakao.Link.sendCustom({
-          templateId: 115325, // 카카오 디벨로퍼스에서 생성한 템플릿 아이디
+          templateId: 115325, // 카카오 디벨로퍼스에서 생성한 템플릿 ID
           templateArgs: {
-            title: "편지 신청서",
-            description: "신청서를 보내면 친구에게 💌 편지 요청이 도착해요!",
-            mobileWebUrl: requestFormLink,
-            webUrl: requestFormLink,
-            imageUrl: kakaoThumbnail,
+            linkId: requestId, // 템플릿에서 사용하는 변수
           },
         });
       } else {
