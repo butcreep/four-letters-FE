@@ -62,10 +62,15 @@ const Home = () => {
 
   const handleDeleteRequest = async () => {
     try {
-      await deleteRequest(selectedRequest.id); // 공통 API 호출
-      setRequests((prev) =>
-        prev.filter((req) => req.id !== selectedRequest.id)
-      );
+      const response = await deleteRequest(selectedRequest.requestId); // 공통 API 호출
+
+      if (response.message === "OK") {
+        setRequests((prev) =>
+          prev.filter((req) => req.requestId !== selectedRequest.requestId)
+        ); // 로컬 상태에서 삭제
+      }
+      console.log("response", response);
+
       setSelectedRequest(null);
       setModalType(null);
     } catch (error) {
