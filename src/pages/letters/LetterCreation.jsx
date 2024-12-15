@@ -310,12 +310,13 @@ const LetterCreation = () => {
 
   const handleSaveDraft = async (draftData) => {
     try {
-      await createLetter({
+      const response = await createLetter({
         ...formData,
         ...draftData,
+        requestId: recipient.requestId,
         status: "DRAFT",
       });
-      console.log("임시저장데이터", draftData);
+      console.log("임시저장데이터", response);
     } catch (error) {
       console.error("임시 저장 중 오류 발생:", error);
       alert("임시 저장에 실패했습니다. 다시 시도해ㄴ주세요.");
