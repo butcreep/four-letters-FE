@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { sendKakaoAuthRequest } from "../api/auth";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../redux/userSlice";
+import Spinner from "components/ui/Spinner";
+import loadImg from "assets/img/Load50.svg";
 
 const KakaoCallBack = () => {
   const navigate = useNavigate();
@@ -41,7 +43,9 @@ const KakaoCallBack = () => {
     }
   }, [navigate, dispatch]);
 
-  return <div className="text-white">로그인 처리 중입니다...</div>;
+  return (
+    <Spinner text="카카오 로그인 중" size={180} opacity={0.8} image={loadImg} />
+  );
 };
 
 export default KakaoCallBack;
