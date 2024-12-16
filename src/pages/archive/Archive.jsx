@@ -6,8 +6,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useSetVh from "hooks/useSetVh";
 import Header from "components/containers/HeaderContainer";
 import { getDraftLetters, getLetters } from "api/letters";
-import EmptyLetter from "assets/Empty-letter.svg";
+// import EmptyLetter from "assets/Empty-letter.svg";
 import Spinner from "components/ui/Spinner";
+import { CenterImage } from "styles/ShareStyle";
 
 const ArchiveContainer = styled.div`
   height: calc(var(--vh, 1vh) * 100 - var(--header-height) - 60px);
@@ -16,15 +17,14 @@ const ArchiveContainer = styled.div`
   overflow: hidden;
 `;
 
-const Tabs = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-`;
+// const Tabs = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 30px;
+// `;
 
 const TabButton = styled.button`
   color: ${props => (props.$active ? "white" : "#333")};
-
   cursor: pointer;
   font-size: 16px;
   text-align: center;
@@ -32,33 +32,33 @@ const TabButton = styled.button`
   padding: 16px 0;
   border-bottom: ${props => (props.$active ? "1px solid white" : "none")};
 `;
-const CenterImage = styled.div`
-  background-image: url(${EmptyLetter});
-  background-size: cover;
-  background-position: center;
-  width: 100px;
-  height: 90px;
-  margin: 0 auto 24px;
-`;
-const ListContainer = styled.div`
-  flex: 1;
-  overflow-y: auto;
+// const CenterImage = styled.div`
+//   background-image: url(${EmptyLetter});
+//   background-size: cover;
+//   background-position: center;
+//   width: 100px;
+//   height: 90px;
+//   margin: 0 auto 24px;
+// `;
+// const ListContainer = styled.div`
+//   flex: 1;
+//   overflow-y: auto;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+//   -ms-overflow-style: none;
+//   scrollbar-width: none;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
+//   &::-webkit-scrollbar {
+//     display: none;
+//   }
+// `;
 
-const LetterCard = styled.div`
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #f9f9f9;
-`;
+// const LetterCard = styled.div`
+//   border: 1px solid #ccc;
+//   border-radius: 8px;
+//   padding: 16px;
+//   margin-bottom: 16px;
+//   background-color: #f9f9f9;
+// `;
 
 const Archive = () => {
   const [activeTab, setActiveTab] = useState("drafts");
@@ -134,29 +134,29 @@ const Archive = () => {
         <Header title="보관함" />
       </div>
       <ArchiveContainer>
-        <Tabs>
+        <div className="flex justify-between mb-8">
           <TabButton $active={activeTab === "drafts"} onClick={() => handleTabClick("drafts")}>
             작성 중 ({drafts?.data?.content?.length || 0})
           </TabButton>
           <TabButton $active={activeTab === "sent"} onClick={() => handleTabClick("sent")}>
             보낸 편지 ({sent?.data?.content?.length || 0})
           </TabButton>
-        </Tabs>
+        </div>
         {!loading && (
-          <ListContainer className="px-40">
+          <div className="px-40 flex-1 overflow-y-auto scrollbar-none scrollbar-none::-webkit-scrollbar">
             {letters.data.content.length > 0 ? (
               letters.data.content.map(letter => (
-                <LetterCard
+                <div
                   key={letter.letterId}
                   onClick={() => handleCardClick(letter.letterId, activeTab)}
-                  className="cursor-pointer"
+                  className="cursor-pointer border border-gray-300 rounded-lg p-4 mb-4 bg-gray-100"
                 >
                   <div className="flex items-center">
                     <h3>To. {letter.receiver || letter.title}</h3>
                     <p className="text-xs ml-1">2024-12-13</p>
                   </div>
                   <p>{getShortenedText(letter?.message || letter?.content)}</p>
-                </LetterCard>
+                </div>
               ))
             ) : (
               <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
@@ -164,7 +164,7 @@ const Archive = () => {
                 {activeTab === "drafts" ? "작성할 편지가 없어요." : "보낸 편지가 없어요."}
               </div>
             )}
-          </ListContainer>
+          </div>
         )}
         <Footer />
       </ArchiveContainer>

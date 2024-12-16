@@ -5,38 +5,39 @@ import images from "assets";
 import useSetVh from "hooks/useSetVh";
 import Spinner from "components/ui/Spinner";
 import loadImg from "assets/img/Load50.svg";
+import { BackgroundContainer, TextAreaWrapper, ContentWrapper, FixedText } from "styles/ShareStyle";
 
-const BackgroundContainer = styled.div`
-  background-image: url(${(props) => props.background});
-  background-size: cover;
-  background-position: center;
-  height: 100%;
-  overflow: hidden;
-`;
+// const BackgroundContainer = styled.div`
+//   background-image: url(${(props) => props.background});
+//   background-size: cover;
+//   background-position: center;
+//   height: 100%;
+//   overflow: hidden;
+// `;
 
-const ContentWrapper = styled.div`
-  padding: 0 40px;
-  border-radius: 12px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding-top: 30px;
-`;
+// const ContentWrapper = styled.div`
+//   padding: 0 40px;
+//   border-radius: 12px;
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   height: 100%;
+//   padding-top: 30px;
+// `;
 
-const TextAreaWrapper = styled.div`
-  width: 100%;
-  position: relative;
-  background-color: #ece5dd;
-  border-radius: 12px;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+// const TextAreaWrapper = styled.div`
+//   width: 100%;
+//   position: relative;
+//   background-color: #ece5dd;
+//   border-radius: 12px;
+//   height: 60%;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -48,7 +49,6 @@ const TextArea = styled.textarea`
   background-color: #ece5dd;
   outline: none;
   resize: none;
-  /* font-family: ${(props) => props.font}; */
   color: #000;
   ::-webkit-scrollbar {
     display: none; /* 스크롤바 숨기기 */
@@ -60,30 +60,30 @@ const TextArea = styled.textarea`
   }
 `;
 
-const FixedText = styled.div`
-  font-size: 16px;
-  color: #000;
-  margin: 5px 0;
-  /* font-family: ${(props) => props.font}, sans-serif; */
-`;
+// const FixedText = styled.div`
+//   font-size: 16px;
+//   color: #000;
+//   margin: 5px 0;
+//   /* font-family: ${props => props.font}, sans-serif; */
+// `;
 
-const CharacterCount = styled.div`
-  text-align: right;
-  font-size: 12px;
-  color: #b6b6b6;
-  margin-top: 5px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-`;
+// const CharacterCount = styled.div`
+//   text-align: right;
+//   font-size: 12px;
+//   color: #b6b6b6;
+//   margin-top: 5px;
+//   position: absolute;
+//   bottom: 20px;
+//   right: 20px;
+// `;
 
-const ButtonGroup = styled.div`
-  width: 100%;
-  display: flex;
+// const ButtonGroup = styled.div`
+//   width: 100%;
+//   display: flex;
 
-  gap: 15px;
-  margin-top: 20px;
-`;
+//   gap: 15px;
+//   margin-top: 20px;
+// `;
 
 const Button = styled.button`
   padding: 15px 0px;
@@ -111,7 +111,7 @@ const Select = styled.select`
   border-radius: 8px;
   margin: 15px 20px;
   width: 100%;
-  font-family: ${(props) => props.font}, sans-serif;
+  font-family: ${props => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
@@ -129,21 +129,19 @@ const FontSelect = ({ selectedFont, onChange }) => {
 const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
   const { letterBackgrounds, letterIcons } = images;
   const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
-  const [selectedFontClass, setSelectedFontClass] = useState(
-    formData.fontClass || "ycomputer-regular"
-  );
+  const [selectedFontClass, setSelectedFontClass] = useState(formData.fontClass || "ycomputer-regular");
   const [selectedModalType, setSelectedModalType] = useState(null);
   const maxTextLength = 300;
 
   useSetVh();
-  const handleContentChange = (e) => {
+  const handleContentChange = e => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = (e) => {
+  const handleFontChange = e => {
     setSelectedFontClass(e.target.value);
   };
 
@@ -189,20 +187,12 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
     setSelectedModalType(null); // 모달 닫기
   };
   const backgroundIndex = formData ? formData.metadata.stationery : 0; // background 값이 없으면 기본값 0 사용
-  const backgroundImage =
-    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
 
   return (
     <div className="h-full">
-      {requestLoading && (
-        <Spinner
-          text="편지를 전송하고 있어요"
-          size={180}
-          opacity={0.8}
-          image={loadImg}
-        />
-      )}
+      {requestLoading && <Spinner text="편지를 전송하고 있어요" size={180} opacity={0.8} image={loadImg} />}
 
       <BackgroundContainer background={backgroundImage}>
         <ContentWrapper>
@@ -212,10 +202,7 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <FixedText
-              font={selectedFontClass}
-              className={`toSender ${selectedFontClass}`}
-            >
+            <FixedText font={selectedFontClass} className={`toSender ${selectedFontClass}`}>
               To. {formData.receiver}
             </FixedText>
             <TextArea
@@ -225,29 +212,23 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               font={selectedFontClass}
               className={` ${selectedFontClass}`}
             />
-            <FixedText
-              font={selectedFontClass}
-              className={` ${selectedFontClass}`}
-            >
+            <FixedText font={selectedFontClass} className={` ${selectedFontClass}`}>
               From. {formData.writer}
             </FixedText>
 
-            <CharacterCount>
+            <div className="text-right text-xs text-gray-400 mt-1 absolute bottom-5 right-5">
               {letterContent.length} / {maxTextLength}
-            </CharacterCount>
+            </div>
           </TextAreaWrapper>
-          <FontSelect
-            selectedFont={selectedFontClass}
-            onChange={handleFontChange}
-          />
-          <ButtonGroup>
+          <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
+          <div className="w-full flex gap-4 mt-5">
             <Button onClick={handleSaveDraft} className="pretendard-button">
               임시 저장
             </Button>
             <Button onClick={handleSendLetter} className="pretendard-button">
               편지 보내기
             </Button>
-          </ButtonGroup>
+          </div>
         </ContentWrapper>
       </BackgroundContainer>
 

@@ -19,8 +19,7 @@ const AppContainer = styled.div`
   background: linear-gradient(180deg, #0d0d0d 0%, #1d1c20 100%);
   height: calc(var(--vh, 1vh) * 100); /* 동적 높이 적용 */
   position: relative;
-
-  padding-bottom: env(safe-area-inset-bottom, 20px); /* 하단 여백 확보 */
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 `;
 
 const App = () => {

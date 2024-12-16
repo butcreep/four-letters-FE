@@ -1,84 +1,68 @@
 import React from "react";
 import Arrow from "assets/icon/Arrow-right.svg";
 import CommonButton from "components/ui/CommonButton";
-import styled from "styled-components";
-import EmptyLetter from "assets/Empty-letter.svg";
-import GradientBefore from "assets/img/Background-Img.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import Tree from "assets/icon/Tree.svg";
 import ListTitleSnow from "assets/icon/Snow/ListTitleSnow.svg";
 import LetterSide from "assets/img/Background-Side.svg";
 import Spinner from "components/ui/Spinner";
+import { CenterImage, GradientDiv, GradientOverlay } from "styles/ShareStyle";
 
-const GradientDiv = styled.div`
-  background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
-  width: 100%;
-  height: calc(100% - 60px);
-  position: relative; /* ::before가 제대로 위치하도록 설정 */
+// const GradientDiv = styled.div`
+//   width: 100%;
+//   height: calc(100% - 60px);
+//   position: relative;
+//   &::before {
+//     content: "";
+//     display: block;
+//     position: absolute;
+//     background-color: #fff;
+//     border-radius: 12px 0 0 0;
+//     top: -30px;
+//     left: 40px;
+//     width: calc(100% - 80px);
+//     height: 30px;
+//     z-index: 1;
+//   }
+// `;
+// const CenterImage = styled.div`
+//   background-image: url(${EmptyLetter});
+//   background-size: cover;
+//   background-position: center;
+//   width: 100px;
+//   height: 90px;
+//   margin: 0 auto 24px;
+// `;
+// const StyledUlWrapper = styled.div`
+//   position: relative;
+//   height: calc(100% - 180px);
+//   overflow: hidden;
+//   border-radius: 0 0 12px 12px;
+// `;
 
-  &::before {
-    content: "";
-    display: block;
-    /* background-image: url(${GradientBefore}); 
-    background-size: cover; 
-    background-position: center;*/
-    position: absolute;
-    background-color: #fff;
-    border-radius: 12px 0 0 0;
-    top: -30px;
-    left: 40px;
-    width: calc(100% - 80px); /* 이미지 크기 */
-    height: 30px;
-    z-index: 1; /* 배경 이미지가 아래쪽에 위치하도록 설정 */
-  }
-`;
-const CenterImage = styled.div`
-  background-image: url(${EmptyLetter});
-  background-size: cover;
-  background-position: center;
-  width: 100px; /* 원하는 너비 */
-  height: 90px; /* 원하는 높이 */
-  margin: 0 auto 24px; /* 가운데 정렬 */
-`;
-const StyledUlWrapper = styled.div`
-  position: relative; /* 그라데이션 오버레이의 기준 */
-  height: calc(100% - 180px); /* 화면 크기에 따라 높이 제한 */
-  overflow: hidden; /* 전체 영역 스크롤 방지 */
-  border-radius: 0 0 12px 12px;
-`;
+// const StyledUl = styled.ul`
+//   background: white;
+//   width: 100%;
+//   position: relative;
+//   height: 100%;
+//   padding-bottom: 30px;
+//   overflow-y: auto;
+//   scrollbar-width: none;
+//   -ms-overflow-style: none;
 
-const StyledUl = styled.ul`
-  background: white;
-  width: 100%;
-  position: relative;
-  /* width: 295px; */
-  /* height: 390px; */
-  height: 100%;
-  /* height: calc(100% - 180px);  */
-  /* height: 80%; */
-  padding-bottom: 30px;
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-`;
-const GradientOverlay = styled.div`
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  bottom: 0;
-  pointer-events: none; /* 스크롤, 클릭 이벤트 방지 */
-  z-index: 1; /* 컨텐츠 위로 고정 */
-`;
+//   &::-webkit-scrollbar {
+//     display: none;
+//   }
+// `;
+// const GradientOverlay = styled.div`
+//   position: absolute;
+//   width: 100%;
+//   height: 200px;
+//   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+//   bottom: 0;
+//   pointer-events: none;
+//   z-index: 1;
+// `;
 export const RequestList = ({ requests, onRequestClick, loading }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -125,7 +109,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
         </div>
       </div>
 
-      <GradientDiv>
+      <GradientDiv className="purple-gradient">
         <div className="absolute top-[-64px] left-[15px] w-[64px]">
           <img src={Tree} alt="" />
         </div>
@@ -133,7 +117,7 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
           <img src={LetterSide} alt="" />
         </div>
         <div className="px-40 h-full">
-          <StyledUlWrapper>
+          <div className="relative h-[calc(100%-180px)] overflow-hidden rounded-b-[12px]">
             {letterComplete && (
               <p className="text-center bg-white text-[#867cdd] pb-3 font-semibold text-lg">
                 {requests.length}명의 친구가
@@ -141,27 +125,21 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
                 편지를 기다리고 있어요
               </p>
             )}
-            <StyledUl>
+            <ul className="bg-white w-full relative h-full pb-[30px] overflow-y-auto scrollbar-none">
               {loading || requests.length > 0 ? (
-                requests.map((request) => (
+                requests.map(request => (
                   <li
                     key={request.requestId}
                     className="letter-item cursor-pointer flex pb-[10px] mx-5 justify-between items-center pt-5 border-b border-dashed border-[#eeeeee]"
                     onClick={() => onRequestClick(request)}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="sender text-base">
-                        {request.requesterName}
-                      </div>
-                      <div className="date text-xs text-[#B1B1B9]">
-                        {request.updatedAt.split("T")[0]}
-                      </div>
+                      <div className="sender text-base">{request.requesterName}</div>
+                      <div className="date text-xs text-[#B1B1B9]">{request.updatedAt.split("T")[0]}</div>
                     </div>
                     <div className="flex items-center">
                       {request.isDraft && (
-                        <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">
-                          작성중
-                        </div>
+                        <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">작성중</div>
                       )}
                       <img src={Arrow} alt="Arrow" />
                     </div>
@@ -173,26 +151,18 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
                   작성할 편지가 없어요.
                 </div>
               )}
-            </StyledUl>
+            </ul>
             <GradientOverlay />
-          </StyledUlWrapper>
+          </div>
           {letterComplete || (
             <p className="pb-[10px] text-sm pt-[29px] text-center">
-              신청서를 보내고 <span className="font-bold">편지 요청</span>을
-              받아보세요!
+              신청서를 보내고 <span className="font-bold">편지 요청</span>을 받아보세요!
             </p>
           )}
           {letterComplete ? (
             <div className="flex justify-center gap-1 mt-3">
-              <CommonButton
-                text="보관함으로 가기"
-                onClick={handleNavigateToArchive}
-              />
-              <CommonButton
-                text="홈으로"
-                onClick={handleNavigateToHome}
-                $bgColor="#000"
-              />
+              <CommonButton text="보관함으로 가기" onClick={handleNavigateToArchive} />
+              <CommonButton text="홈으로" onClick={handleNavigateToHome} $bgColor="#000" />
             </div>
           ) : (
             <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />

@@ -3,15 +3,9 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import CommonButton from "components/ui/CommonButton"; // CommonButton 컴포넌트를 import
+import CommonButton from "components/ui/CommonButton";
 
 import images from "assets";
-
-// Styled-components 정의
-const Container = styled.div`
-  padding-top: 30px;
-  position: relative;
-`;
 
 const LargeImage = styled.div`
   width: 100%;
@@ -35,8 +29,6 @@ const SwiperContainer = styled.div`
 `;
 
 const SmallImage = styled.div`
-  /* min-width: 100px;
-  min-height: 100px; */
   cursor: pointer;
   border: ${props => (props.$isSelected ? "2px solid var(--color-deep-purple)" : "2px solid transparent")};
   border-radius: 8px;
@@ -53,9 +45,9 @@ const TemplateSelection = ({ onNext, formData }) => {
   const { previewLetters } = images;
   const [selectedTemplate, setSelectedTemplate] = useState(
     previewLetters[formData?.metadata.stationery] || previewLetters[0],
-  ); // 선택된 템플릿을 초기화
+  );
   const handleSelectTemplate = template => {
-    setSelectedTemplate(template); // 선택된 템플릿 설정
+    setSelectedTemplate(template);
   };
 
   const handleNext = () => {
@@ -66,14 +58,14 @@ const TemplateSelection = ({ onNext, formData }) => {
         metadata: {
           stationery: selectedTemplate.id,
         },
-      }); // 선택된 템플릿 데이터를 부모로 전달
+      });
     }
   };
 
   return (
     <div className="h-full">
       <div className="footer-height flex flex-col justify-between">
-        <Container>
+        <div className="pt-[30px] relative">
           <LargeImage className="px-40 ">
             <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
           </LargeImage>
@@ -91,7 +83,7 @@ const TemplateSelection = ({ onNext, formData }) => {
               ))}
             </Swiper>
           </SwiperContainer>
-        </Container>
+        </div>
         <div className="px-40">
           <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
         </div>
