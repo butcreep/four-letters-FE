@@ -1,19 +1,9 @@
 import CommonButton from "components/ui/CommonButton";
 import React, { useEffect } from "react";
-// import styled from "styled-components";
 import SantaLetterImage from "assets/img/Santa-Letter.svg";
 import KakaoLogo from "assets/icon/Kakao.svg";
 import Snowbg from "assets/img/Intro_Snowbg.svg";
 import { CenterImage } from "styles/ShareStyle";
-
-// const CenterImage = styled.div`
-//   background-image: url(${SantaLetterImage});
-//   background-size: cover;
-//   background-position: center;
-//   width: 220px;
-//   height: 270px;
-//   margin: 0 auto 58px;
-// `;
 
 const Intro = () => {
   useEffect(() => {
@@ -54,7 +44,12 @@ const Intro = () => {
           <img src={Snowbg} alt="" className="w-full" />
         </div>
       </div>
-      <CenterImage image={SantaLetterImage} size={220} height={270} margin={58} />
+      <CenterImage
+        image={SantaLetterImage}
+        size={220}
+        height={270}
+        margin={58}
+      />
       <CommonButton
         text="카카오로 시작하기"
         onClick={handleLogin}

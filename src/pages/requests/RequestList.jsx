@@ -8,61 +8,6 @@ import LetterSide from "assets/img/Background-Side.svg";
 import Spinner from "components/ui/Spinner";
 import { CenterImage, GradientDiv, GradientOverlay } from "styles/ShareStyle";
 
-// const GradientDiv = styled.div`
-//   width: 100%;
-//   height: calc(100% - 60px);
-//   position: relative;
-//   &::before {
-//     content: "";
-//     display: block;
-//     position: absolute;
-//     background-color: #fff;
-//     border-radius: 12px 0 0 0;
-//     top: -30px;
-//     left: 40px;
-//     width: calc(100% - 80px);
-//     height: 30px;
-//     z-index: 1;
-//   }
-// `;
-// const CenterImage = styled.div`
-//   background-image: url(${EmptyLetter});
-//   background-size: cover;
-//   background-position: center;
-//   width: 100px;
-//   height: 90px;
-//   margin: 0 auto 24px;
-// `;
-// const StyledUlWrapper = styled.div`
-//   position: relative;
-//   height: calc(100% - 180px);
-//   overflow: hidden;
-//   border-radius: 0 0 12px 12px;
-// `;
-
-// const StyledUl = styled.ul`
-//   background: white;
-//   width: 100%;
-//   position: relative;
-//   height: 100%;
-//   padding-bottom: 30px;
-//   overflow-y: auto;
-//   scrollbar-width: none;
-//   -ms-overflow-style: none;
-
-//   &::-webkit-scrollbar {
-//     display: none;
-//   }
-// `;
-// const GradientOverlay = styled.div`
-//   position: absolute;
-//   width: 100%;
-//   height: 200px;
-//   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-//   bottom: 0;
-//   pointer-events: none;
-//   z-index: 1;
-// `;
 export const RequestList = ({ requests, onRequestClick, loading }) => {
   const navigate = useNavigate();
   const location = useLocation();
