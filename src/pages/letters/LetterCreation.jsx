@@ -37,15 +37,15 @@ const LetterCreation = () => {
 
   const handleBack = () => {
     if (step > 1) {
-      setStep(prev => prev - 1);
+      setStep((prev) => prev - 1);
     } else {
       navigate(-1);
     }
   };
 
-  const handleNext = data => {
-    setFormData(prev => ({ ...prev, ...data }));
-    setStep(prev => prev + 1);
+  const handleNext = (data) => {
+    setFormData((prev) => ({ ...prev, ...data }));
+    setStep((prev) => prev + 1);
   };
 
   const handleDelete = async () => {
@@ -69,10 +69,7 @@ const LetterCreation = () => {
   };
   const shareCompleteLink = useKakaoShare("COMPLETE", recipient?.requestId);
 
-  console.log("아이디말이야편지아이디", recipient.letterId);
-  const handleSubmit = async data => {
-    setIsLoading(true);
-
+  const handleSubmit = async (data) => {
     const requestBody = {
       requestId: recipient.requestId,
       writer: formData.writer,
@@ -85,9 +82,13 @@ const LetterCreation = () => {
       status: "COMPLETED", // 기본 상태는 COMPLETED
     };
 
+    setIsLoading(true);
     try {
       if (recipient.status === "DRAFT") {
-        const updatedLetter = await updateLetter(recipient.letterId, requestBody);
+        const updatedLetter = await updateLetter(
+          recipient.letterId,
+          requestBody
+        );
         if (updatedLetter.message === "CREATED") {
           shareCompleteLink("COMPLETE", recipient.letterId); // 카카오 공유
         }
@@ -97,8 +98,11 @@ const LetterCreation = () => {
 
         if (response.message === "CREATED") {
           const getLetter = await getLetters();
-          const getLetterId = getLetter.data.content.find(letter => letter.requestId === recipient.requestId);
-          shareCompleteLink("COMPLETE", getLetterId); // 카카오 공유
+          const getLetterId = getLetter?.data.content.find(
+            (letter) => letter.requestId === recipient.requestId
+          );
+
+          shareCompleteLink("COMPLETE", getLetterId.letterId); // 카카오 공유
         } else {
           throw new Error("Unexpected response from server");
         }
@@ -110,7 +114,7 @@ const LetterCreation = () => {
       setIsLoading(false);
     }
   };
-  const handleSaveDraft = async draftData => {
+  const handleSaveDraft = async (draftData) => {
     try {
       const response = await createLetter({
         ...formData,
@@ -137,8 +141,16 @@ const LetterCreation = () => {
     <>
       <Header title={stepTitles[step]} onBack={handleBack} />
       <div className="header-height">
-        {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} isLoading={isLoading} />}
-        {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} />}
+        {step === 1 && (
+          <SenderRecipientForm
+            formData={formData}
+            onNext={handleNext}
+            isLoading={isLoading}
+          />
+        )}
+        {step === 2 && (
+          <TemplateSelection formData={formData} onNext={handleNext} />
+        )}
         {step === 3 && (
           <LetterWrite
             formData={formData}

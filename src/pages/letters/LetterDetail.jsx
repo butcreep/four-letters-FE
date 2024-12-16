@@ -6,7 +6,12 @@ import { getLetterById } from "api/letters";
 import images from "assets";
 import Header from "components/containers/HeaderContainer";
 import Spinner from "components/ui/Spinner";
-import { BackgroundContainer, TextAreaWrapper, ContentWrapper, FixedText } from "styles/ShareStyle";
+import {
+  BackgroundContainer,
+  TextAreaWrapper,
+  ContentWrapper,
+  FixedText,
+} from "styles/ShareStyle";
 
 // const BackgroundContainer = styled.div`
 //   background-image: url(${props => props.background});
@@ -84,7 +89,10 @@ const LetterDetail = () => {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
+        console.log("data", id);
         const data = await getLetterById(id);
+        console.log("data", data);
+
         setDetail(data.data);
       } catch (err) {
         console.error("Error fetching detail:", err);
@@ -104,20 +112,26 @@ const LetterDetail = () => {
   }
   const showHeader = !location.pathname.startsWith("/letter-complete");
   const backgroundIndex = detail?.metadata?.stationery;
-  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage =
+    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <>
       {showHeader && <Header title="작성된 편지" />}
       <BackgroundContainer background={backgroundImage}>
-        <ContentWrapper className={detail.metadata?.font || "ycomputer-regular"} margin={80}>
+        <ContentWrapper
+          className={detail.metadata?.font || "ycomputer-regular"}
+          margin={80}
+        >
           <TextAreaWrapper>
             <img
               src={backgroundIcon}
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <h2 className="mt-5 text-2xl text-center text-gray-800">To. {detail.writer}</h2>
+            <h2 className="mt-5 text-2xl text-center text-gray-800">
+              To. {detail.writer}
+            </h2>
             <ContentText>{detail.content}</ContentText>
             <FixedText>From. {detail.receiver}</FixedText>
           </TextAreaWrapper>

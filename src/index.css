@@ -71,7 +71,7 @@ body {
 }
 
 .purple-gradient {
-  background: linear-gradient(180deg, #867cdd 0%, #6157b6 100%);
+  background: linear-gradient(180deg, #867cdd 0%, #eec8ff 100%);
 }
 .scrollbar-none {
   scrollbar-width: none;
@@ -82,5 +82,9 @@ body {
   display: none;
 }
 .gradient-overlay {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }

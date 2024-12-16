@@ -24,7 +24,6 @@ const KakaoCallBack = () => {
             // Redux 상태 업데이트
             dispatch(setUserInfo({ userId, token, name }));
 
-            console.log("저장된 토큰:", token);
             navigate("/home"); // 홈 화면으로 이동
           } else {
             console.error("토큰 값이 없습니다. 응답 데이터:", data);

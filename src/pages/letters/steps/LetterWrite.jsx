@@ -5,7 +5,12 @@ import images from "assets";
 import useSetVh from "hooks/useSetVh";
 import Spinner from "components/ui/Spinner";
 import loadImg from "assets/img/Load50.svg";
-import { BackgroundContainer, TextAreaWrapper, ContentWrapper, FixedText } from "styles/ShareStyle";
+import {
+  BackgroundContainer,
+  TextAreaWrapper,
+  ContentWrapper,
+  FixedText,
+} from "styles/ShareStyle";
 
 // const BackgroundContainer = styled.div`
 //   background-image: url(${(props) => props.background});
@@ -111,7 +116,7 @@ const Select = styled.select`
   border-radius: 8px;
   margin: 15px 20px;
   width: 100%;
-  font-family: ${props => props.font}, sans-serif;
+  font-family: ${(props) => props.font}, sans-serif;
 `;
 
 const FontSelect = ({ selectedFont, onChange }) => {
@@ -126,22 +131,24 @@ const FontSelect = ({ selectedFont, onChange }) => {
   );
 };
 
-const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
+const LetterWrite = ({ formData, onSubmit, onSaveDraft, isLoading }) => {
   const { letterBackgrounds, letterIcons } = images;
   const [letterContent, setLetterContent] = useState(formData.content || ""); // formData로 초기값 설정
-  const [selectedFontClass, setSelectedFontClass] = useState(formData.fontClass || "ycomputer-regular");
+  const [selectedFontClass, setSelectedFontClass] = useState(
+    formData.fontClass || "ycomputer-regular"
+  );
   const [selectedModalType, setSelectedModalType] = useState(null);
   const maxTextLength = 300;
 
   useSetVh();
-  const handleContentChange = e => {
+  const handleContentChange = (e) => {
     const value = e.target.value;
     if (value.length <= maxTextLength) {
       setLetterContent(value);
     }
   };
 
-  const handleFontChange = e => {
+  const handleFontChange = (e) => {
     setSelectedFontClass(e.target.value);
   };
 
@@ -187,14 +194,22 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
     setSelectedModalType(null); // 모달 닫기
   };
   const backgroundIndex = formData ? formData.metadata.stationery : 0; // background 값이 없으면 기본값 0 사용
-  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage =
+    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
 
   return (
     <div className="h-full">
-      {requestLoading && <Spinner text="편지를 전송하고 있어요" size={180} opacity={0.8} image={loadImg} />}
+      {isLoading && (
+        <Spinner
+          text="편지를 전송하고 있어요"
+          size={180}
+          opacity={0.8}
+          image={loadImg}
+        />
+      )}
 
-      <BackgroundContainer background={backgroundImage}>
+      <BackgroundContainer background={backgroundImage} className="pt-[90px]">
         <ContentWrapper>
           <TextAreaWrapper>
             <img
@@ -202,7 +217,10 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <FixedText font={selectedFontClass} className={`toSender ${selectedFontClass}`}>
+            <FixedText
+              font={selectedFontClass}
+              className={`toSender ${selectedFontClass}`}
+            >
               To. {formData.receiver}
             </FixedText>
             <TextArea
@@ -212,7 +230,10 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               font={selectedFontClass}
               className={` ${selectedFontClass}`}
             />
-            <FixedText font={selectedFontClass} className={` ${selectedFontClass}`}>
+            <FixedText
+              font={selectedFontClass}
+              className={` ${selectedFontClass}`}
+            >
               From. {formData.writer}
             </FixedText>
 
@@ -220,7 +241,10 @@ const LetterWrite = ({ formData, onSubmit, onSaveDraft, requestLoading }) => {
               {letterContent.length} / {maxTextLength}
             </div>
           </TextAreaWrapper>
-          <FontSelect selectedFont={selectedFontClass} onChange={handleFontChange} />
+          <FontSelect
+            selectedFont={selectedFontClass}
+            onChange={handleFontChange}
+          />
           <div className="w-full flex gap-4 mt-5">
             <Button onClick={handleSaveDraft} className="pretendard-button">
               임시 저장
