@@ -10,9 +10,7 @@ import EmptyLetter from "assets/Empty-letter.svg";
 import Spinner from "components/ui/Spinner";
 
 const ArchiveContainer = styled.div`
-  height: calc(
-    var(--vh, 1vh) * 100 - var(--header-height) - 60px
-  ); /* 동적 높이 */
+  height: calc(var(--vh, 1vh) * 100 - var(--header-height) - 60px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -22,44 +20,35 @@ const Tabs = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
-  /* border-bottom: 2px solid #ccc; */
 `;
 
 const TabButton = styled.button`
-  /* background: ${(props) => (props.$active ? "#333" : "#f9f9f9")}; */
-  color: ${(props) => (props.$active ? "white" : "#333")};
-  /* border: none;
-  padding: 8px 16px;
-  margin: 0 4px;
-  border-radius: 4px; */
+  color: ${props => (props.$active ? "white" : "#333")};
+
   cursor: pointer;
   font-size: 16px;
   text-align: center;
-  flex: 1; /* 버튼을 반반 배치 */
+  flex: 1;
   padding: 16px 0;
-  border-bottom: ${(props) => (props.$active ? "1px solid white" : "none")};
-
-  /* &:hover {
-    background: ${(props) => (props.$active ? "#333" : "#e0e0e0")};
-  } */
+  border-bottom: ${props => (props.$active ? "1px solid white" : "none")};
 `;
 const CenterImage = styled.div`
   background-image: url(${EmptyLetter});
   background-size: cover;
   background-position: center;
-  width: 100px; /* 원하는 너비 */
-  height: 90px; /* 원하는 높이 */
-  margin: 0 auto 24px; /* 가운데 정렬 */
+  width: 100px;
+  height: 90px;
+  margin: 0 auto 24px;
 `;
 const ListContainer = styled.div`
-  flex: 1; /* 남은 공간을 차지하여 스크롤 가능 영역 확보 */
-  overflow-y: auto; /* 세로 스크롤 활성화 */
+  flex: 1;
+  overflow-y: auto;
 
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
   }
 `;
 
@@ -118,25 +107,23 @@ const Archive = () => {
     fetchSentLetters();
   }, []);
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = tab => {
     setActiveTab(tab);
     navigate(`/archive/${tab}`);
   };
 
-  const handleCardClick = (id) => {
-    const recipient = drafts.data.content.find(
-      (draft) => draft.letterId === id
-    );
+  const handleCardClick = id => {
+    const recipient = drafts.data.content.find(draft => draft.letterId === id);
 
     if (!recipient) {
       navigate(`/archive/letter/${id}`, { state: { id } });
     } else {
+      // navigate(`/letter/${id}`, { state: { recipient } });
       navigate(`/letter/${id}`, { state: { recipient } });
     }
   };
 
-  const getShortenedText = (text) =>
-    text?.length > 20 ? `${text.slice(0, 20)}...` : text;
+  const getShortenedText = text => (text?.length > 20 ? `${text.slice(0, 20)}...` : text);
 
   const letters = activeTab === "drafts" ? drafts : sent;
 
@@ -148,23 +135,17 @@ const Archive = () => {
       </div>
       <ArchiveContainer>
         <Tabs>
-          <TabButton
-            $active={activeTab === "drafts"}
-            onClick={() => handleTabClick("drafts")}
-          >
+          <TabButton $active={activeTab === "drafts"} onClick={() => handleTabClick("drafts")}>
             작성 중 ({drafts?.data?.content?.length || 0})
           </TabButton>
-          <TabButton
-            $active={activeTab === "sent"}
-            onClick={() => handleTabClick("sent")}
-          >
+          <TabButton $active={activeTab === "sent"} onClick={() => handleTabClick("sent")}>
             보낸 편지 ({sent?.data?.content?.length || 0})
           </TabButton>
         </Tabs>
         {!loading && (
           <ListContainer className="px-40">
             {letters.data.content.length > 0 ? (
-              letters.data.content.map((letter) => (
+              letters.data.content.map(letter => (
                 <LetterCard
                   key={letter.letterId}
                   onClick={() => handleCardClick(letter.letterId, activeTab)}
@@ -180,9 +161,7 @@ const Archive = () => {
             ) : (
               <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
                 <CenterImage />
-                {activeTab === "drafts"
-                  ? "작성할 편지가 없어요."
-                  : "보낸 편지가 없어요."}
+                {activeTab === "drafts" ? "작성할 편지가 없어요." : "보낸 편지가 없어요."}
               </div>
             )}
           </ListContainer>

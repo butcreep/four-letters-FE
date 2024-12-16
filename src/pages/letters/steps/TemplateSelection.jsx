@@ -38,10 +38,7 @@ const SmallImage = styled.div`
   /* min-width: 100px;
   min-height: 100px; */
   cursor: pointer;
-  border: ${(props) =>
-    props.$isSelected
-      ? "2px solid var(--color-deep-purple)"
-      : "2px solid transparent"};
+  border: ${props => (props.$isSelected ? "2px solid var(--color-deep-purple)" : "2px solid transparent")};
   border-radius: 8px;
 
   img {
@@ -55,9 +52,9 @@ const SmallImage = styled.div`
 const TemplateSelection = ({ onNext, formData }) => {
   const { previewLetters } = images;
   const [selectedTemplate, setSelectedTemplate] = useState(
-    previewLetters[formData.background] || previewLetters[0]
+    previewLetters[formData?.metadata.stationery] || previewLetters[0],
   ); // 선택된 템플릿을 초기화
-  const handleSelectTemplate = (template) => {
+  const handleSelectTemplate = template => {
     setSelectedTemplate(template); // 선택된 템플릿 설정
   };
 
@@ -78,18 +75,11 @@ const TemplateSelection = ({ onNext, formData }) => {
       <div className="footer-height flex flex-col justify-between">
         <Container>
           <LargeImage className="px-40 ">
-            <img
-              src={selectedTemplate.src}
-              alt={`Template ${selectedTemplate.id}`}
-            />
+            <img src={selectedTemplate.src} alt={`Template ${selectedTemplate.id}`} />
           </LargeImage>
           <SwiperContainer className="pl-[40px]">
-            <Swiper
-              spaceBetween={8}
-              slidesPerView={3}
-              style={{ paddingRight: "40px" }}
-            >
-              {previewLetters.map((template) => (
+            <Swiper spaceBetween={8} slidesPerView={3} style={{ paddingRight: "40px" }}>
+              {previewLetters.map(template => (
                 <SwiperSlide key={template.id}>
                   <SmallImage
                     onClick={() => handleSelectTemplate(template)}
@@ -103,11 +93,7 @@ const TemplateSelection = ({ onNext, formData }) => {
           </SwiperContainer>
         </Container>
         <div className="px-40">
-          <CommonButton
-            text="다음"
-            onClick={handleNext}
-            disabled={!selectedTemplate}
-          />
+          <CommonButton text="다음" onClick={handleNext} disabled={!selectedTemplate} />
         </div>
       </div>
     </div>
