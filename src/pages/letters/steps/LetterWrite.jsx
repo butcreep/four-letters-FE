@@ -12,38 +12,6 @@ import {
   FixedText,
 } from "styles/ShareStyle";
 
-// const BackgroundContainer = styled.div`
-//   background-image: url(${(props) => props.background});
-//   background-size: cover;
-//   background-position: center;
-//   height: 100%;
-//   overflow: hidden;
-// `;
-
-// const ContentWrapper = styled.div`
-//   padding: 0 40px;
-//   border-radius: 12px;
-//   position: relative;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   height: 100%;
-//   padding-top: 30px;
-// `;
-
-// const TextAreaWrapper = styled.div`
-//   width: 100%;
-//   position: relative;
-//   background-color: #ece5dd;
-//   border-radius: 12px;
-//   height: 60%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
 const TextArea = styled.textarea`
   width: 100%;
   height: 60%;
@@ -64,31 +32,6 @@ const TextArea = styled.textarea`
     color: rgba(51, 51, 51, 0.5);
   }
 `;
-
-// const FixedText = styled.div`
-//   font-size: 16px;
-//   color: #000;
-//   margin: 5px 0;
-//   /* font-family: ${props => props.font}, sans-serif; */
-// `;
-
-// const CharacterCount = styled.div`
-//   text-align: right;
-//   font-size: 12px;
-//   color: #b6b6b6;
-//   margin-top: 5px;
-//   position: absolute;
-//   bottom: 20px;
-//   right: 20px;
-// `;
-
-// const ButtonGroup = styled.div`
-//   width: 100%;
-//   display: flex;
-
-//   gap: 15px;
-//   margin-top: 20px;
-// `;
 
 const Button = styled.button`
   padding: 15px 0px;

@@ -13,51 +13,6 @@ import {
   FixedText,
 } from "styles/ShareStyle";
 
-// const BackgroundContainer = styled.div`
-//   background-image: url(${props => props.background});
-//   background-size: cover;
-//   background-position: center;
-//   height: 100%;
-//   overflow: hidden;
-// `;
-
-// const ContentWrapper = styled.div`
-//   padding: 0 40px;
-//   border-radius: 12px;
-//   position: relative;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   height: 100%;
-//   padding-top: 30px;
-//   margin-top: 80px;
-// `;
-
-// const TextAreaWrapper = styled.div`
-//   width: 100%;
-//   position: relative;
-//   background-color: #ece5dd;
-//   border-radius: 12px;
-//   height: 60%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const Title = styled.h2`
-//   margin-top: 20px;
-//   font-size: 24px;
-//   text-align: center;
-//   color: #333;
-// `;
-
-// const FixedText = styled.div`
-//   font-size: 16px;
-//   color: #000;
-//   margin: 5px 0;
-// `;
-
 const ContentText = styled.div`
   width: 100%;
   height: 60%;
@@ -89,9 +44,7 @@ const LetterDetail = () => {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        console.log("data", id);
         const data = await getLetterById(id);
-        console.log("data", data);
 
         setDetail(data.data);
       } catch (err) {
