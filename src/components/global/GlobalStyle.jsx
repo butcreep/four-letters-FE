@@ -18,22 +18,6 @@ const GlobalStyle = createGlobalStyle`
 
 
 
-  /* Font Classes */
-/* .poor-story {
-  font-family: "Poor Story", sans-serif;
-}
-
-.hi-melody {
-  font-family: 'Hi Melody', cursive;
-}
-
-.gaegu {
-  font-family: "Gaegu", sans-serif;
-}
-
-.dongle {
-  font-family: 'Dongle', sans-serif;
-} */
 
 .ycomputer-regular {
   font-family: 'Ycomputer-Regular', sans-serif;
@@ -47,16 +31,16 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'YOnepickTTF-Bold', sans-serif;
   font-size: 52px;
   font-weight: bold;
-  line-height: 1.4; /* 140% */
-  letter-spacing: -0.03em; /* -3% */
+  line-height: 1.4;
+  letter-spacing: -0.03em;
 }
 
 .yonepick-subtitle {
   font-family: 'YOnepickTTF-Bold', sans-serif;
   font-size: 40px;
   font-weight: bold;
-  line-height: 1.4; /* 140% */
-  letter-spacing: -0.03em; /* -3% */
+  line-height: 1.4;
+  letter-spacing: -0.03em;
 }
 
 /* Pretendard 폰트 스타일 */
@@ -64,21 +48,21 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'Pretendard', sans-serif;
   font-size: 24px;
   font-weight: bold;
-  line-height: 1.3; /* 130% */
-  letter-spacing: -0.03em; /* -3% */
+  line-height: 1.3;
+  letter-spacing: -0.03em;
 }
 
 .pretendard-button {
   font-family: 'Pretendard', sans-serif;
   font-size: 16px;
-  font-weight: 500; /* medium */
-  line-height: 1.2; /* 120% */
-  letter-spacing: -0.03em; /* -3% */
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
 }
 
 
   .ant-modal-mask {
-    background-color: rgba(0, 0, 0, 0.8) !important; /* 어두운 백그라운드 */
+    background-color: rgba(0, 0, 0, 0.8) !important;
   }
 
   .ant-modal {

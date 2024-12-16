@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useSetVh = (headerRef) => {
+const useSetVh = headerRef => {
   useEffect(() => {
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
@@ -11,10 +11,7 @@ const useSetVh = (headerRef) => {
       // 헤더 높이를 계산하고 CSS 변수로 설정
       if (headerRef?.current) {
         const headerHeight = headerRef.current.getBoundingClientRect().height;
-        document.documentElement.style.setProperty(
-          "--header-height",
-          `${headerHeight}px`
-        );
+        document.documentElement.style.setProperty("--header-height", `${headerHeight}px`);
       }
     };
 

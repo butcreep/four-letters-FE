@@ -4,15 +4,15 @@ import { Spin } from "antd";
 
 const GradientIcon = styled.div`
   svg {
-    width: ${(props) => props.size || 48}px; /* 스피너 크기 동적 */
-    height: ${(props) => props.size || 48}px;
+    width: ${props => props.size || 48}px;
+    height: ${props => props.size || 48}px;
     animation: spin 2s linear infinite;
 
     /* SVG에 대한 그라데이션 스타일 추가 */
     circle {
       stroke: url(#gradient);
       stroke-width: 3;
-      fill: none; /* 투명한 배경 유지 */
+      fill: none;
     }
   }
 
@@ -40,12 +40,7 @@ const GradientSpin = ({ size }) => (
   </GradientIcon>
 );
 
-const Spinner = ({
-  opacity = 0, // 기본 투명도
-  size = 48, // 기본 스피너 크기
-  text = "", // 기본 텍스트
-  image = null, // 기본 이미지 없음
-}) => {
+const Spinner = ({ opacity = 0, size = 48, text = "", image = null }) => {
   return (
     <div
       style={{
@@ -55,28 +50,26 @@ const Spinner = ({
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "column", // 수직 정렬
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         background: `rgba(0, 0, 0, ${opacity})`,
         zIndex: 1000,
       }}
     >
-      {/* 이미지가 있으면 렌더링 */}
       {image && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[80%]">
           <img
             src={image}
             alt="spinner-icon"
             style={{
-              width: "84px", // 이미지 크기 조정 (스피너보다 약간 큼)
-              // marginBottom: 16,
+              width: "84px",
             }}
           />
         </div>
       )}
       <Spin indicator={<GradientSpin size={size} />} />
-      {/* 텍스트가 있으면 렌더링 */}
+
       {text && (
         <p
           style={{
