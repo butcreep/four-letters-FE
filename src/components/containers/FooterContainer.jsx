@@ -4,7 +4,7 @@ import styled from "styled-components";
 import images from "assets";
 
 const FooterContainer = styled.div`
-  position: absolute; /* 부모 컨테이너 기준 위치 고정 */
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -50,20 +50,13 @@ const Footer = () => {
   const location = useLocation();
   return (
     <FooterContainer>
-      {buttons.map((button) => (
+      {buttons.map(button => (
         <FooterButton
           key={button.path}
           onClick={() => navigate(button.path)}
           active={location.pathname === button.path}
         >
-          <img
-            src={
-              location.pathname === button.path
-                ? button.icon.active
-                : button.icon.inactive
-            }
-            alt={button.label}
-          />
+          <img src={location.pathname === button.path ? button.icon.active : button.icon.inactive} alt={button.label} />
         </FooterButton>
       ))}
     </FooterContainer>

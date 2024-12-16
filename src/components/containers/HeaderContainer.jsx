@@ -42,7 +42,7 @@ const Header = ({ title = "편지 작성", onBack, onDelete }) => {
     if (onBack) {
       onBack();
     } else {
-      navigate(-1); // 이전 페이지로 이동
+      navigate(-1);
     }
   };
 

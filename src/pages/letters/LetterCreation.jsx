@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "components/containers/HeaderContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import SenderRecipientForm from "./steps/SenderRecipientForm";
 import TemplateSelection from "./steps/TemplateSelection";
 import LetterWrite from "./steps/LetterWrite";
-import { createLetter } from "api/letters";
-import { getRequestById, updateRequest } from "api/requests";
+import { createLetter, getLetters, updateLetter } from "api/letters";
 import CommonModal from "components/ui/CommonModal";
+import useKakaoShare from "hooks/useKakaoShare";
 
 const LetterCreation = () => {
   const location = useLocation();
+
   const recipient = location.state?.recipient;
-  const [editData, setEditData] = useState(null);
+
   const [step, setStep] = useState(1);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [requestLoading, setRequestLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    writer: "",
-    receiver: "",
-    content: "",
+    writer: recipient.writer || "",
+    receiver: recipient.receiver || "",
+    content: recipient.content || "",
     metadata: {
-      font: "",
-      stationery: "",
+      font: recipient.metadata?.font || "",
+      stationery: recipient.metadata?.stationery || "",
     },
   });
 
@@ -33,37 +34,6 @@ const LetterCreation = () => {
     2: "편지지 선택",
     3: "편지 쓰기",
   };
-
-  useEffect(() => {
-    if (recipient?.id) {
-      const fetchRequests = async () => {
-        setIsLoading(true);
-        try {
-          const data = await getRequestById(recipient.id);
-          setEditData(data);
-        } catch (error) {
-          console.error("Error fetching requests:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchRequests();
-    }
-  }, [recipient?.id]);
-
-  useEffect(() => {
-    if (editData) {
-      setFormData({
-        fromSender: editData.fromSender || "",
-        toRecipient: editData.toRecipient || "",
-        message: editData.message || "",
-        metadata: {
-          font: editData.metadata?.font || "",
-          stationery: editData.metadata?.stationery || "",
-        },
-      });
-    }
-  }, [editData]);
 
   const handleBack = () => {
     if (step > 1) {
@@ -97,9 +67,9 @@ const LetterCreation = () => {
       navigate("/home");
     }
   };
+  const shareCompleteLink = useKakaoShare("COMPLETE", recipient?.requestId);
 
   const handleSubmit = async (data) => {
-    setRequestLoading(true);
     const requestBody = {
       requestId: recipient.requestId,
       writer: formData.writer,
@@ -109,27 +79,41 @@ const LetterCreation = () => {
         font: data.metadata.font,
         stationery: data.metadata.stationery,
       },
-      status: "COMPLETED",
+      status: "COMPLETED", // 기본 상태는 COMPLETED
     };
-    console.log("편지 전송 데이터", requestBody);
 
+    setIsLoading(true);
     try {
-      const response = await createLetter(requestBody);
-
-      if (response.message === "CREATED") {
-        await updateRequest(recipient.id, { isDone: true });
-        navigate("/letter-complete");
+      if (recipient.status === "DRAFT") {
+        const updatedLetter = await updateLetter(
+          recipient.letterId,
+          requestBody
+        );
+        if (updatedLetter.message === "CREATED") {
+          shareCompleteLink("COMPLETE", recipient.letterId); // 카카오 공유
+        }
       } else {
-        throw new Error("Unexpected response from server");
+        // 새로운 편지 생성
+        const response = await createLetter(requestBody);
+
+        if (response.message === "CREATED") {
+          const getLetter = await getLetters();
+          const getLetterId = getLetter?.data.content.find(
+            (letter) => letter.requestId === recipient.requestId
+          );
+
+          shareCompleteLink("COMPLETE", getLetterId.letterId); // 카카오 공유
+        } else {
+          throw new Error("Unexpected response from server");
+        }
       }
     } catch (error) {
-      console.error("Error Sending Letter:", error);
+      console.error("Error Submitting Letter:", error);
       alert("편지 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
-      setRequestLoading(false);
+      setIsLoading(false);
     }
   };
-
   const handleSaveDraft = async (draftData) => {
     try {
       const response = await createLetter({
@@ -138,7 +122,11 @@ const LetterCreation = () => {
         requestId: recipient.requestId,
         status: "DRAFT",
       });
-      console.log("임시저장데이터", response);
+      if (response.message === "CREATED") {
+        console.log("임시저장데이터", response);
+      } else {
+        throw new Error("Unexpected response from server");
+      }
     } catch (error) {
       console.error("임시 저장 중 오류 발생:", error);
       alert("임시 저장에 실패했습니다. 다시 시도해ㄴ주세요.");
@@ -166,7 +154,7 @@ const LetterCreation = () => {
         {step === 3 && (
           <LetterWrite
             formData={formData}
-            requestLoading={requestLoading}
+            isLoading={isLoading}
             onSubmit={handleSubmit}
             onSaveDraft={handleSaveDraft}
           />

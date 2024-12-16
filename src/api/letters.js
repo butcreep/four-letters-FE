@@ -6,9 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getLetters = async () => {
   try {
-    const response = await apiClient.get(
-      "/letters?status=COMPLETED&page=0&size=10"
-    );
+    const response = await apiClient.get("/letters?status=COMPLETED");
     return response.data;
   } catch (error) {
     console.error("Error fetching letters:", error.message || error);
@@ -21,9 +19,7 @@ export const getLetters = async () => {
  */
 export const getDraftLetters = async () => {
   try {
-    const response = await apiClient.get(
-      "/letters?status=DRAFT&page=0&size=10"
-    );
+    const response = await apiClient.get("/letters?status=DRAFT");
     return response.data;
   } catch (error) {
     console.error("Error fetching letters:", error.message || error);
@@ -55,8 +51,6 @@ export const getLetterById = async (letterId) => {
  * @throws {Error} - 편지 생성 실패 시 에러 메시지
  */
 export const createLetter = async (data) => {
-  console.log("createLetter", data);
-
   try {
     const response = await apiClient.post(`/letters`, data);
     if (response.status === 200) {

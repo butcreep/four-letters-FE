@@ -8,7 +8,7 @@ import RequestLink from "pages/requests/RequestLink";
 import LetterCreation from "pages/letters/LetterCreation";
 import useSetVh from "hooks/useSetVh";
 import Archive from "pages/archive/Archive";
-import LetterDetail from "pages/archive/LetterDetail";
+import LetterDetail from "pages/letters/LetterDetail";
 import KakaoCallback from "api/KakaoCallBack";
 
 const AppContainer = styled.div`
@@ -19,8 +19,7 @@ const AppContainer = styled.div`
   background: linear-gradient(180deg, #0d0d0d 0%, #1d1c20 100%);
   height: calc(var(--vh, 1vh) * 100); /* 동적 높이 적용 */
   position: relative;
-
-  padding-bottom: env(safe-area-inset-bottom, 20px); /* 하단 여백 확보 */
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 `;
 
 const App = () => {
@@ -35,6 +34,7 @@ const App = () => {
         <Route path="/archive/drafts" element={<Archive />} />
         <Route path="/archive/sent" element={<Archive />} />
         <Route path="/archive/letter/:id" element={<LetterDetail />} />
+        <Route path="/letter-complete/:id" element={<LetterDetail />} />
         <Route path="/letter/:id" element={<LetterCreation />} />
         <Route path="/letter" element={<LetterCreation />} />
         <Route path="/request-link" element={<RequestLink />} />

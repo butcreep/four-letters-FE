@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "components/containers/FooterContainer";
 import { deleteRequest, getRequestLinks, getRequests } from "../api/requests"; // 공통 API 가져오기
 import { useSelector } from "react-redux";
+import { getLetters } from "api/letters";
 
 const Home = () => {
   const [requests, setRequests] = useState([]);
@@ -14,7 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [linkId, setLinkId] = useState("");
 
-  const userId = useSelector((state) => state.user?.userId);
+  const userId = useSelector(state => state.user?.userId);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -34,12 +35,15 @@ const Home = () => {
     const fetchRequests = async () => {
       setLoading(true); // 로딩 시작
       try {
-        console.log("linkId", linkId);
+        // const data = await getRequests(linkId);
+        // setRequests(data.data.content);
+        const requestData = await getRequests(linkId); // getRequests 호출
+        const letterData = await getLetters(); // getLetters 호출
 
-        const data = await getRequests(linkId);
-        console.log("ddd", data);
+        const letterRequestIds = letterData.data.content.map(letter => letter.requestId);
+        const filteredRequests = requestData.data.content.filter(req => !letterRequestIds.includes(req.requestId));
 
-        setRequests(data.data.content);
+        setRequests(filteredRequests); // 중복 없는 요청 저장
       } catch (error) {
         console.error("Error fetching requests:", error);
       } finally {
@@ -65,9 +69,7 @@ const Home = () => {
       const response = await deleteRequest(selectedRequest.requestId); // 공통 API 호출
 
       if (response.message === "OK") {
-        setRequests((prev) =>
-          prev.filter((req) => req.requestId !== selectedRequest.requestId)
-        ); // 로컬 상태에서 삭제
+        setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId)); // 로컬 상태에서 삭제
       }
       console.log("response", response);
 
@@ -98,7 +100,7 @@ const Home = () => {
       <RequestList
         requests={requests}
         loading={loading}
-        onRequestClick={(req) => {
+        onRequestClick={req => {
           setSelectedRequest(req);
           setModalType(req.isDraft ? "continueWriting" : "friendRequest");
         }}
