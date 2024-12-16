@@ -1,45 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import useSetVh from "hooks/useSetVh";
 import { getLetterById } from "api/letters";
 import images from "assets";
 import Header from "components/containers/HeaderContainer";
+import Spinner from "components/ui/Spinner";
 
-// const BackgroundContainer = styled.div`
-//   background-image: url(${(props) => props.background});
-//   background-size: cover;
-//   background-position: center;
-//   height: 100%;
-//   overflow: hidden;
-// `;
-
-// const ContentWrapper = styled.div`
-//   border-radius: 12px;
-//   position: relative;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   margin: 0 40px;
-//   height: 100%;
-// `;
-// const TextAreaWrapper = styled.div`
-//   background-color: #ffe7a6;
-//   width: 100%;
-//   position: relative;
-//   border-radius: 12px;
-//   height: 70%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: space-between;
-//   .toSender {
-//     margin-top: 10%;
-//   }
-// `;
 const BackgroundContainer = styled.div`
-  background-image: url(${(props) => props.background});
+  background-image: url(${props => props.background});
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -53,7 +22,6 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   height: 100%;
   padding-top: 30px;
   margin-top: 80px;
@@ -79,25 +47,12 @@ const Title = styled.h2`
 `;
 
 const FixedText = styled.div`
-  /* font-size: 14px;
-  color: #888;
-  margin: 5px 0;
-  text-align: left;
-  width: 100%; */
   font-size: 16px;
   color: #000;
   margin: 5px 0;
 `;
 
 const ContentText = styled.div`
-  /* width: 100%;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  text-align: center; */
   width: 100%;
   height: 60%;
   text-align: center;
@@ -109,14 +64,15 @@ const ContentText = styled.div`
   resize: none;
   color: #000;
   ::-webkit-scrollbar {
-    display: none; /* 스크롤바 숨기기 */
+    display: none;
   }
-  -ms-overflow-style: none; /* IE, Edge 스크롤바 숨기기 */
-  scrollbar-width: none; /* Firefox 스크롤바 숨기기 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const LetterDetail = () => {
-  const { id } = useParams(); // URL에서 ID 추출
+  const { id } = useParams();
+  const location = useLocation();
   const [detail, setDetail] = useState(null);
   const [error, setError] = useState(null);
   const headerRef = useRef(null);
@@ -128,7 +84,6 @@ const LetterDetail = () => {
     const fetchDetail = async () => {
       try {
         const data = await getLetterById(id);
-
         setDetail(data.data);
       } catch (err) {
         console.error("Error fetching detail:", err);
@@ -139,26 +94,22 @@ const LetterDetail = () => {
     fetchDetail();
   }, [id]);
 
-  console.log("detailData", detail);
   if (error) {
     return <p>{error}</p>;
   }
 
   if (!detail) {
-    return <p>로딩 중...</p>;
+    return <Spinner />;
   }
+  const showHeader = !location.pathname.startsWith("/letter-complete");
   const backgroundIndex = detail?.metadata?.stationery;
-
-  const backgroundImage =
-    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <>
-      <Header title="작성된 편지" />
+      {showHeader && <Header title="작성된 편지" />}
       <BackgroundContainer background={backgroundImage}>
-        <ContentWrapper
-          className={detail.metadata?.font || "ycomputer-regular"}
-        >
+        <ContentWrapper className={detail.metadata?.font || "ycomputer-regular"}>
           <TextAreaWrapper>
             <img
               src={backgroundIcon}

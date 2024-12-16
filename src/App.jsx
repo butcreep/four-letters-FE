@@ -8,7 +8,7 @@ import RequestLink from "pages/requests/RequestLink";
 import LetterCreation from "pages/letters/LetterCreation";
 import useSetVh from "hooks/useSetVh";
 import Archive from "pages/archive/Archive";
-import LetterDetail from "pages/archive/LetterDetail";
+import LetterDetail from "pages/letters/LetterDetail";
 import KakaoCallback from "api/KakaoCallBack";
 
 const AppContainer = styled.div`
@@ -35,6 +35,7 @@ const App = () => {
         <Route path="/archive/drafts" element={<Archive />} />
         <Route path="/archive/sent" element={<Archive />} />
         <Route path="/archive/letter/:id" element={<LetterDetail />} />
+        <Route path="/letter-complete/:id" element={<LetterDetail />} />
         <Route path="/letter/:id" element={<LetterCreation />} />
         <Route path="/letter" element={<LetterCreation />} />
         <Route path="/request-link" element={<RequestLink />} />
