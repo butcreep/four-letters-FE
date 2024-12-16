@@ -6,7 +6,7 @@ import TemplateSelection from "./steps/TemplateSelection";
 import LetterWrite from "./steps/LetterWrite";
 import { createLetter, getLetters, updateLetter } from "api/letters";
 import CommonModal from "components/ui/CommonModal";
-import useKakaoShare from "hooks/useKakaoShare";
+import shareCompleteLink from "hooks/useKakaoShare";
 
 const LetterCreation = () => {
   const location = useLocation();
@@ -67,7 +67,6 @@ const LetterCreation = () => {
       navigate("/home");
     }
   };
-  const shareCompleteLink = useKakaoShare("COMPLETE", recipient?.requestId);
 
   const handleSubmit = async (data) => {
     const requestBody = {
@@ -94,15 +93,17 @@ const LetterCreation = () => {
         }
       } else {
         // 새로운 편지 생성
+
         const response = await createLetter(requestBody);
 
         if (response.message === "CREATED") {
           const getLetter = await getLetters();
-          const getLetterId = getLetter?.data.content.find(
+          const getLetterId = getLetter?.data?.content?.find(
             (letter) => letter.requestId === recipient.requestId
           );
 
-          shareCompleteLink("COMPLETE", getLetterId.letterId); // 카카오 공유
+          shareCompleteLink("COMPLETE", getLetterId?.letterId); // 카카오 공유
+          navigate(`/archive/letter/${getLetterId?.letterId}`);
         } else {
           throw new Error("Unexpected response from server");
         }

@@ -15,7 +15,6 @@ export const sendKakaoAuthRequest = async (authorizationCode) => {
       redirectionUri: `${window.location.origin}/kakao/callback`,
     });
 
-    console.log("서버 응답:", response.data);
     return response.data; // 응답 데이터를 반환합니다.
   } catch (error) {
     console.error("API 요청 실패:", error.response?.data || error.message);
