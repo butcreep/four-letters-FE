@@ -28,7 +28,9 @@ export const getRequestLinks = async (userId) => {
  * @returns {Promise<Object>} - 요청 리스트 데이터
  */
 export const getRequests = async (linkId) => {
-  const response = await apiClient.get(`/requests/links/${linkId}`);
+  const response = await apiClient.get(
+    `/requests/links/${linkId}?page=0&size=100`
+  );
   return response.data;
 };
 

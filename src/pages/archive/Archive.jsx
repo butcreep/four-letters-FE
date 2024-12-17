@@ -47,7 +47,7 @@ const Archive = () => {
       setLoading(true);
       try {
         const requests = await getDraftLetters();
-        console.log("임시저장", requests.data.content);
+        console.log("임시저장", requests);
         setDrafts(requests || { data: { content: [] } });
       } catch (error) {
         console.error("Error fetching drafts:", error);
@@ -60,7 +60,7 @@ const Archive = () => {
       setLoading(true);
       try {
         const letters = await getLetters();
-        console.log("letters", letters);
+        console.log("보낸편지", letters);
 
         setSent(letters || { data: { content: [] } });
       } catch (error) {

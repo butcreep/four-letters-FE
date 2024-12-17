@@ -10,13 +10,10 @@ import shareCompleteLink from "hooks/useKakaoShare";
 
 const LetterCreation = () => {
   const location = useLocation();
-
   const recipient = location.state?.recipient;
-
   const [step, setStep] = useState(1);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -95,15 +92,18 @@ const LetterCreation = () => {
         // 새로운 편지 생성
 
         const response = await createLetter(requestBody);
+        console.log(response);
 
         if (response.message === "CREATED") {
           const getLetter = await getLetters();
+          console.log("getLetter", getLetter);
+
           const getLetterId = getLetter?.data?.content?.find(
             (letter) => letter.requestId === recipient.requestId
           );
-
+          console.log("getLetterId", getLetterId);
           shareCompleteLink("COMPLETE", getLetterId?.letterId); // 카카오 공유
-          navigate(`/archive/letter/${getLetterId?.letterId}`);
+          // navigate(`/archive/letter/${getLetterId?.letterId}`);
         } else {
           throw new Error("Unexpected response from server");
         }

@@ -40,12 +40,11 @@ const LetterDetail = () => {
   const { letterBackgrounds, letterIcons } = images;
 
   useSetVh(headerRef);
-
+  console.log(typeof id);
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         const data = await getLetterById(id);
-
         setDetail(data.data);
       } catch (err) {
         console.error("Error fetching detail:", err);

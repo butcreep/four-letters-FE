@@ -9,17 +9,18 @@ const SenderRecipientForm = ({ onNext, formData, isLoading }) => {
     if (formData.writer) setSender(formData.writer);
     if (formData.receiver) setRecipient(formData.receiver);
   }, [formData]);
+  console.log(recipient);
 
   const handleSubmit = () => {
     onNext({ receiver: sender, writer: recipient });
   };
-  const validateInput = value => {
+  const validateInput = (value) => {
     if (value.length > 0 && value[0] === " ") return false; // 첫 글자가 공백이면 유효하지 않음
     if (value.length > 7) return false; // 길이가 7자를 초과하면 유효하지 않음
     return true;
   };
 
-  const handleInputChange = setter => e => {
+  const handleInputChange = (setter) => (e) => {
     const value = e.target.value;
     if (validateInput(value)) {
       setter(value); // 입력값이 유효하면 상태 업데이트
@@ -46,7 +47,9 @@ const SenderRecipientForm = ({ onNext, formData, isLoading }) => {
                 onChange={handleInputChange(setRecipient)}
                 placeholder="별명, 닉네임, 이름으로 입력"
               />
-              <p className="text-xs mt-[10px] text-white">1~7자 이내로 입력해주세요.</p>
+              <p className="text-xs mt-[10px] text-white">
+                1~7자 이내로 입력해주세요.
+              </p>
             </div>
             <div>
               <label className="form-label" htmlFor="sender">
@@ -61,10 +64,16 @@ const SenderRecipientForm = ({ onNext, formData, isLoading }) => {
                 onChange={handleInputChange(setSender)}
                 placeholder="별명, 닉네임, 이름으로 입력"
               />
-              <p className="text-xs mt-[10px] text-white">1~7자 이내로 입력해주세요.</p>
+              <p className="text-xs mt-[10px] text-white">
+                1~7자 이내로 입력해주세요.
+              </p>
             </div>
           </div>
-          <CommonButton text="다음" onClick={handleSubmit} disabled={!sender.trim() || !recipient.trim()} />
+          <CommonButton
+            text="다음"
+            onClick={handleSubmit}
+            disabled={!sender.trim() || !recipient.trim()}
+          />
         </div>
       )}
     </div>
