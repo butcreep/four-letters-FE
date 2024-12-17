@@ -38,14 +38,17 @@ const Home = () => {
         const requestData = await getRequests(linkId); // getRequests 호출
         const letterData = await getLetters(); // getLetters 호출
 
-        const letterRequestIds = letterData.data.content.map(
-          (letter) => letter.requestId
-        );
-        const filteredRequests = requestData.data.content.filter(
-          (req) => !letterRequestIds.includes(req.requestId)
-        );
-
-        setRequests(filteredRequests); // 중복 없는 요청 저장
+        if (letterData.data) {
+          const letterRequestIds = letterData?.data.content?.map(
+            (letter) => letter.requestId
+          );
+          const filteredRequests = requestData.data.content.filter(
+            (req) => !letterRequestIds?.includes(req.requestId)
+          );
+          setRequests(filteredRequests); // 중복 없는 요청 저장
+        } else {
+          setRequests(requestData.data.content); // 중복 없는 요청 저장
+        }
       } catch (error) {
         console.error("Error fetching requests:", error);
       } finally {
