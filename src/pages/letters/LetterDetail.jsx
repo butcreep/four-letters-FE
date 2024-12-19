@@ -82,10 +82,10 @@ const LetterDetail = () => {
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
             <h2 className="mt-5 text-2xl text-center text-gray-800">
-              To. {detail.writer}
+              To. {detail.receiver}
             </h2>
             <ContentText>{detail.content}</ContentText>
-            <FixedText>From. {detail.receiver}</FixedText>
+            <FixedText>From. {detail.writer}</FixedText>
           </TextAreaWrapper>
         </ContentWrapper>
       </BackgroundContainer>
