@@ -9,10 +9,9 @@ const SenderRecipientForm = ({ onNext, formData, isLoading }) => {
     if (formData.writer) setSender(formData.writer);
     if (formData.receiver) setRecipient(formData.receiver);
   }, [formData]);
-  console.log(recipient);
 
   const handleSubmit = () => {
-    onNext({ receiver: sender, writer: recipient });
+    onNext({ receiver: recipient, writer: sender });
   };
   const validateInput = (value) => {
     if (value.length > 0 && value[0] === " ") return false; // 첫 글자가 공백이면 유효하지 않음
