@@ -18,13 +18,13 @@ const ArchiveContainer = styled.div`
 `;
 
 const TabButton = styled.button`
-  color: ${(props) => (props.$active ? "white" : "#333")};
+  color: ${props => (props.$active ? "white" : "#333")};
   cursor: pointer;
   font-size: 16px;
   text-align: center;
   flex: 1;
   padding: 16px 0;
-  border-bottom: ${(props) => (props.$active ? "1px solid white" : "none")};
+  border-bottom: ${props => (props.$active ? "1px solid white" : "none")};
 `;
 
 const Archive = () => {
@@ -74,26 +74,22 @@ const Archive = () => {
     fetchSentLetters();
   }, []);
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = tab => {
     setActiveTab(tab);
     navigate(`/archive/${tab}`);
   };
 
-  const handleCardClick = (id) => {
-    const recipient = drafts.data.content.find(
-      (draft) => draft.letterId === id
-    );
+  const handleCardClick = id => {
+    const recipient = drafts.data.content.find(draft => draft.letterId === id);
 
     if (!recipient) {
       navigate(`/archive/letter/${id}`, { state: { id } });
     } else {
-      // navigate(`/letter/${id}`, { state: { recipient } });
       navigate(`/letter/${id}`, { state: { recipient } });
     }
   };
 
-  const getShortenedText = (text) =>
-    text?.length > 20 ? `${text.slice(0, 20)}...` : text;
+  const getShortenedText = text => (text?.length > 20 ? `${text.slice(0, 20)}...` : text);
 
   const letters = activeTab === "drafts" ? drafts : sent;
 
@@ -105,23 +101,17 @@ const Archive = () => {
       </div>
       <ArchiveContainer>
         <div className="flex justify-between mb-8">
-          <TabButton
-            $active={activeTab === "drafts"}
-            onClick={() => handleTabClick("drafts")}
-          >
+          <TabButton $active={activeTab === "drafts"} onClick={() => handleTabClick("drafts")}>
             작성 중 ({drafts?.data?.content?.length || 0})
           </TabButton>
-          <TabButton
-            $active={activeTab === "sent"}
-            onClick={() => handleTabClick("sent")}
-          >
+          <TabButton $active={activeTab === "sent"} onClick={() => handleTabClick("sent")}>
             보낸 편지 ({sent?.data?.content?.length || 0})
           </TabButton>
         </div>
         {!loading && (
           <div className="px-40 flex-1 overflow-y-auto scrollbar-none scrollbar-none::-webkit-scrollbar">
             {letters.data.content.length > 0 ? (
-              letters.data.content.map((letter) => (
+              letters.data.content.map(letter => (
                 <div
                   key={letter.letterId}
                   onClick={() => handleCardClick(letter.letterId, activeTab)}
@@ -137,9 +127,7 @@ const Archive = () => {
             ) : (
               <div className="h-full text-[#B1B1B9] text-center text-sm mb-[20px] flex flex-col items-center justify-center">
                 <CenterImage />
-                {activeTab === "drafts"
-                  ? "작성할 편지가 없어요."
-                  : "보낸 편지가 없어요."}
+                {activeTab === "drafts" ? "작성할 편지가 없어요." : "보낸 편지가 없어요."}
               </div>
             )}
           </div>
