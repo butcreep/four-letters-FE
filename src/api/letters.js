@@ -6,9 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getLetters = async () => {
   try {
-    const response = await apiClient.get(
-      "/letters?status=COMPLETED&page=0&size=10"
-    );
+    const response = await apiClient.get("/letters?status=COMPLETED");
     return response.data;
   } catch (error) {
     console.error("Error fetching letters:", error.message || error);
@@ -21,9 +19,7 @@ export const getLetters = async () => {
  */
 export const getDraftLetters = async () => {
   try {
-    const response = await apiClient.get(
-      "/letters?status=DRAFT&page=0&size=100"
-    );
+    const response = await apiClient.get("/letters?status=DRAFT");
     return response.data;
   } catch (error) {
     console.error("Error fetching letters:", error.message || error);
@@ -35,7 +31,7 @@ export const getDraftLetters = async () => {
  * @param {Number} letterId - 가져올 편지의 ID
  * @returns {Promise<Object>} - 특정 편지 데이터
  */
-export const getLetterById = async (letterId) => {
+export const getLetterById = async letterId => {
   try {
     const response = await apiClient.get(`/letters/${letterId}`);
     return response.data;
@@ -54,7 +50,7 @@ export const getLetterById = async (letterId) => {
  * @returns {Promise<Object>} - 생성된 편지 데이터
  * @throws {Error} - 편지 생성 실패 시 에러 메시지
  */
-export const createLetter = async (data) => {
+export const createLetter = async data => {
   try {
     const response = await apiClient.post(`/letters`, data);
     if (response.status === 200) {
@@ -65,9 +61,7 @@ export const createLetter = async (data) => {
   } catch (error) {
     console.error("Error creating letter:", error.message || error);
     if (error.response?.status === 400) {
-      throw new Error(
-        error.response?.data?.error?.[0]?.message || "잘못된 요청입니다."
-      );
+      throw new Error(error.response?.data?.error?.[0]?.message || "잘못된 요청입니다.");
     }
     throw new Error("편지 생성에 실패했습니다. 다시 시도해주세요.");
   }
@@ -96,9 +90,7 @@ export const updateLetter = async (letterId, updateData) => {
   } catch (error) {
     console.error("Error updating letter:", error.message || error);
     if (error.response?.status === 400) {
-      throw new Error(
-        error.response?.data?.error?.[0]?.message || "잘못된 요청입니다."
-      );
+      throw new Error(error.response?.data?.error?.[0]?.message || "잘못된 요청입니다.");
     }
     throw new Error("편지 수정에 실패했습니다. 다시 시도해주세요.");
   }
@@ -109,7 +101,7 @@ export const updateLetter = async (letterId, updateData) => {
  * @returns {Promise<Object>} - 삭제 성공 메시지
  * @throws {Error} - 편지 삭제 실패 시 에러 메시지
  */
-export const deleteLetterById = async (letterId) => {
+export const deleteLetterById = async letterId => {
   try {
     const response = await apiClient.delete(`/letters/${letterId}`);
     if (response.status === 200) {
