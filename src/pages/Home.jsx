@@ -21,7 +21,8 @@ const Home = () => {
     const fetchRequestLinks = async () => {
       try {
         setLoading(true);
-        const data = await getRequestLinks(userId);
+        // const data = await getRequestLinks(userId);
+        const data = await getRequestLinks();
         setLinkId(data?.linkId || "123"); // ✅ 안전한 방식
       } catch (error) {
         console.error("Error fetching request links:", error);

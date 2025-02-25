@@ -17,7 +17,8 @@ const RequestLink = () => {
     const fetchRequests = async () => {
       try {
         setLoading(true);
-        const data = await getRequestLinks(userId);
+        // const data = await getRequestLinks(userId);
+        const data = await getRequestLinks();
         setRequestId(data?.linkId || "123");
       } catch (error) {
         console.error("Error fetching requests:", error);
