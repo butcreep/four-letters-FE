@@ -15,7 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [linkId, setLinkId] = useState("");
 
-  const userId = useSelector((state) => state.user?.userId);
+  const userId = useSelector(state => state.user?.userId) || "test-user";
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -39,12 +39,8 @@ const Home = () => {
         const letterData = await getLetters(); // getLetters 호출
 
         if (letterData.data) {
-          const letterRequestIds = letterData?.data.content?.map(
-            (letter) => letter.requestId
-          );
-          const filteredRequests = requestData.data.content.filter(
-            (req) => !letterRequestIds?.includes(req.requestId)
-          );
+          const letterRequestIds = letterData?.data.content?.map(letter => letter.requestId);
+          const filteredRequests = requestData.data.content.filter(req => !letterRequestIds?.includes(req.requestId));
           setRequests(filteredRequests); // 중복 없는 요청 저장
         } else {
           setRequests(requestData.data.content); // 중복 없는 요청 저장
@@ -74,9 +70,7 @@ const Home = () => {
       const response = await deleteRequest(selectedRequest.requestId); // 공통 API 호출
 
       if (response.message === "OK") {
-        setRequests((prev) =>
-          prev.filter((req) => req.requestId !== selectedRequest.requestId)
-        ); // 로컬 상태에서 삭제
+        setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId)); // 로컬 상태에서 삭제
       }
       console.log("response", response);
 
@@ -107,7 +101,7 @@ const Home = () => {
       <RequestList
         requests={requests}
         loading={loading}
-        onRequestClick={(req) => {
+        onRequestClick={req => {
           setSelectedRequest(req);
           setModalType(req.isDraft ? "continueWriting" : "friendRequest");
         }}
