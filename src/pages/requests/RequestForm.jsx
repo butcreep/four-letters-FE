@@ -9,7 +9,7 @@ import Hello from "assets/icon/Hello-Santa.svg";
 import Spinner from "components/ui/Spinner";
 
 const RequestForm = () => {
-  const { requestId } = useParams();
+  const { requestId } = useParams() || { requestId: "default-id" };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,14 +34,14 @@ const RequestForm = () => {
     );
   };
 
-  const handleInputChange = (field) => (e) => {
-    setFormData((prev) => ({
+  const handleInputChange = field => e => {
+    setFormData(prev => ({
       ...prev,
       [field]: e.target.value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (loading) return;
 
@@ -63,9 +63,7 @@ const RequestForm = () => {
     } catch (error) {
       console.error("Error submitting request:", error);
       if (error.response?.status === 400) {
-        const errorMessage = error.response?.data?.error
-          ?.map((err) => err.message)
-          .join(", ");
+        const errorMessage = error.response?.data?.error?.map(err => err.message).join(", ");
         alert(`입력 오류: ${errorMessage || "잘못된 요청입니다."}`);
       } else {
         alert("서버 오류가 발생했습니다.");
@@ -104,10 +102,7 @@ const RequestForm = () => {
               💌 편지를 요청해 보세요!
             </p>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-6 mb-[30px]"
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6 mb-[30px]">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
                 요청자
@@ -124,10 +119,7 @@ const RequestForm = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="message"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="message" className="block text-sm font-medium mb-2">
                 메시지
               </label>
               <textarea
@@ -153,13 +145,9 @@ const RequestForm = () => {
           <p className="mb-3 text-base">안내사항</p>
           <ul className="text-sm text-[#B1B1B9] list-disc list-inside">
             <li className="pb-[6px]">
-              편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
-              알림톡으로 편지를 보내드려요)
+              편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오 알림톡으로 편지를 보내드려요)
             </li>
-            <li>
-              작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
-              않아요)
-            </li>
+            <li>작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지 않아요)</li>
           </ul>
         </div>
       </div>
