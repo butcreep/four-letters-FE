@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import RequestList from "./requests/RequestList";
 import CommonModal from "components/ui/CommonModal";
 import { useNavigate } from "react-router-dom";
@@ -15,39 +15,36 @@ const Home = () => {
   const navigate = useNavigate();
   const [linkId, setLinkId] = useState("");
 
-  // 기존 코드: 백엔드에서 userId를 가져오는 방식 (서버 필요)
-  // const userId = useSelector((state) => state.user?.userId);
-
-  // 수정 코드: 백엔드 없이 기본 userId 설정 (서버가 없을 때 사용)
   const userId = useSelector(state => state.user?.userId) || "test-user";
 
-  // API 중복 호출 방지용 useRef
-  const hasFetched = useRef(false);
-
-  /**
-   * 📌 기존 코드: 백엔드에서 requestLinks를 가져오는 방식 (백엔드 필요)
-   *
-   * useEffect(() => {
-   *   const fetchRequests = async () => {
-   *     try {
-   *       setLoading(true);
-   *       const data = await getRequestLinks(userId);
-   *       setLinkId(data?.data?.linkId || "123");
-   *     } catch (error) {
-   *       console.error("Error fetching requests:", error);
-   *     }
-   *   };
-   *   fetchRequests();
-   * }, [userId]);
-   */
-
-  // 📌 수정 코드: 백엔드 없이 기본 linkId 설정
   useEffect(() => {
-    const fetchRequests = async () => {
+    const fetchRequestLinks = async () => {
+      try {
+        setLoading(true);
+        const data = await getRequestLinks(userId);
+        setLinkId(data?.linkId || "123"); // ✅ 안전한 방식
+      } catch (error) {
+        console.error("Error fetching request links:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRequestLinks();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchRequestsAndLetters = async () => {
+      if (!linkId) return;
+
       setLoading(true);
       try {
-        // 백엔드 없이 기본값 사용
-        setLinkId("123");
+        const requestData = await getRequests(linkId);
+        const letterData = await getLetters();
+
+        const letterRequestIds = letterData?.content?.map(letter => letter.requestId) || [];
+        const filteredRequests = requestData?.content?.filter(req => !letterRequestIds.includes(req.requestId)) || [];
+
+        setRequests(filteredRequests);
       } catch (error) {
         console.error("Error fetching requests:", error);
       } finally {
@@ -55,74 +52,23 @@ const Home = () => {
       }
     };
 
-    if (!linkId) fetchRequests();
+    fetchRequestsAndLetters();
   }, [linkId]);
 
-  /**
-   * 📌 기존 코드: 백엔드에서 요청 리스트를 가져오는 방식 (백엔드 필요)
-   *
-   * useEffect(() => {
-   *   const fetchRequests = async () => {
-   *     setLoading(true);
-   *     try {
-   *       const requestData = await getRequests(linkId);
-   *       const letterData = await getLetters();
-   *
-   *       if (letterData.data) {
-   *         const letterRequestIds = letterData?.data?.content?.map(
-   *           (letter) => letter.requestId
-   *         );
-   *         const filteredRequests = requestData.data.content.filter(
-   *           (req) => !letterRequestIds?.includes(req.requestId)
-   *         );
-   *         setRequests(filteredRequests);
-   *       } else {
-   *         setRequests(requestData.data.content);
-   *       }
-   *     } catch (error) {
-   *       console.error("Error fetching requests:", error);
-   *     } finally {
-   *       setLoading(false);
-   *     }
-   *   };
-   *   if (linkId) fetchRequests();
-   * }, [linkId]);
-   */
+  const handleWriteLetter = () => {
+    navigate(`/letter`, { state: { recipient: selectedRequest } });
+  };
 
-  // 📌 수정 코드: 백엔드 없이 요청 리스트 설정
-  useEffect(() => {
-    const fetchRequests = async () => {
-      if (hasFetched.current) return; // ✅ API 중복 호출 방지
-      setLoading(true);
-      try {
-        // 기본 요청 데이터 (목 데이터)
-        const requestData = [
-          { requestId: 1, title: "테스트 요청 1", isDraft: false },
-          { requestId: 2, title: "테스트 요청 2", isDraft: true },
-        ];
+  const handleEditLetter = () => {
+    navigate(`/letter/${selectedRequest.id}`, { state: { recipient: selectedRequest } });
+  };
 
-        setRequests(requestData);
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-      } finally {
-        setLoading(false);
-        hasFetched.current = true;
-      }
-    };
-
-    if (linkId) fetchRequests();
-  }, [linkId]);
-
-  // 요청 삭제 (백엔드 없이 동작하도록 변경)
   const handleDeleteRequest = async () => {
     try {
-      // 기존 백엔드 요청 삭제 (주석 처리)
-      // const response = await deleteRequest(selectedRequest.requestId);
-      // if (response.message === "OK") {
-
-      // 백엔드 없이 로컬 상태에서 삭제
-      setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId));
-
+      const response = await deleteRequest(selectedRequest.requestId);
+      if (response.success) {
+        setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId));
+      }
       setSelectedRequest(null);
       setModalType(null);
     } catch (error) {
@@ -146,7 +92,13 @@ const Home = () => {
           type={modalType}
           isVisible={!!modalType}
           onCancel={() => setModalType(null)}
-          onConfirm={modalType === "deleteRequest" ? handleDeleteRequest : () => console.log("기능 추가 예정")}
+          onConfirm={
+            modalType === "deleteRequest"
+              ? handleDeleteRequest
+              : modalType === "continueWriting"
+              ? handleEditLetter
+              : handleWriteLetter
+          }
           onClose={() => setModalType(null)}
           data={selectedRequest}
         />
