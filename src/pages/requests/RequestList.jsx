@@ -72,25 +72,19 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
             )}
             <ul className="bg-white w-full relative h-full pb-[30px] overflow-y-auto scrollbar-none">
               {loading || requests.length > 0 ? (
-                requests.map((request) => (
+                requests.map(request => (
                   <li
                     key={request.requestId}
                     className="letter-item cursor-pointer flex pb-[10px] mx-5 justify-between items-center pt-5 border-b border-dashed border-[#eeeeee]"
                     onClick={() => onRequestClick(request)}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="sender text-base">
-                        {request.requesterName}
-                      </div>
-                      <div className="date text-xs text-[#B1B1B9]">
-                        {request.updatedAt.split("T")[0]}
-                      </div>
+                      <div className="sender text-base">{request.requesterName}</div>
+                      <div className="date text-xs text-[#B1B1B9]">{request.updatedAt.split("T")[0]}</div>
                     </div>
                     <div className="flex items-center">
                       {request.isDraft && (
-                        <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">
-                          작성중
-                        </div>
+                        <div className="rounded-xl bg-[#BCF8BE] text-[#36A33A] text-xs p-1 px-[10px] mr-2">작성중</div>
                       )}
                       <img src={Arrow} alt="Arrow" />
                     </div>
@@ -107,21 +101,13 @@ export const RequestList = ({ requests, onRequestClick, loading }) => {
           </div>
           {letterComplete || (
             <p className="pb-[10px] text-sm pt-[29px] text-center">
-              신청서를 보내고 <span className="font-bold">편지 요청</span>을
-              받아보세요!
+              신청서를 보내고 <span className="font-bold">편지 요청</span>을 받아보세요!
             </p>
           )}
           {letterComplete ? (
             <div className="flex justify-center gap-1 mt-3">
-              <CommonButton
-                text="보관함으로 가기"
-                onClick={handleNavigateToArchive}
-              />
-              <CommonButton
-                text="홈으로"
-                onClick={handleNavigateToHome}
-                $bgColor="#000"
-              />
+              <CommonButton text="보관함으로 가기" onClick={handleNavigateToArchive} />
+              <CommonButton text="홈으로" onClick={handleNavigateToHome} $bgColor="#000" />
             </div>
           ) : (
             <CommonButton text="신청서 보내기" onClick={handleNavigateToForm} />
