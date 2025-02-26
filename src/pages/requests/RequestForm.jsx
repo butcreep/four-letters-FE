@@ -9,7 +9,7 @@ import Hello from "assets/icon/Hello-Santa.svg";
 import Spinner from "components/ui/Spinner";
 
 const RequestForm = () => {
-  const { requestId } = useParams() || { requestId: "default-id" };
+  const { requestId } = useParams() || { requestId: "123" };
 
   const [formData, setFormData] = useState({
     name: "",

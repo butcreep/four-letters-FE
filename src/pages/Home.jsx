@@ -15,15 +15,18 @@ const Home = () => {
   const navigate = useNavigate();
   const [linkId, setLinkId] = useState("");
 
-  const userId = useSelector((state) => state.user?.userId) || "123";
+  const userId = useSelector(state => state.user?.userId) || "123";
 
   useEffect(() => {
     const fetchRequestLinks = async () => {
       try {
         setLoading(true);
+        // ✅ 서버 복구 시 아래 코드로 교체 필요
         // const data = await getRequestLinks(userId);
         const data = await getRequestLinks();
-        setLinkId(data?.linkId || "123"); // ✅ 안전한 방식
+        console.log("data", data);
+
+        setLinkId(data?.linkId || "123");
       } catch (error) {
         console.error("Error fetching request links:", error);
       } finally {
@@ -40,15 +43,15 @@ const Home = () => {
       setLoading(true);
       try {
         const requestData = await getRequests(linkId);
+
         const letterData = await getLetters();
+        console.log("requestData", requestData);
+        console.log("letterData", letterData);
 
-        const letterRequestIds =
-          letterData?.content?.map((letter) => letter.requestId) || [];
-        const filteredRequests =
-          requestData?.content?.filter(
-            (req) => !letterRequestIds.includes(req.requestId)
-          ) || [];
+        const letterRequestIds = letterData?.content?.map(letter => letter.requestId) || [];
+        const filteredRequests = requestData?.content?.filter(req => !letterRequestIds.includes(req.requestId)) || [];
 
+        console.log("filteredRequests", filteredRequests);
         setRequests(filteredRequests);
       } catch (error) {
         console.error("Error fetching requests:", error);
@@ -74,9 +77,7 @@ const Home = () => {
     try {
       const response = await deleteRequest(selectedRequest.requestId);
       if (response.success) {
-        setRequests((prev) =>
-          prev.filter((req) => req.requestId !== selectedRequest.requestId)
-        );
+        setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId));
       }
       setSelectedRequest(null);
       setModalType(null);
@@ -90,7 +91,7 @@ const Home = () => {
       <RequestList
         requests={requests}
         loading={loading}
-        onRequestClick={(req) => {
+        onRequestClick={req => {
           setSelectedRequest(req);
           setModalType(req.isDraft ? "continueWriting" : "friendRequest");
         }}

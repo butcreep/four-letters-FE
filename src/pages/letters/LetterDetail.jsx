@@ -6,12 +6,7 @@ import { getLetterById } from "api/letters";
 import images from "assets";
 import Header from "components/containers/HeaderContainer";
 import Spinner from "components/ui/Spinner";
-import {
-  BackgroundContainer,
-  TextAreaWrapper,
-  ContentWrapper,
-  FixedText,
-} from "styles/ShareStyle";
+import { BackgroundContainer, TextAreaWrapper, ContentWrapper, FixedText } from "styles/ShareStyle";
 
 const ContentText = styled.div`
   width: 100%;
@@ -45,7 +40,7 @@ const LetterDetail = () => {
     const fetchDetail = async () => {
       try {
         const data = await getLetterById(id);
-        setDetail(data.data);
+        setDetail(data);
       } catch (err) {
         console.error("Error fetching detail:", err);
         setError("데이터를 불러오지 못했습니다.");
@@ -64,26 +59,20 @@ const LetterDetail = () => {
   }
   const showHeader = !location.pathname.startsWith("/letter-complete");
   const backgroundIndex = detail?.metadata?.stationery;
-  const backgroundImage =
-    letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
+  const backgroundImage = letterBackgrounds?.[backgroundIndex] || letterBackgrounds?.[0];
   const backgroundIcon = letterIcons?.[backgroundIndex] || letterIcons?.[0];
   return (
     <>
       {showHeader && <Header title="작성된 편지" />}
       <BackgroundContainer background={backgroundImage}>
-        <ContentWrapper
-          className={detail.metadata?.font || "ycomputer-regular"}
-          margin={80}
-        >
+        <ContentWrapper className={detail.metadata?.font || "ycomputer-regular"} margin={80}>
           <TextAreaWrapper>
             <img
               src={backgroundIcon}
               alt="letter-icon"
               className="w-20 h-20 mx-auto absolute top-[-60px] left-1/2 transform -translate-x-1/2 z-[1]"
             />
-            <h2 className="mt-5 text-2xl text-center text-gray-800">
-              To. {detail.receiver}
-            </h2>
+            <h2 className="mt-5 text-2xl text-center text-gray-800">To. {detail.receiver}</h2>
             <ContentText>{detail.content}</ContentText>
             <FixedText>From. {detail.writer}</FixedText>
           </TextAreaWrapper>
