@@ -5,19 +5,28 @@ import apiClient from "./apiClient";
  * @param {Number} userId - 요청 링크를 가져올 사용자의 ID
  * @returns {Promise<Object>} - 요청 링크 데이터 또는 에러 정보
  */
-export const getRequestLinks = async userId => {
-  try {
-    if (!userId) {
-      throw new Error("User ID not found in the store.");
-    }
+// export const getRequestLinks = async userId => {
+//   try {
+//     if (!userId) {
+//       throw new Error("User ID not found in the store.");
+//     }
 
-    const response = await apiClient.get(`/users/${userId}/links`);
+//     const response = await apiClient.get(`/users/${userId}/links`);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching request links:", error);
+//     return {
+//       error: error.response?.data || error.message || "An unknown error occurred.",
+//     };
+//   }
+// };
+export const getRequestLinks = async () => {
+  try {
+    const response = await apiClient.get("/default-link"); // 기본 링크 API 호출
     return response.data;
   } catch (error) {
-    console.error("Error fetching request links:", error);
-    return {
-      error: error.response?.data || error.message || "An unknown error occurred.",
-    };
+    console.error("Error fetching default request link:", error);
+    return { error: "Failed to fetch default request link" };
   }
 };
 
@@ -26,7 +35,7 @@ export const getRequestLinks = async userId => {
  * @param {String} linkId - 요청 리스트를 가져올 링크 ID
  * @returns {Promise<Object>} - 요청 리스트 데이터
  */
-export const getRequests = async linkId => {
+export const getRequests = async (linkId) => {
   const response = await apiClient.get(`/requests/links/${linkId}`);
   return response.data;
 };
@@ -36,10 +45,10 @@ export const getRequests = async linkId => {
  * @param {String} requestId - 요청을 가져올 링크 ID
  * @returns {Promise<Object>} - 요청 데이터
  */
-export const getRequestById = async requestId => {
+export const getRequestById = async (requestId) => {
   const response = await apiClient.get(
     // `/letters/${requestId}/requests?page=0&size=10`
-    `/requests/links/${requestId}`,
+    `/requests/links/${requestId}`
   );
   return response.data;
 };
@@ -69,7 +78,7 @@ export const updateRequest = async (id, data) => {
  * @param {Number} id - 삭제할 요청의 ID
  * @returns {Promise<Object>} - 삭제 결과 데이터
  */
-export const deleteRequest = async id => {
+export const deleteRequest = async (id) => {
   const response = await apiClient.delete(`/requests/${id}`);
   return response.data;
 };

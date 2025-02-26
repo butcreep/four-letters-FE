@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 });
 
-apiClient.interceptors.request.use(config => {
+apiClient.interceptors.request.use((config) => {
   const state = store.getState();
   const token = state.user?.token;
 

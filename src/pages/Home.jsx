@@ -15,13 +15,14 @@ const Home = () => {
   const navigate = useNavigate();
   const [linkId, setLinkId] = useState("");
 
-  const userId = useSelector(state => state.user?.userId) || "test-user";
+  const userId = useSelector((state) => state.user?.userId) || "123";
 
   useEffect(() => {
     const fetchRequestLinks = async () => {
       try {
         setLoading(true);
-        const data = await getRequestLinks(userId);
+        // const data = await getRequestLinks(userId);
+        const data = await getRequestLinks();
         setLinkId(data?.linkId || "123"); // ✅ 안전한 방식
       } catch (error) {
         console.error("Error fetching request links:", error);
@@ -41,8 +42,12 @@ const Home = () => {
         const requestData = await getRequests(linkId);
         const letterData = await getLetters();
 
-        const letterRequestIds = letterData?.content?.map(letter => letter.requestId) || [];
-        const filteredRequests = requestData?.content?.filter(req => !letterRequestIds.includes(req.requestId)) || [];
+        const letterRequestIds =
+          letterData?.content?.map((letter) => letter.requestId) || [];
+        const filteredRequests =
+          requestData?.content?.filter(
+            (req) => !letterRequestIds.includes(req.requestId)
+          ) || [];
 
         setRequests(filteredRequests);
       } catch (error) {
@@ -60,14 +65,18 @@ const Home = () => {
   };
 
   const handleEditLetter = () => {
-    navigate(`/letter/${selectedRequest.id}`, { state: { recipient: selectedRequest } });
+    navigate(`/letter/${selectedRequest.id}`, {
+      state: { recipient: selectedRequest },
+    });
   };
 
   const handleDeleteRequest = async () => {
     try {
       const response = await deleteRequest(selectedRequest.requestId);
       if (response.success) {
-        setRequests(prev => prev.filter(req => req.requestId !== selectedRequest.requestId));
+        setRequests((prev) =>
+          prev.filter((req) => req.requestId !== selectedRequest.requestId)
+        );
       }
       setSelectedRequest(null);
       setModalType(null);
@@ -81,7 +90,7 @@ const Home = () => {
       <RequestList
         requests={requests}
         loading={loading}
-        onRequestClick={req => {
+        onRequestClick={(req) => {
           setSelectedRequest(req);
           setModalType(req.isDraft ? "continueWriting" : "friendRequest");
         }}

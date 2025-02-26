@@ -11,13 +11,14 @@ const RequestLink = () => {
   const [requestId, setRequestId] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const userId = useSelector(state => state.user?.userId) || "test-user";
+  const userId = useSelector((state) => state.user?.userId) || "123";
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         setLoading(true);
-        const data = await getRequestLinks(userId);
+        // const data = await getRequestLinks(userId);
+        const data = await getRequestLinks();
         setRequestId(data?.linkId || "123");
       } catch (error) {
         console.error("Error fetching requests:", error);
@@ -35,7 +36,7 @@ const RequestLink = () => {
       navigator.clipboard
         .writeText(requestFormLink)
         .then(() => alert("링크가 복사되었습니다!"))
-        .catch(err => {
+        .catch((err) => {
           console.error("복사 실패:", err);
           fallbackCopyTextToClipboard(requestFormLink);
         });
@@ -44,7 +45,7 @@ const RequestLink = () => {
     }
   };
 
-  const fallbackCopyTextToClipboard = text => {
+  const fallbackCopyTextToClipboard = (text) => {
     const input = document.createElement("input");
     input.value = text;
     document.body.appendChild(input);
@@ -78,7 +79,10 @@ const RequestLink = () => {
         <div className="mb-[60px] w-full">
           <div className="rounded-lg">
             <div className="mb-[30px]">
-              <label htmlFor="requestLink" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="requestLink"
+                className="block text-sm font-medium mb-2"
+              >
                 신청 링크
               </label>
               <div className="flex justify-between items-center py-[13px] px-[14px] rounded-lg border-[#78787E] border gap-3">
@@ -89,14 +93,22 @@ const RequestLink = () => {
                   value={requestFormLink}
                   className="bg-transparent text-[var(--color-deep-white)] w-5/6 mr-2 overflow-hidden text-ellipsis whitespace-nowrap"
                 />
-                <button onClick={handleCopyLink} className="text-sm font-bold text-[var(--color-deep-purple)]">
+                <button
+                  onClick={handleCopyLink}
+                  className="text-sm font-bold text-[var(--color-deep-purple)]"
+                >
                   복사
                 </button>
               </div>
-              <p className="text-xs mt-[10px]">신청서 링크를 복사해서 공유해 보세요!</p>
+              <p className="text-xs mt-[10px]">
+                신청서 링크를 복사해서 공유해 보세요!
+              </p>
             </div>
             <div>
-              <label htmlFor="kakaoShare" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="kakaoShare"
+                className="block text-sm font-medium mb-2"
+              >
                 카카오로 공유
               </label>
               <CommonButton
@@ -107,7 +119,9 @@ const RequestLink = () => {
                 $bgColor="#FDE502"
                 color="#3B1E1D"
               />
-              <p className="text-xs mt-2">카카오톡에 등록된 친구에게 링크를 공유합니다.</p>
+              <p className="text-xs mt-2">
+                카카오톡에 등록된 친구에게 링크를 공유합니다.
+              </p>
             </div>
           </div>
         </div>
@@ -116,9 +130,13 @@ const RequestLink = () => {
           <p className="mb-3 text-base">안내사항</p>
           <ul className="text-sm text-[#B1B1B9] list-disc list-inside">
             <li className="pb-[6px]">
-              편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오 알림톡으로 편지를 보내드려요)
+              편지를 요청해야 작성자가 편지를 발송할 수 있습니다. (카카오
+              알림톡으로 편지를 보내드려요)
             </li>
-            <li>작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지 않아요)</li>
+            <li>
+              작성자가 편지를 거절할 수 있습니다. (단, 요청자에게 알림이 가지
+              않아요)
+            </li>
           </ul>
         </div>
       </div>
