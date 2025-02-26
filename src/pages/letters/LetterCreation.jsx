@@ -34,15 +34,15 @@ const LetterCreation = () => {
 
   const handleBack = () => {
     if (step > 1) {
-      setStep((prev) => prev - 1);
+      setStep(prev => prev - 1);
     } else {
       navigate(-1);
     }
   };
 
-  const handleNext = (data) => {
-    setFormData((prev) => ({ ...prev, ...data }));
-    setStep((prev) => prev + 1);
+  const handleNext = data => {
+    setFormData(prev => ({ ...prev, ...data }));
+    setStep(prev => prev + 1);
   };
 
   const handleDelete = async () => {
@@ -65,7 +65,7 @@ const LetterCreation = () => {
     }
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async data => {
     const requestBody = {
       requestId: recipient.requestId,
       writer: formData.writer,
@@ -81,10 +81,7 @@ const LetterCreation = () => {
     setIsLoading(true);
     try {
       if (recipient.status === "DRAFT") {
-        const updatedLetter = await updateLetter(
-          recipient.letterId,
-          requestBody
-        );
+        const updatedLetter = await updateLetter(recipient.letterId, requestBody);
         if (updatedLetter.message === "CREATED") {
           shareCompleteLink("COMPLETE", recipient.letterId); // 카카오 공유
         }
@@ -98,9 +95,7 @@ const LetterCreation = () => {
           const getLetter = await getLetters();
           console.log("getLetter", getLetter);
 
-          const getLetterId = getLetter?.data?.content?.find(
-            (letter) => letter.requestId === recipient.requestId
-          );
+          const getLetterId = getLetter?.content?.find(letter => letter.requestId === recipient.requestId);
           console.log("getLetterId", getLetterId);
           shareCompleteLink("COMPLETE", getLetterId?.letterId); // 카카오 공유
           // navigate(`/archive/letter/${getLetterId?.letterId}`);
@@ -115,7 +110,7 @@ const LetterCreation = () => {
       setIsLoading(false);
     }
   };
-  const handleSaveDraft = async (draftData) => {
+  const handleSaveDraft = async draftData => {
     try {
       const response = await createLetter({
         ...formData,
@@ -142,16 +137,8 @@ const LetterCreation = () => {
     <>
       <Header title={stepTitles[step]} onBack={handleBack} />
       <div className="header-height">
-        {step === 1 && (
-          <SenderRecipientForm
-            formData={formData}
-            onNext={handleNext}
-            isLoading={isLoading}
-          />
-        )}
-        {step === 2 && (
-          <TemplateSelection formData={formData} onNext={handleNext} />
-        )}
+        {step === 1 && <SenderRecipientForm formData={formData} onNext={handleNext} isLoading={isLoading} />}
+        {step === 2 && <TemplateSelection formData={formData} onNext={handleNext} />}
         {step === 3 && (
           <LetterWrite
             formData={formData}

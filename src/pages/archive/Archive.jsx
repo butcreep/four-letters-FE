@@ -80,7 +80,7 @@ const Archive = () => {
   };
 
   const handleCardClick = id => {
-    const recipient = drafts.data.content.find(draft => draft.letterId === id);
+    const recipient = drafts?.content?.find(draft => draft.letterId === id);
 
     if (!recipient) {
       navigate(`/archive/letter/${id}`, { state: { id } });
@@ -110,8 +110,8 @@ const Archive = () => {
         </div>
         {!loading && (
           <div className="px-40 flex-1 overflow-y-auto scrollbar-none scrollbar-none::-webkit-scrollbar">
-            {letters.data.content.length > 0 ? (
-              letters.data.content.map(letter => (
+            {letters?.content?.length > 0 ? (
+              letters.content.map(letter => (
                 <div
                   key={letter.letterId}
                   onClick={() => handleCardClick(letter.letterId, activeTab)}
